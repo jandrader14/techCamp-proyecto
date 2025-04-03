@@ -1,0 +1,21 @@
+.inputWrapper {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--primary);
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .inputLabel {
+    position: absolute;
+    top: -0.75rem;
+    left: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--primary);
+  }
+  

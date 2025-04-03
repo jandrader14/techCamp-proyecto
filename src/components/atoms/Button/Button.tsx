@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../styles/Button.module.css";
+import styles from "./Button.module.css";
 
 interface ButtonProps {
   text: string;
@@ -15,4 +15,4 @@ export const Button: React.FC<ButtonProps> = ({ text, type = "button", onClick }
   );
 };
 
-
+export default Button;

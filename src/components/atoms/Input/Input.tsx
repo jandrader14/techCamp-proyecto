@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import styles from "./Input.module.css";
 
 interface InputProps {
@@ -19,3 +19,5 @@ export const Input: React.FC<InputProps> = ({ type, id, label, required, pattern
     </div>
   );
 };
+
+export default Input;
