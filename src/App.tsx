@@ -1,7 +1,13 @@
+
 import AuthLayout from "./components/layout/AuthLayout/AuthLayout";
+import LoginForm from "./components/organisms/LoginForm/LoginForm";
 
 function App() {
-  return <AuthLayout>Contenido dentro de AuthLayout</AuthLayout>;
+  return (
+    <AuthLayout>
+      <LoginForm />
+    </AuthLayout>
+  );
 }
 
 export default App;

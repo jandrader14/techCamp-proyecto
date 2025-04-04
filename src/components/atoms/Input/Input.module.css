@@ -1,21 +1,63 @@
-.inputWrapper {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-  
-  .inputField {
-    width: 100%;
-    padding: 0.5rem;
-    border: 2px solid var(--primary);
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .inputLabel {
-    position: absolute;
-    top: -0.75rem;
-    left: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--primary);
-  }
-  
+.input__wrapper {
+  position: relative;
+  padding: 0.9375rem 0 0;
+  margin-bottom: 0.5rem;
+}
+
+.input__field {
+  font-size: 1rem;
+  color: var(--text);
+  width: 100%;
+  padding: 0.375rem;
+  padding-right: 2rem;
+  padding-bottom: 0.5rem;
+  line-height: 2rem;
+  height: 2.5rem;
+  outline: 0;
+  border: 0;
+  vertical-align: middle;
+  border-bottom: 2px solid var(--primary);
+  background: transparent;
+  transition: border-color 0.3s;
+}
+
+.input__field::placeholder {
+  color: transparent;
+}
+
+.input__label {
+  user-select: none;
+}
+
+/* Estilos para la etiqueta cuando el campo de entrada está vacío y muestra el placeholder */
+.input__field:placeholder-shown ~ .input__label {
+  cursor: text; /* Cambia el cursor a una forma de texto */
+  color: var(--text); /* Color del texto de la etiqueta */
+  top: 0.8rem; /* Posición vertical de la etiqueta */
+  font-size: 1.2rem; /* Tamaño de la fuente de la etiqueta */
+  position: absolute; /* Posiciona la etiqueta de manera absoluta */
+}
+
+/* Estilos generales para la etiqueta */
+.input__label,
+.input__field:focus ~ .input__label,
+.input__field:not(:placeholder-shown) ~ .input__label {
+  position: absolute; /* Posiciona la etiqueta de manera absoluta */
+  display: block; /* Muestra la etiqueta como un bloque */
+  font-size: 1rem; /* Tamaño de la fuente de la etiqueta */
+  color: var(--text); /* Color del texto de la etiqueta */
+  transition: 0.3s; /* Transición suave para los cambios de estilo */
+}
+
+/* Estilos para la etiqueta cuando el campo de entrada está enfocado o no está vacío */
+.input__field:focus ~ .input__label,
+.input__field:not(:placeholder-shown) ~ .input__label {
+  top: -0.75rem; /* Mueve la etiqueta hacia arriba */
+  font-size: 0.75rem; /* Reduce el tamaño de la fuente de la etiqueta */
+  color: var(--primary); /* Cambia el color del texto de la etiqueta */
+}
+
+/* Estilos para el campo de entrada cuando está enfocado */
+.input__field:focus {
+  border-bottom: 2px solid var(--primary); /* Cambia el color del borde inferior del campo de entrada */
+}

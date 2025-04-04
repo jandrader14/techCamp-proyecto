@@ -1,0 +1,31 @@
+:root {
+  /*Global variables*/
+  --primary: #d4145a;
+  --text: #1f2346;
+  --white: #ffffff;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*::selection {
+  /*Selection color*/
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+body {
+  background-image: url("https://drive.google.com/thumbnail?id=1EZCUYQIR6FIVK6iDOz6DY9vM16XYoZ0x&sz=w1366-h768");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-size: 16px;
+  font-family: "Work Sans", sans-serif;
+  height: 100vh;
+  padding: 1rem;
+  display: flex; /*1*/
+  justify-content: center; /*2*/
+  align-items: center; /*3*/
+  overflow: hidden;
+}

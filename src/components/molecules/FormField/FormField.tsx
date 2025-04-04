@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from "./FormField.module.css";
 import Input from '../../atoms/Input/Input';
 
 interface FormFieldProps {
@@ -8,12 +7,10 @@ interface FormFieldProps {
   name: string;
 }
 
-const FormField: React.FC<FormFieldProps> = ({ type, label,  }) => {
-  return (
-    <div className={styles.formField}>
-      <Input type={type} label={label} required id={''} />
-    </div>
-  );
+const FormField: React.FC<FormFieldProps> = ({ type, label, name }) => {
+  return (    
+      <Input type={type} label={label} name={name} required id={''} />
+    );
 };
 
 export default FormField;

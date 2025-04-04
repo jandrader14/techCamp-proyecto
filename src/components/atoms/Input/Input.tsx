@@ -5,16 +5,18 @@ interface InputProps {
   type: string;
   id: string;
   label: string;
+  name: string;
   required?: boolean;
   pattern?: string;
+  placeholder?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ type, id, label, required, pattern }) => {
+const Input: React.FC<InputProps> = ({ type, id, label, name, required, pattern }) => {
   return (
     <div className={styles.inputWrapper}>
-      <input type={type} id={id} className={styles.inputField} required={required} pattern={pattern} />
-      <label htmlFor={id} className={styles.inputLabel}>
-        {label}
+      <input type={type} id={id} name={name} className={styles.input__field} required={required} pattern={pattern} />
+      <label id={id} className={styles.input__label}>
+        {label}        
       </label>
     </div>
   );

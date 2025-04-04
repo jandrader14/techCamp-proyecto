@@ -1,27 +1,77 @@
 .loginForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--white);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  position: relative;
+  gap: 1rem;
+  background-color: var(--white);
+  width: 100%;
+  max-width: 35rem;
+  padding: 3rem 2.5rem;
+  border-radius: 1.5rem;
+  height: fit-content;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.loginWelcome {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.logo {
+  height: 5rem;
+  margin: 0 auto;
+  margin-bottom: 0.5rem;
+}
+
+/*Responsive*/
+@media (max-width: 768px) {
+  .loginForm {
+    padding: 2rem 1.5rem;
   }
-  
-  .logo img {
-    width: 80px;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
-  }
-  
-  .welcome {
+
+  .form-btn {
     font-size: 1rem;
-    margin-bottom: 1rem;
+    min-height: 2.5rem;
+    line-height: 2.5rem;
   }
-  
+
+  .input__field {
+    font-size: 0.875rem;
+    height: 2rem;
+    line-height: 1.5rem;
+  }
+
+  .input__label {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginForm {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-btn {
+    font-size: 0.875rem;
+    min-height: 2rem;
+    line-height: 2rem;
+  }
+
+  .input__field {
+    font-size: 0.75rem;
+    height: 1.75rem;
+    line-height: 1.25rem;
+  }
+
+  .input__label {
+    font-size: 0.75rem;
+  }
+}
+/*--- End Login Style*/
+
+
+
+
+
+
