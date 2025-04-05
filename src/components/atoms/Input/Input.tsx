@@ -11,11 +11,11 @@ interface InputProps {
   placeholder?: string;
 }
 
-const Input: React.FC<InputProps> = ({ type, id, label, name, required, pattern }) => {
+const Input: React.FC<InputProps> = ({ type, id, label, name, required, pattern, placeholder }) => {
   return (
-    <div className={styles.inputWrapper}>
-      <input type={type} id={id} name={name} className={styles.input__field} required={required} pattern={pattern} />
-      <label id={id} className={styles.input__label}>
+    <div className={styles.inputWrapper}>      
+      <input type={type} id={id} name={name} className={styles.inputField} required={required} pattern={pattern} placeholder={placeholder} />
+      <label htmlFor={id} className={styles.inputLabel}>
         {label}        
       </label>
     </div>

@@ -9,21 +9,16 @@
   padding: 0;
   box-sizing: border-box;
 }
-*::selection {
-  /*Selection color*/
-  background-color: var(--primary);
-  color: var(--white);
-}
 
 body {
   background-image: url("https://drive.google.com/thumbnail?id=1EZCUYQIR6FIVK6iDOz6DY9vM16XYoZ0x&sz=w1366-h768");
-  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  box-sizing: border-box;
   font-size: 16px;
   font-family: "Work Sans", sans-serif;
-  height: 100vh;
-  padding: 1rem;
+  min-height: 100vh;
+  width: 100%;
   display: flex; /*1*/
   justify-content: center; /*2*/
   align-items: center; /*3*/

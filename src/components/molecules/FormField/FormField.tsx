@@ -9,7 +9,7 @@ interface FormFieldProps {
 
 const FormField: React.FC<FormFieldProps> = ({ type, label, name }) => {
   return (    
-      <Input type={type} label={label} name={name} required id={''} />
+      <Input type={type} label={label} name={name} required id={''} placeholder=" " />
     );
 };
 

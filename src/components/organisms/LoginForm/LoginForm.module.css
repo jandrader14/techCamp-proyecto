@@ -1,3 +1,4 @@
+/* Estilos principales del formulario */
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -6,72 +7,32 @@
   gap: 1rem;
   background-color: var(--white);
   width: 100%;
-  max-width: 35rem;
+  max-width: 40rem; /* Controla el ancho máximo del formulario */
   padding: 3rem 2.5rem;
   border-radius: 1.5rem;
   height: fit-content;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
+/* Estilos para la sección de bienvenida */
 .loginWelcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
   margin-bottom: 1rem;
   text-align: center;
 }
 
-.logo {
-  height: 5rem;
+/* Estilos para la imagen del logo */
+.loginWelcome img {
+  max-width: 120px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Asegura que la imagen no se deforme */
   margin: 0 auto;
   margin-bottom: 0.5rem;
 }
-
-/*Responsive*/
-@media (max-width: 768px) {
-  .loginForm {
-    padding: 2rem 1.5rem;
-  }
-
-  .form-btn {
-    font-size: 1rem;
-    min-height: 2.5rem;
-    line-height: 2.5rem;
-  }
-
-  .input__field {
-    font-size: 0.875rem;
-    height: 2rem;
-    line-height: 1.5rem;
-  }
-
-  .input__label {
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .loginForm {
-    padding: 1.5rem 1rem;
-  }
-
-  .form-btn {
-    font-size: 0.875rem;
-    min-height: 2rem;
-    line-height: 2rem;
-  }
-
-  .input__field {
-    font-size: 0.75rem;
-    height: 1.75rem;
-    line-height: 1.25rem;
-  }
-
-  .input__label {
-    font-size: 0.75rem;
-  }
-}
-/*--- End Login Style*/
-
-
-
-
-
-

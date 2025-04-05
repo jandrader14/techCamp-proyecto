@@ -1,10 +1,17 @@
-.input__wrapper {
+:root {
+  /*Global variables*/
+  --primary: #d4145a;
+  --text: #1f2346;
+  --white: #ffffff;
+}
+
+.inputWrapper {
   position: relative;
   padding: 0.9375rem 0 0;
   margin-bottom: 0.5rem;
 }
 
-.input__field {
+.inputField {
   font-size: 1rem;
   color: var(--text);
   width: 100%;
@@ -18,30 +25,30 @@
   vertical-align: middle;
   border-bottom: 2px solid var(--primary);
   background: transparent;
-  transition: border-color 0.3s;
+  transition: border-color 0.2s ease-in-out; /* Reduced duration for better performance */
 }
 
-.input__field::placeholder {
+.inputField::placeholder {
   color: transparent;
 }
 
-.input__label {
+.inputLabel {
   user-select: none;
 }
 
 /* Estilos para la etiqueta cuando el campo de entrada está vacío y muestra el placeholder */
-.input__field:placeholder-shown ~ .input__label {
-  cursor: text; /* Cambia el cursor a una forma de texto */
+.inputField:placeholder-shown ~ .inputLabel {
+  cursor: text; /* Changes the cursor to a text input style */
   color: var(--text); /* Color del texto de la etiqueta */
   top: 0.8rem; /* Posición vertical de la etiqueta */
   font-size: 1.2rem; /* Tamaño de la fuente de la etiqueta */
   position: absolute; /* Posiciona la etiqueta de manera absoluta */
 }
 
-/* Estilos generales para la etiqueta */
-.input__label,
-.input__field:focus ~ .input__label,
-.input__field:not(:placeholder-shown) ~ .input__label {
+/* General styles for the label */
+.inputLabel,
+.inputField:focus ~ .inputLabel,
+.inputField:not(:placeholder-shown) ~ .inputLabel {
   position: absolute; /* Posiciona la etiqueta de manera absoluta */
   display: block; /* Muestra la etiqueta como un bloque */
   font-size: 1rem; /* Tamaño de la fuente de la etiqueta */
@@ -49,15 +56,15 @@
   transition: 0.3s; /* Transición suave para los cambios de estilo */
 }
 
-/* Estilos para la etiqueta cuando el campo de entrada está enfocado o no está vacío */
-.input__field:focus ~ .input__label,
-.input__field:not(:placeholder-shown) ~ .input__label {
-  top: -0.75rem; /* Mueve la etiqueta hacia arriba */
+/* Styles for the label when the input field is focused or not empty */
+.inputField:focus ~ .inputLabel,
+.inputField:not(:placeholder-shown) ~ .inputLabel {
+  top: -0.85rem; /* Adjusted for better alignment */
   font-size: 0.75rem; /* Reduce el tamaño de la fuente de la etiqueta */
   color: var(--primary); /* Cambia el color del texto de la etiqueta */
 }
 
-/* Estilos para el campo de entrada cuando está enfocado */
-.input__field:focus {
-  border-bottom: 2px solid var(--primary); /* Cambia el color del borde inferior del campo de entrada */
+/* Styles for the input field when focused */
+.inputField:focus {
+  border-bottom: 2px solid var(--primary, #007BFF); /* Cambia el color del borde inferior del campo de entrada con un color de respaldo */
 }
