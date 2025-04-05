@@ -1,0 +1,55 @@
+.welcomeMainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem;
+}
+
+.welcomeContainer {
+  align-items: center;
+  background-color: var(--welcome); /* Fondo del contenedor principal */
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  height: 100%;
+  max-height: 150px;
+  padding: 1rem;
+  width: 100%;
+}
+
+.welcomeContainer h1 {
+  font-size: 24px;
+  color: var(--title);
+  margin-bottom: 10px;
+}
+
+.welcomeContainer p {
+  font-size: 16px;
+  color: var(--color-paragraph);
+  line-height: 1.5;
+  font-weight: normal;
+}
+
+.welcomeText {
+  width: 100%;
+  max-width: 60%;
+  padding: 1.5rem;
+}
+
+.welcomeImage {
+  width: 100%;
+  max-width: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.welcomeImage img {
+  position: relative;
+  bottom: 5px;
+  width: 100%;
+  max-width: 250px;
+  height: 100%;
+  max-height: 650px;
+}
