@@ -4,16 +4,14 @@
   --text: #1f2346;
   --white: #ffffff;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  background-image: url("https://drive.google.com/thumbnail?id=1EZCUYQIR6FIVK6iDOz6DY9vM16XYoZ0x&sz=w1366-h768");
-  background-size: cover;
-  background-position: center;
+body {  
   box-sizing: border-box;
   font-size: 16px;
   font-family: "Work Sans", sans-serif;

@@ -1,4 +1,9 @@
-/* Estilos principales del formulario */
+body{
+  background-image: url('../../../assets/fondo_frutas.png');
+  background-size: cover;
+  background-position: center;
+}
+
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -26,7 +31,7 @@
   text-align: center;
 }
 
-/* Estilos para la imagen del logo */
+
 .loginWelcome img {
   max-width: 120px;
   max-height: 120px;
