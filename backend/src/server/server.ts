@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors'; //Middleware
 import dotenv from 'dotenv';
-import {connectDB} from './config/db'; //config db
-import authRoutes from './routes/authRoutes'; //routes
+import {connectDB} from './config/db.ts'; //config db
+import authRoutes from '../routes/authRoutes.ts'; //routes
 
 dotenv.config();
 

@@ -5,6 +5,8 @@ interface FormFieldProps {
   type: string;
   label: string;
   name: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FormField: React.FC<FormFieldProps> = ({ type, label, name }) => {
