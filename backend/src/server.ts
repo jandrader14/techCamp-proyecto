@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan'; // Import morgan for logging
 
 import {connectDB} from './database/index.ts'
+import {PORT} from './config/index.ts'
 
 export class Server{
   private app: express.Application;
@@ -16,7 +17,7 @@ export class Server{
   }
 
   configuration(){
-    this.app.set('port', 5000);
+    this.app.set('port', PORT || 5000);
     
   }
 

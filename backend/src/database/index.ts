@@ -1,9 +1,9 @@
 import {connect} from 'mongoose';
+import {MONGO_URI} from '../config/index.ts';
 
-const MONGO_URI = 'mongodb+srv://andraderjohanna:johanna@cluster0.mwkecjr.mongodb.net/marketHomeRecipes?retryWrites=true&w=majority&appName=Cluster0';
 
 export const connectDB =() => {
-    connect(MONGO_URI);
+    connect(MONGO_URI as string);
     console.log('Conectado a MongoDB 😁');
 
 }
