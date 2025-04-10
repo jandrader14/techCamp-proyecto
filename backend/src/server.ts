@@ -4,6 +4,9 @@ import morgan from 'morgan'; // Import morgan for logging
 
 import {connectDB} from './database/index.ts'
 import {PORT} from './config/index.ts'
+import {routes} from './routes/index.ts'
+
+
 
 export class Server{
   private app: express.Application;
@@ -30,6 +33,7 @@ export class Server{
     this.app.get('/', (req, res) => {
       res.json({ message: 'Welcome to the API' });      
     });
+    this.app.use('/api/users', routes.UserRoute);
   }
 
   listen(){

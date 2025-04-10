@@ -1,27 +1,25 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
-        "dev": "nodemon ./src/index.ts",
-        "start": "node ./src/index.ts"
+        "dev": "nodemon",
+        "start": "ts-node ./src/index.ts"
     },
     "dependencies": {
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^5.1.0",
-        "mongodb": "^6.15.0",
         "mongoose": "^8.13.2",
         "morgan": "^1.10.0"
     },
     "devDependencies": {
         "@types/express": "^5.0.1",
-        "@types/morgan": "^1.9.9",
         "@types/mocha": "^10.0.10",
         "@types/mongoose": "^5.11.96",
+        "@types/morgan": "^1.9.9",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2",
-        "typescript": "^5.0.0"
-
+        "typescript": "^5.8.3"
     }
 }
