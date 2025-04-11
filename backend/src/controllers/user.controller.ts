@@ -25,7 +25,7 @@ export const userController ={
         try {
             const {id} = req.params;
             const data = await userService.update(id, req.body);
-            return res.json(data);
+            return res.json(data);            
         } catch (error:any) {
             res.status(500).json({message: error.message});
             

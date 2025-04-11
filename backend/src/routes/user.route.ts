@@ -12,11 +12,11 @@ router.post('/', (req, res, next) => {
     userController.create(req, res).catch(next); // Handle async errors
 });
 
-router.patch('/', (req, res, next) => {
+router.patch('/:id', (req, res, next) => {
     userController.update(req, res).catch(next); // Handle async errors
 });
 
-router.delete('/', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
     userController.delete(req, res).catch(next); // Handle async errors
 });
 
