@@ -1,4 +1,4 @@
-import { Server } from './server.ts'; // Use relative path with `.js` extension
+import { Server } from './server/server.ts'; 
 
 const server = new Server();
 server.listen();
