@@ -44,9 +44,15 @@ const LoginForm: React.FC = () => {
       </div>
       <FormField type="email" label="Correo Electrónico" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <FormField type="password" label="Contraseña" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      
+      <div className={styles.forgotPassword}>
+        <a href="#">¿Olvidaste tu contraseña?</a>
+      </div>
       <Button text={loading ? 'Cargando...' : 'Ingresar'} type="submit" disabled={loading} />
       {error && <p className={styles.error}>{error}</p>} {/* Mostrar mensaje de error */}
+      <div className={styles.register}>
+        <p>¿No tienes cuenta? </p>
+        <a href="/register">Regístrate</a>
+      </div>
     </form>
   );
 };

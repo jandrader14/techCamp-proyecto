@@ -8,8 +8,8 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: start;
-  position: relative;
-  gap: 1rem;
+  align-content: center;
+  gap: 0.5rem;
   background-color: var(--white);
   width: 100%;
   max-width: 40rem; /* Controla el ancho máximo del formulario */
@@ -46,4 +46,33 @@ body{
   color: red;
   font-size: 0.9rem;
   margin-top: 0.5rem;
+}
+
+.forgotPassword{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end; /* Align the div to the right */
+  align-items: center; /* Ensure vertical alignment */
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.forgotPassword a {
+  margin: 0; /* Remove default margins */
+  text-align: center; /* Align text to the center */
+}
+
+.register {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end; /* Align the div to the right */
+  align-items: center; /* Ensure vertical alignment */
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.register p,
+.register a {
+  margin: 0; /* Remove default margins */
+  text-align: right; /* Align text to the right */
 }
