@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
 import Button from "../../atoms/Button/Button";
 import styles from "./RegisterForm.module.css";
-import img from "../../../assets/frutasVerduras.png"; // Usa una imagen alusiva a mercado o comida
+import img from "../../../assets/vegetales1.png";
 
-const RegisterForm: React.FC = () => {
+
+export const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -66,7 +68,7 @@ const RegisterForm: React.FC = () => {
       />
 
       <div className={styles.loginRedirect}>
-        <a href="/login">¿Ya eres miembro? Ingresa</a>
+        <Link to="/">¿Ya eres miembro? Ingresa</Link>
       </div>
 
       <Button
@@ -79,4 +81,4 @@ const RegisterForm: React.FC = () => {
   );
 };
 
-export default RegisterForm;
+

@@ -1,11 +1,11 @@
+import React from "react";
+//import { BrowserRouter } from "react-router-dom";
+import {FormRoute} from "./routes/FormRoute";
 
-//import AuthLayout from "./components/layout/AuthLayout/AuthLayout";
-import LoginForm from "./components/organisms/LoginForm/LoginForm";
-
-function App() {
+const App: React.FC = () => {
   return (
-    <LoginForm />
+      <FormRoute />    
   );
-}
+};
 
 export default App;
