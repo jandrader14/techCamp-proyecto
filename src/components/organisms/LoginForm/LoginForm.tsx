@@ -43,10 +43,10 @@ const LoginForm: React.FC = () => {
         <p>Bienvenid@ 👏</p>
       </div>
       <FormField type="email" label="Correo Electrónico" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
-      <FormField type="password" label="Contraseña" name="password"  value={password} onChange={(e) => setPassword(e.target.value)}/>
-
+      <FormField type="password" label="Contraseña" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      
       <Button text={loading ? 'Cargando...' : 'Ingresar'} type="submit" disabled={loading} />
+      {error && <p className={styles.error}>{error}</p>} {/* Mostrar mensaje de error */}
     </form>
   );
 };
