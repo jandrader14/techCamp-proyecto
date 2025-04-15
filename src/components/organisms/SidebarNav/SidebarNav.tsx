@@ -1,23 +1,48 @@
 import { Home, Settings, Archive, BookHeart, Bell } from "lucide-react";
+
 import styles from "./SidebarNav.module.css";
+import { NavLink } from "react-router-dom";
 
 export function SidebarNav() {
   return (
     <nav className={styles.navContainer}>
-        <div className={styles.navContent}>
-            <div className={styles.logo}>
-                <img src="src/assets/vegetales1.png" />Logo dashboard</div>
-            <div className={styles.icons}>
-                <Home size={24} />Inicio</div>
-            <div className={styles.icons}>
-                <Archive size={24} />Inventario</div>
-            <div className={styles.icons}>
-                <BookHeart />Recetas</div>
-            <div className={styles.icons}>
-                <Bell />Notificaciones</div>
-            <div className={styles.icons}>
-                <Settings size={24}/>Ajustes</div>
+      <div className={styles.navContent}>
+        <NavLink to="/dashboard" className={styles.logo}>
+          <img src="src/assets/cesta.png" alt="Logo" />
+        </NavLink>
+
+        <NavLink to="/dashboard" className={styles.iconItem}>
+          <Home size={24} />
+          <span className={styles.tooltip}>Inicio</span>
+        </NavLink>
+
+        <NavLink
+          to="/inventario"
+          className={({ isActive }) =>
+            `${styles.iconItem} ${isActive ? styles.active : ""}`
+          }
+        >
+          <Archive size={24} />
+          <span className={styles.tooltip}>Inventario</span>
+        </NavLink>
+
+        <NavLink to="/inventario" className={styles.iconItem}>
+          <BookHeart size={24} />
+          <span className={styles.tooltip}>Recetas</span>
+        </NavLink>
+
+        <div className={styles.iconItem}>
+          <Bell size={24} />
+          <span className={styles.tooltip}>Notificaciones</span>
         </div>
+
+        <div className={styles.separator}></div>
+
+        <div className={styles.iconItem}>
+          <Settings size={24} />
+          <span className={styles.tooltip}>Ajustes</span>
+        </div>
+      </div>
     </nav>
   );
 }
