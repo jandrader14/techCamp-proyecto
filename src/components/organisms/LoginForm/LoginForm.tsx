@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import FormField from "../../molecules/FormField/FormField";
 import Button from "../../atoms/Button/Button";
 import styles from "./LoginForm.module.css";
@@ -12,6 +13,7 @@ export const LoginForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,10 +22,16 @@ export const LoginForm: React.FC = () => {
 
     try {
       // Enviar la solicitud al backend
-      const response = await axios.post("http://localhost:5000/login", {
+      const response = await axios.post("http://localhost:5000/api/users/", {
         email,
         password,
       });
+
+      if (response.status === 200) {
+        alert('Login exitoso'); // Puedes mostrar un mensaje si lo deseas
+        navigate('/dashboard'); // Redirige al dashboard
+      }
+      
       console.log("Login exitoso:", response.data);
     } catch (error) {
       // Si ocurre un error (por ejemplo, usuario no encontrado o contraseña incorrecta)

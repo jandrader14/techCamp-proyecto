@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
 import Button from "../../atoms/Button/Button";
@@ -13,11 +13,15 @@ export const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccessMessage("");
 
     
     try {
@@ -31,6 +35,11 @@ export const RegisterForm: React.FC = () => {
   
       if (response.status === 201) {
         console.log('Usuario creado:', response.data);
+        setSuccessMessage("¡Usuario creado con éxito! 😁");
+        
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       }
     } catch (err: any) {
       console.error('Error al enviar los datos:', err);
@@ -82,6 +91,7 @@ export const RegisterForm: React.FC = () => {
         disabled={loading}
       />
       {error && <p className={styles.error}>{error}</p>}
+      {successMessage && <p className={styles.success}>{successMessage}</p>}
     </form>
   );
 };

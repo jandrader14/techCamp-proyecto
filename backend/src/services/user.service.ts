@@ -49,4 +49,9 @@ export const userService = {
     delete: async (id: string) => {
         return await User.findByIdAndDelete(id);
     },
+    findByEmail: async (email: string) => {
+        return await User.findOne({ email });
+    }
+
+
 };

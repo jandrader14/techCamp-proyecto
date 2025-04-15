@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-
+import bcrypt from 'bcryptjs';
 import { userService } from '../services'
 
 export const userController ={
@@ -49,7 +49,38 @@ export const userController ={
             res.status(500).json({message: error.message});
             
         }
-    }
+    },
+    login: async (req: Request, res: Response) => {
+        const { email, password } = req.body;
+    
+        try {
+            const user = await userService.findByEmail(email);
+    
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+    
+            // Comparar la contraseña ingresada con la guardada (hasheada)
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return res.status(401).json({ message: 'Contraseña incorrecta' });
+            }
+    
+            // Si pasa la validación
+            return res.status(200).json({
+                message: 'Inicio de sesión exitoso',
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email
+                    // ¡Nunca envíes la contraseña!
+                }
+            });
+        } catch (error: any) {
+            console.error('Error al iniciar sesión:', error);
+            return res.status(500).json({ message: 'Error en el servidor', error: error.message });
+        }
 
-};
+    }
+}
 
