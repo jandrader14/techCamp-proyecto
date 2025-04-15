@@ -26,7 +26,7 @@ export class Server{
 
   middlewares(){
     this.app.use(morgan('dev'));
-    this.app.use(cors({origin: 'http://127.0.0.1:5173'})); // Add morgan middleware for logging
+    this.app.use(cors()); // Add morgan middleware for logging
     this.app.use(express.json());
   }
   routes(){
