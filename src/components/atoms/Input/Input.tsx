@@ -6,17 +6,39 @@ interface InputProps {
   id: string;
   label: string;
   name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   pattern?: string;
   placeholder?: string;
 }
 
-const Input: React.FC<InputProps> = ({ type, id, label, name, required, pattern, placeholder }) => {
+const Input: React.FC<InputProps> = ({
+  type,
+  id,
+  label,
+  name,
+  value,
+  onChange,
+  required,
+  pattern,
+  placeholder
+}) => {
   return (
-    <div className={styles.inputWrapper}>      
-      <input type={type} id={id} name={name} className={styles.inputField} required={required} pattern={pattern} placeholder={placeholder} />
+    <div className={styles.inputWrapper}>
+      <input
+        type={type}
+        id={id}
+        name={name}
+        className={styles.inputField}
+        value={value}
+        onChange={onChange}
+        required={required}
+        pattern={pattern}
+        placeholder={placeholder}
+      />
       <label htmlFor={id} className={styles.inputLabel}>
-        {label}        
+        {label}
       </label>
     </div>
   );
