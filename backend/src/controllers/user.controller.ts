@@ -12,13 +12,22 @@ export const userController ={
             
         }
     },
-    create: async(req: Request, res: Response) => {
+    
+    create: async (req: Request, res: Response) => {
+        console.log('Body recibido:', req.body);
         try {
-            const data = await userService.create(req.body);
-            return res.json(data);
-        } catch (error:any) {
-            res.status(500).json({message: error.message});
-            
+            const userData = req.body;
+            const newUser = await userService.create(userData);
+            return res.status(201).json({
+                message: 'Usuario creado correctamente',
+                user: newUser,
+            });
+        } catch (error: any) {
+            console.error('Error al crear el usuario:', error); // Log del error
+            return res.status(500).json({
+                message: 'Hubo un problema al crear el usuario',
+                error: error.message,  // Mensaje detallado del error
+            });
         }
     }, 
     update: async(req: Request, res: Response) => {

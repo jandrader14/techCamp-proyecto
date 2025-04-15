@@ -9,7 +9,7 @@ import {routes} from '../routes/index.ts'
 
 
 export class Server{
-  private app: express.Application;
+   app: express.Application;
 
   constructor(){
     this.app = express();
@@ -26,14 +26,14 @@ export class Server{
 
   middlewares(){
     this.app.use(morgan('dev'));
-    this.app.use(cors()); // Add morgan middleware for logging
+    this.app.use(cors({origin: 'http://127.0.0.1:5173'})); // Add morgan middleware for logging
     this.app.use(express.json());
   }
   routes(){
     this.app.get('/', (req, res) => {
       res.json({ message: 'Welcome to the API' });      
     });
-    this.app.use('/api/users', routes.UserRoute);
+    this.app.use('/api/users', routes.UserRoute); // Ensure the route is correctly referenced
   }
 
   listen(){

@@ -8,9 +8,9 @@ import img from "../../../assets/vegetales1.png";
 
 
 export const RegisterForm: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -19,17 +19,22 @@ export const RegisterForm: React.FC = () => {
     setLoading(true);
     setError("");
 
+    
     try {
-      const response = await axios.post("http://localhost:5000/register", {
+      console.log({ name, email, password });
+
+      const response = await axios.post('http://localhost:5000/api/users/register', {
         name,
         email,
         password,
       });
-      console.log("Registro exitoso:", response.data);
-    } catch (error) {
-      setError("Hubo un problema al registrarse. Inténtalo nuevamente.");
-    } finally {
-      setLoading(false);
+  
+      if (response.status === 201) {
+        console.log('Usuario creado:', response.data);
+      }
+    } catch (err: any) {
+      console.error('Error al enviar los datos:', err);
+      setError(err.response ? err.response.data.message : 'Hubo un error al crear el usuario');
     }
   };
 
@@ -80,5 +85,6 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+
 
 

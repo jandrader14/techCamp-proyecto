@@ -8,9 +8,10 @@ router.get('/', (req, res, next) => {
     userController.getAllUsers(req, res).catch(next); // Handle async errors
 });
 
-router.post('/', (req, res, next) => {
+router.post('/register', (req, res, next) => {
     userController.create(req, res).catch(next); // Handle async errors
 });
+//router.post('/register', userController.create);
 
 router.patch('/:id', (req, res, next) => {
     userController.update(req, res).catch(next); // Handle async errors
