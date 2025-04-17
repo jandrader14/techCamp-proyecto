@@ -13,8 +13,10 @@ export const FormRoute: React.FC = () => {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotPassword" element={<ForgotPasswordForm />} />
-      <Route path="/dashboard" element={<DashboardLayout />} />
-      <Route index element={<Dashboard />} />
+      {/* Aquí está la clave: anidar la ruta del dashboard */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<Dashboard />} />
+      </Route>
     </Routes>
   );
 };
