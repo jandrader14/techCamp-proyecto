@@ -28,7 +28,7 @@ export const LoginForm: React.FC = () => {
       });
 
       if (response.status === 200) {
-        alert('Login exitoso'); // Puedes mostrar un mensaje si lo deseas
+       // alert('Login exitoso'); 
         navigate('/dashboard'); // Redirige al dashboard
       }
       

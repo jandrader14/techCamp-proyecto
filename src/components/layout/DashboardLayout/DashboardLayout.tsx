@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { SidebarNav } from "../../organisms/SidebarNav/SidebarNav";
-import { Header } from "../../atoms/Header/Header";
+import { Header } from "../../organisms/Header/Header";
 import styles from "./DashboardLayout.module.css";
 
 export function DashboardLayout() {
