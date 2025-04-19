@@ -4,11 +4,10 @@ export function WelcomeCard() {
     <div className={styles.welcomeMainContainer}>
       <div className={styles.welcomeContainer}>
         <div className={styles.welcomeText}>
-          <h1>Hola bienvenido &#128075;</h1>
+          <h1>¡Bienvenid@ a tu cocina inteligente! &#128075;</h1>
           <p>
-            Aquí podrás visualizar y administrar de forma sencilla el inventario
-            de tu mercado. A su vez agregar recetas y tener sugerencias de
-            acuerdo al stock de tus productos. &#x1F9C3;
+            Organiza tu mercado, crea recetas deliciosas y descubre ideas
+            basadas en lo que ya tienes. ¡Haz que cada ingrediente cuente! 🍅✨
           </p>
         </div>
         <div className={styles.welcomeImage}>
