@@ -1,10 +1,10 @@
 .card {
+  background-color: var(--background);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  background-color: var(--white);
-  border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .image {
@@ -26,11 +26,12 @@
 .title {
   font-size: 1.125rem;
   font-weight: 600;
+  color: var(--card-title);
 }
 
 .description {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--card-text);
 }
 
 .buttons {
@@ -41,7 +42,8 @@
 }
 
 .iconButton {
-  background-color: var(--gray-100);
+  background-color: var(--icon-primary);
+  color: var(--background);
   border: none;
   border-radius: 50%;
   padding: 0.5rem;
@@ -53,6 +55,7 @@
 }
 
 .iconButton:hover {
-  background-color: var(--primary-light);
+  background-color: var(--icon-view);
+  color: var(--background);
   transform: scale(1.05);
 }

@@ -8,6 +8,11 @@
   --button-background: #ff7f50; /* Color de fondo de botones */
   --button-background-hover: #ff6347; /* Color de fondo de botones al pasar el mouse */
   --button-text: white; /* Color del texto de los botones */
+  --icon-primary: #3a3a3a;
+  --icon-delete: #e63946;
+  --icon-view: #1d3557;
+  --card-title: #2e2e2e;
+  --card-text: #5c5c5c;
   --font-family: 'Poppins', sans-serif; /* Fuente para títulos */
   --font-family-body: 'Inter', sans-serif; /* Fuente para texto de párrafos */
 }
