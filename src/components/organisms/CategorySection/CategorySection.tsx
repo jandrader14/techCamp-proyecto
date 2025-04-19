@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from "./CategorySection.module.css";
 import { CategoryCard } from "../../atoms/CategoryCard/CategoryCard";
 import { ChevronRight } from "lucide-react";
@@ -16,9 +17,9 @@ export function CategorySection() {
     <section className={styles.section}>
       <div className={styles.header}>
         <h2 className={styles.title}>Categorías</h2>
-        <button className={styles.button}>
+        <Link to="/inventory" className={styles.button}>
           Ver todas <ChevronRight size={18} className={styles.icon} />
-        </button>
+        </Link>
       </div>
       <div className={styles.cardContainer}>
         {categories.map((cat, index) => (
