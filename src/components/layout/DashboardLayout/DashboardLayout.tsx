@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { SidebarNav } from "../../organisms/SidebarNav/SidebarNav";
 import { Header } from "../../organisms/Header/Header";
+import { ClockWidget } from "../../molecules/ClockWidget/ClockWidget";
 import styles from "./DashboardLayout.module.css";
 
 export function DashboardLayout() {
@@ -16,16 +17,12 @@ export function DashboardLayout() {
             </div>
             <aside className={styles.aside}>
               <div className={styles.widget}>
-                <h4>Hora actual</h4>
-                {/* Componente del reloj va aquí */}
+                <ClockWidget />
               </div>
-              <div className={styles.widget}>
-                <h4>Calendario</h4>
-                {/* Aquí insertas el calendario */}
-              </div>
+
               <div className={styles.widget}>
                 <h4>Sugerencias de recetas</h4>
-                {/* Aquí va la sección conectada con la API de DeepSeek */}
+                {/* Aquí luego insertamos el componente de sugerencias */}
               </div>
             </aside>
           </div>
