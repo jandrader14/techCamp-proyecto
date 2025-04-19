@@ -1,9 +1,4 @@
-:root {
-  /*Global variables*/
-  --primary: #d4145a;
-  --text: #1f2346;
-  --white: #ffffff;
-}
+
 
 .button {
   background: var(--primary);
@@ -27,6 +22,6 @@
 }
 
 .button:hover {
-  background: palevioletred;
+  background:var(--button-background-hover);
 }
   

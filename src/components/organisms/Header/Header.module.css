@@ -25,7 +25,9 @@
 }
 
 .leftSection .logo{
-  font-weight: bold;
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+
 }
 
 .centerSection{
