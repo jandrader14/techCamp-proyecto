@@ -1,5 +1,4 @@
 import { WelcomeCard } from "../../molecules/WelcomeCard/WelcomeCard";
-//import { RecipesSuggest } from "src/components/organisms/RecipesSuggest/RecipesSuggest";
 import { CategorySection } from "../../organisms/CategorySection/CategorySection";
 import { RecipeInventory } from "../../organisms/RecipesInventory/RecipesInventory";
 
