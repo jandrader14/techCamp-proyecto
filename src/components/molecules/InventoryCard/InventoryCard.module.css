@@ -63,3 +63,33 @@
   background-color: var(--button-background-hover);
   color: var(--button-text);
 }
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color:var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--button-background-hover);
+}

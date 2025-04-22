@@ -1,34 +1,30 @@
-import styles from "./InventoryCard.module.css";
+import React from "react";
 
-interface InvetoryCardProps {
+interface InventoryCardProps {
   imageSrc: string;
   title: string;
   description: string;
   buttonLabel: string;
   onClick: () => void;
+  className?: string; // Allows for optional className prop
 }
 
-export function InventoryCard({
+export const InventoryCard: React.FC<InventoryCardProps> = ({
   imageSrc,
   title,
   description,
   buttonLabel,
   onClick,
-}: InvetoryCardProps) {
+  className,
+}) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.imageWrapper}>
-        <img src={imageSrc} alt={title} />
-      </div>
-      <div className={styles.textContent}>
-        <h2>{title}</h2>
-        <p>{description}</p>
-      </div>
-      <div className={styles.buttonContainer}>
-        <button className={styles.buttonBtn} onClick={onClick}>
-          {buttonLabel}
-        </button>
-      </div>
+    <div className={`${className || ""}`}>
+      <img src={imageSrc} alt={title} />
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <button onClick={onClick}>
+        {buttonLabel}
+      </button>
     </div>
   );
-}
+};
