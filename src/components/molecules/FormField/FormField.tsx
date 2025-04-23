@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input} from '../../atoms/Input/Input';
 
-type InputType = 'text' | 'number' | 'file' | 'select' | 'checkbox' | 'textarea' | 'date';
+type InputType = 'text' | 'number' | 'file' | 'select' | 'checkbox' | 'textarea' | 'date' | 'email' | 'password';
 
 interface FormFieldProps {
   id?: string;

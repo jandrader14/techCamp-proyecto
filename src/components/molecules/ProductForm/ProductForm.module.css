@@ -66,6 +66,11 @@
   color: var(--text, #333);
 }
 
+.successMessage {
+  color: green;
+  font-weight: bold;
+  margin-top: 1rem;
+}
 
 
 

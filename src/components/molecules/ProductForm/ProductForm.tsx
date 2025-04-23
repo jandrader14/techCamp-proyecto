@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+
 import FormField from "../../molecules/FormField/FormField";
 import Button from "../../atoms/Button/Button";
 import styles from "./ProductForm.module.css";
@@ -16,32 +18,75 @@ export function ProductForm() {
     price: "",
     alerts: false,
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleChange = (
+  const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, type, value } = e.target;
 
-    let newValue: string | File | boolean | null = value;
-
     if (type === "checkbox" && e.target instanceof HTMLInputElement) {
-      newValue = e.target.checked;
+      const newValue = e.target.checked;
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
     } else if (type === "file" && e.target instanceof HTMLInputElement) {
-      newValue = e.target.files?.[0] || null;
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFormData((prev) => ({
+            ...prev,
+            [name]: reader.result as string, // esto será la cadena base64
+          }));
+        };
+        reader.readAsDataURL(file); // convierte a base64 automáticamente
+      }
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
-    // spread operator - State update
-    setFormData((prev) => ({
-      ...prev, //spread operator
-      [name]: newValue,
-    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Producto registrado:", formData);
-    // Aquí podrías llamar a una función de envío al backend
+
+    const formDataToSend = new FormData();
+
+    for (const key in formData) {
+      const value = formData[key as keyof typeof formData];
+      if (value !== null) {
+        formDataToSend.append(key, value as string | Blob);
+      }
+    }
+
+    try {
+      const endpoint = "http://localhost:5000/api/products";
+      console.log("📦 URL:", JSON.stringify(endpoint)); // Para ver si tiene \n
+      const response = await axios.post(endpoint, formData);
+
+      console.log("📦 URL enviada:", "http://localhost:5000/api/products");
+
+      console.log("Producto registrado con éxito:", response.data);
+      setSuccessMessage("✅ Producto guardado correctamente");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 4000);
+
+      setFormData({
+        image: null,
+        name: "",
+        quantity: 1,
+        category: "",
+        unit: "",
+        description: "",
+        entryDate: "",
+        expiryDate: "",
+        price: "",
+        alerts: false,
+      });
+    } catch (error) {
+      console.error("Error al registrar el producto:", error);
+    }
   };
 
   return (
@@ -150,8 +195,11 @@ export function ProductForm() {
           onChange={handleChange}
         />
       </div>
-
+      {successMessage && (
+  <p className={styles.successMessage}>{successMessage}</p>
+)}
       <Button type="submit" text="Registrar producto" />
     </form>
+    
   );
 }
