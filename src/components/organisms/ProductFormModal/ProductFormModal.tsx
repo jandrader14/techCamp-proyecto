@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import styles from "./ProductFormModal.module.css";
 import { ProductForm } from "../../molecules/ProductForm/ProductForm";
+import {X} from 'lucide-react'
 
 interface Props {
   onClose: () => void;
@@ -19,7 +20,7 @@ export function ProductFormModal({ onClose }: Props) {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>✕</button>
+        <button className={styles.closeButton} onClick={onClose}><X /></button>
         <ProductForm />
       </div>
     </div>

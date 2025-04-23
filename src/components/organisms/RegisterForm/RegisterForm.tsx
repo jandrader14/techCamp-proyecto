@@ -41,9 +41,9 @@ export const RegisterForm: React.FC = () => {
           navigate("/");
         }, 3000);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al enviar los datos:', err);
-      setError(err.response ? err.response.data.message : 'Hubo un error al crear el usuario');
+      
     }
   };
 
