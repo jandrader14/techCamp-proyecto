@@ -27,13 +27,14 @@ export class Server{
   middlewares(){
     this.app.use(morgan('dev'));
     this.app.use(cors()); // Add morgan middleware for logging
-    this.app.use(express.json());
+    this.app.use(express.json({ limit: "10mb" }));
   }
   routes(){
     this.app.get('/', (req, res) => {
       res.json({ message: 'Welcome to the API' });      
     });
     this.app.use('/api/users', routes.UserRoute); // Ensure the route is correctly referenced
+    this.app.use('/api/products', routes.ProductRoute);
   }
 
   listen(){

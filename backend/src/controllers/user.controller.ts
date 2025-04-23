@@ -7,8 +7,8 @@ export const userController ={
         try {
             const data = await userService.getAll();
             return res.json(data);
-        } catch (error:any) {
-            res.status(500).json({message: error.message});
+        } catch (error) {
+            res.status(500).json({message: (error as Error).message});
             
         }
     },
@@ -22,11 +22,11 @@ export const userController ={
                 message: 'Usuario creado correctamente',
                 user: newUser,
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error al crear el usuario:', error); // Log del error
             return res.status(500).json({
                 message: 'Hubo un problema al crear el usuario',
-                error: error.message,  // Mensaje detallado del error
+                error:  (error as Error).message,  // Mensaje detallado del error
             });
         }
     }, 
@@ -35,8 +35,8 @@ export const userController ={
             const {id} = req.params;
             const data = await userService.update(id, req.body);
             return res.json(data);            
-        } catch (error:any) {
-            res.status(500).json({message: error.message});
+        } catch (error) {
+            res.status(500).json({message: (error as Error).message});
             
         }
     }, 
@@ -45,8 +45,8 @@ export const userController ={
             const {id} = req.params;
             const data = await userService.delete(id);
             return res.json(data);
-        } catch (error:any) {
-            res.status(500).json({message: error.message});
+        } catch (error) {
+            res.status(500).json({message:  (error as Error).message});
             
         }
     },
@@ -76,9 +76,9 @@ export const userController ={
                     // ¡Nunca envíes la contraseña!
                 }
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error al iniciar sesión:', error);
-            return res.status(500).json({ message: 'Error en el servidor', error: error.message });
+            return res.status(500).json({ message: 'Error en el servidor', error:  (error as Error).message });
         }
 
     }
