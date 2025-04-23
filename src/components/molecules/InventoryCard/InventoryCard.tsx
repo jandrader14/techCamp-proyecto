@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./InventoryCard.module.css";
 
 interface InventoryCardProps {
   imageSrc: string;
@@ -18,13 +19,19 @@ export const InventoryCard: React.FC<InventoryCardProps> = ({
   className,
 }) => {
   return (
-    <div className={`${className || ""}`}>
-      <img src={imageSrc} alt={title} />
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <button onClick={onClick}>
-        {buttonLabel}
-      </button>
+    <div className={`${styles.card} ${className || ""}`}>
+      <div className={styles.imageWrapper}>
+        <img src={imageSrc} alt={title} className={styles.image} />
+      </div>
+      <div className={styles.textContent}>
+        <h2 className={styles.title}>{title}</h2>
+        <p className={styles.description}>{description}</p>
+      </div>
+      <div className={styles.buttonContainer}>
+        <button className={styles.buttonBtn} onClick={onClick}>
+          {buttonLabel}
+        </button>
+      </div>
     </div>
   );
 };
