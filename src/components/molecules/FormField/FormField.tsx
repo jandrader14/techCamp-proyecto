@@ -1,27 +1,32 @@
 import React from 'react';
-import Input from '../../atoms/Input/Input';
+import {Input} from '../../atoms/Input/Input';
+
+type InputType = 'text' | 'number' | 'file' | 'select' | 'checkbox' | 'textarea' | 'date';
 
 interface FormFieldProps {
-  type: string;
+  id?: string;
+  type: InputType;
   label: string;
   name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => void;
+  placeholder?: string;
+  min?: number;
+  required?: boolean;
+  options?: { value: string; label: string }[];
+  rows?: number;
+  step?: string | number;
+  accept?: string;
+  checked?: boolean;
 }
 
-const FormField: React.FC<FormFieldProps> = ({ type, label, name, value, onChange }) => {
-  return (
-    <Input
-      type={type}
-      label={label}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required
-      id={name}
-      placeholder=" "
-    />
-  );
+
+ const FormField: React.FC<FormFieldProps> = (props) => {
+  return <Input {...props} />;
 };
 
 

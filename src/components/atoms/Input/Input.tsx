@@ -1,47 +1,88 @@
-import React from 'react';
+import React from "react";
 import styles from "./Input.module.css";
 
 interface InputProps {
   type: string;
-  id: string;
+  id?: string;
   label: string;
   name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  pattern?: string;
+  value?: string | number;
+  checked?: boolean;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
   placeholder?: string;
+  accept?: string;
+  options?: { value: string; label: string }[];
+  rows?: number;
+  required?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({
+export const Input: React.FC<InputProps> = ({
   type,
-  id,
   label,
   name,
   value,
+  checked,
   onChange,
+  placeholder,
+  accept,
+  options,
+  rows,
   required,
-  pattern,
-  placeholder
 }) => {
   return (
     <div className={styles.inputWrapper}>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        className={styles.inputField}
-        value={value}
-        onChange={onChange}
-        required={required}
-        pattern={pattern}
-        placeholder={placeholder}
-      />
-      <label htmlFor={id} className={styles.inputLabel}>
-        {label}
-      </label>
+      <div className={styles.inputLabelWrapper}>
+        <label htmlFor={name} className={styles.inputLabel}>
+          {label}
+        </label>
+      </div>
+      {type === "textarea" ? (
+        <textarea
+          id={name}
+          name={name}
+          value={value as string}
+          onChange={onChange}
+          placeholder={placeholder}
+          rows={rows}
+          required={required}
+          className={styles.inputField}
+        />
+      ) : type === "select" ? (
+        <select
+          id={name}
+          name={name}
+          value={value as string}
+          onChange={onChange}
+          required={required}
+          className={styles.selectField}
+        >
+          <option value="" disabled hidden>
+            Selecciona
+          </option>
+          {options?.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={name}
+          type={type}
+          name={name}
+          value={type === "checkbox" ? undefined : (value as string | number)}
+          checked={type === "checkbox" ? checked : undefined}
+          onChange={onChange}
+          placeholder={placeholder || " "}
+          accept={accept}
+          required={required}
+          className={styles.inputField}
+        />
+      )}
     </div>
   );
 };
-
-export default Input;

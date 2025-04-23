@@ -21,8 +21,8 @@ export function DashboardLayout() {
               </div>
 
               <div className={styles.widget}>
-                <h4>Sugerencias de recetas</h4>
-                {/* Aquí luego insertamos el componente de sugerencias */}
+                <h4>Alertas 🔔</h4>
+                {/* Aquí luego insertamos el componente de alertas */}
               </div>
             </aside>
           </div>
