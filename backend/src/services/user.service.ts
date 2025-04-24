@@ -34,7 +34,7 @@ export const userService = {
         // Guardar el usuario en la base de datos
         try {
             await newUser.save();
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error al guardar el usuario:', error);
             throw new Error('Error al guardar el usuario');
         }

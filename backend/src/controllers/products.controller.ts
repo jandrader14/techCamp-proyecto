@@ -1,47 +1,50 @@
 import { Request, Response } from "express";
-import { Product } from "../models/product.model";
+import { productsService } from "../services/products.service";
 
-export const createProduct = async (req: Request, res: Response) => {
-  try {
-    const {
-      image,
-      name,
-      quantity,
-      category,
-      unit,
-      description,
-      entryDate,
-      expiryDate,
-      price,
-      alerts,
-    } = req.body;
+export const productsController = {
+  getAllProducts: async (req: Request, res: Response) => {
+    try {
+      const data = await productsService.getAll();
+      return res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
 
-    // Validación rápida (puedes mejorarla si quieres)
-    if (!name || !category || !unit) {
-      return res.status(400).json({ message: "Faltan campos requeridos" });
     }
+  },
+  create: async (req: Request, res: Response) => {
+    try {
+      const newProduct = await productsService.create(req.body);
+      return res.status(201).json({
+        message: 'Producto creado correctamente',
+        product: newProduct,
+      });
+    } catch (error) {
+      console.error('Error al crear producto:', error);
+      return res.status(500).json({
+        message: 'Error del servidor',
+        error: (error as Error).message
+      });
+    }
+  },
+  delete: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const data = await productsService.delete(id);
+      return res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
 
-    const newProduct = new Product({
-      image,         // <- Este debe ser una cadena base64
-      name,
-      quantity,
-      category,
-      unit,
-      description,
-      entryDate,
-      expiryDate,
-      price,
-      alerts,
-    });
+    }
+  },
+  update: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const data = await productsService.update(id, req.body);
+      return res.json(data);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
 
-    const savedProduct = await newProduct.save();
+    }
+  },
+}
 
-    res.status(201).json({
-      message: "Producto creado correctamente",
-      product: savedProduct,
-    });
-  } catch (error) {
-    console.error("Error al crear producto:", error);
-    res.status(500).json({ message: "Error del servidor" });
-  }
-};
