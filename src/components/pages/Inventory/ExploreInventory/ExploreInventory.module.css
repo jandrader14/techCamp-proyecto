@@ -7,9 +7,11 @@
   }
   
   .categoryTitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    color: var(--primary);
+    font-size: 1.2rem;
     font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
   }
   
   .carousel {

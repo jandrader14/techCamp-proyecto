@@ -3,9 +3,7 @@ import { FormRoute } from "./routes/FormRoute";
 
 const App: React.FC = () => {
   return (
-   
       <FormRoute />
-   
   );
 };
 

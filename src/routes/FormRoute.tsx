@@ -9,6 +9,8 @@ import { DashboardLayout } from "../components/layout/DashboardLayout/DashboardL
 import { InventoryLayout } from "../components/layout/InventoryLayout/InventoryLayout";
 import { Inventory } from "../components/pages/Inventory/Inventory";
 import { ExploreInventory } from "../components/pages/Inventory/ExploreInventory/ExploreInventory";
+import { RecipesLayout } from "../components/layout/RecipesLayout/RecipesLayout";
+import { Recipes } from "../components/pages/Recipes/Recipes";
 
 export const FormRoute: React.FC = () => {
   return (
@@ -16,17 +18,19 @@ export const FormRoute: React.FC = () => {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgotPassword" element={<ForgotPasswordForm />} />
-      {/* Aquí está la clave: anidar la ruta del dashboard */}
+      
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
       </Route>
       <Route path="/inventario" element={<InventoryLayout />}>
         <Route index element={<Inventory />} />{" "}
         <Route path="productos" element={<ExploreInventory />} />
-        {/* Explorar inventario */}
         {/* <Route path="alertas" element={<Alerts />} /> {/* Página de alertas */}
         {/* <Route path="ajustes" element={<Settings />} />{" "}*/}
         {/* Página de configuración */}
+      </Route>
+      <Route path="/recetas" element={<RecipesLayout />}>
+        <Route index element={<Recipes />} />
       </Route>
     </Routes>
   );

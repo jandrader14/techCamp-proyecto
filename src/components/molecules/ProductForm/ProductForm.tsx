@@ -58,6 +58,7 @@ export function ProductForm() {
         formDataToSend.append(key, value as string | Blob);
       }
     }
+    
 
     try {
       const endpoint = "http://localhost:5000/api/products";
@@ -132,6 +133,8 @@ export function ProductForm() {
           { value: "frutas", label: "Frutas" },
           { value: "verduras", label: "Verduras" },
           { value: "granos", label: "Granos" },
+          { value: "carnes-pollo-pescado", label: "Carne, Pollo y Pescado" },
+          { value: "lácteos-huevos", label: "Lácteos y Huevos" },
         ]}
       />
 

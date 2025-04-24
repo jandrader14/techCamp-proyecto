@@ -26,7 +26,7 @@ export function SidebarNav() {
           <span className={styles.tooltip}>Inventario</span>
         </NavLink>
 
-        <NavLink to="/inventario" className={styles.iconItem}>
+        <NavLink to="/recetas" className={styles.iconItem}>
           <BookHeart size={24} />
           <span className={styles.tooltip}>Recetas</span>
         </NavLink>
