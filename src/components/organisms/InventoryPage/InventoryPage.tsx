@@ -1,15 +1,35 @@
 import { useState } from 'react';
-import {ProductFormModal} from '../ProductFormModal/ProductFormModal'; // Asegúrate de importar el modal correctamente
-import { InventoryCard} from '../../molecules/InventoryCard/InventoryCard';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ProductFormModal } from '../ProductFormModal/ProductFormModal';
+import { InventoryCard } from '../../molecules/InventoryCard/InventoryCard';
 import styles from './InventoryPage.module.css';
+import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
 
 export function InventoryPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showEmptyInventoryModal, setEmptyInventoryModal] = useState(false);
+  const navigate = useNavigate();
 
-  const handleCardClick = (cardName: string) => {
-    console.log(`Clicked on ${cardName}`);
+  const handleCardClick = async (cardName: string) => {
     if (cardName === 'Registrar producto') {
       openModal();
+    }
+
+    if (cardName === 'Ver Inventario') {
+      try {
+        const response = await axios.get('http://localhost:5000/api/products'); // Ajusta la URL a la de tu API
+        const products = response.data;
+        console.log(response.data)
+
+        if (products.length === 0) {
+          setEmptyInventoryModal(true);
+        } else {
+          navigate('/inventario/productos');
+        }
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
     }
   };
 
@@ -52,7 +72,9 @@ export function InventoryPage() {
           onClick={() => handleCardClick('Historial de Cambios')}
         />
       </div>
+
       {isModalOpen && <ProductFormModal onClose={closeModal} />}
+      {showEmptyInventoryModal && <EmptyInventoryModal onClose={() => setEmptyInventoryModal(false)} />}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import FormField from "../../molecules/FormField/FormField";
-import Button from "../../atoms/Button/Button";
+import {Button} from "../../atoms/Button/Button";
 import styles from "./ProductForm.module.css";
 
 export function ProductForm() {

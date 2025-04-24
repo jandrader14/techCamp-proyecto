@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FormField from "../../molecules/FormField/FormField";
-import Button from "../../atoms/Button/Button";
+import { Button } from "../../atoms/Button/Button";
 import styles from "./LoginForm.module.css";
 import img from "../../../assets/vegetales1.png";
 

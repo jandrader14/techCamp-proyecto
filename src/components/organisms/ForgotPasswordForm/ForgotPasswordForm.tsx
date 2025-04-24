@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
-import Button from "../../atoms/Button/Button";
+import {Button} from "../../atoms/Button/Button";
 import styles from "./ForgotPasswordForm.module.css";
 import img from "../../../assets/vegetales1.png";
 
@@ -27,6 +27,7 @@ import img from "../../../assets/vegetales1.png";
       }
     } catch (error) {
       setMessage("No se pudo actualizar la contraseña ❌");
+      console.error(error);
     } finally {
       setLoading(false);
     }

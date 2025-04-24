@@ -7,7 +7,8 @@ import { ForgotPasswordForm } from "../components/organisms/ForgotPasswordForm/F
 import { Dashboard } from "../components/pages/Dashboard/Dashboard";
 import { DashboardLayout } from "../components/layout/DashboardLayout/DashboardLayout";
 import { InventoryLayout } from "../components/layout/InventoryLayout/InventoryLayout";
-import { Inventory } from '../components/pages/Inventory/Inventory';
+import { Inventory } from "../components/pages/Inventory/Inventory";
+import { ExploreInventory } from "../components/pages/Inventory/ExploreInventory/ExploreInventory";
 
 export const FormRoute: React.FC = () => {
   return (
@@ -20,7 +21,12 @@ export const FormRoute: React.FC = () => {
         <Route index element={<Dashboard />} />
       </Route>
       <Route path="/inventario" element={<InventoryLayout />}>
-        <Route index element={<Inventory />} />
+        <Route index element={<Inventory />} />{" "}
+        <Route path="productos" element={<ExploreInventory />} />
+        {/* Explorar inventario */}
+        {/* <Route path="alertas" element={<Alerts />} /> {/* Página de alertas */}
+        {/* <Route path="ajustes" element={<Settings />} />{" "}*/}
+        {/* Página de configuración */}
       </Route>
     </Routes>
   );
