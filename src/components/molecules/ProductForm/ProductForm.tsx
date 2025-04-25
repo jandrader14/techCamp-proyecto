@@ -165,7 +165,7 @@ export function ProductForm() {
         label="Fecha de ingreso"
         name="entryDate"
         type="date"
-        value={formData.entryDate}
+        value={formData.entryDate || ""}
         onChange={handleChange}
         required
       />
@@ -173,7 +173,7 @@ export function ProductForm() {
         label="Fecha de vencimiento"
         name="expiryDate"
         type="date"
-        value={formData.expiryDate}
+        value={formData.expiryDate || ""}
         onChange={handleChange}
         required
       />

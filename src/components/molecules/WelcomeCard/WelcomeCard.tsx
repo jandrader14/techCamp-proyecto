@@ -11,7 +11,7 @@ export function WelcomeCard() {
           </p>
         </div>
         <div className={styles.welcomeImage}>
-          <img src="src/assets/vegetales1.png" alt="welcome image" />
+          <img src="https://res.cloudinary.com/dcgcixisy/image/upload/vegetales1_c0qmkl.png" alt="welcome image" />
         </div>
       </div>
     </div>

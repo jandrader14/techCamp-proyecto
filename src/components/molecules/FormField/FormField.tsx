@@ -11,7 +11,7 @@ interface FormFieldProps {
   value?: string | number;
   onChange: (
     e: React.ChangeEvent<
-      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => void;
   placeholder?: string;
