@@ -50,7 +50,7 @@ export function RecipeInventory() {
           setRecipes(response.data);
         }
       } catch (err) {
-        setError("No se pudieron cargar las recetas. Mostrando ejemplos...");
+        setError(" ");
         console.error(err);
         setRecipes(mockRecipes); // Fallback a los datos falsos si hay error
       } finally {

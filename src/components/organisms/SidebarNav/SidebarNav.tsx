@@ -31,17 +31,17 @@ export function SidebarNav() {
           <span className={styles.tooltip}>Recetas</span>
         </NavLink>
 
-        <div className={styles.iconItem}>
+        {/* <div className={styles.iconItem}>
           <Bell size={24} />
           <span className={styles.tooltip}>Notificaciones</span>
-        </div>
+        </div> */}
 
         <div className={styles.separator}></div>
 
-        <div className={styles.iconItem}>
+        {/* <div className={styles.iconItem}>
           <Settings size={24} />
           <span className={styles.tooltip}>Ajustes</span>
-        </div>
+        </div> */}
       </div>
     </nav>
   );
