@@ -8,9 +8,11 @@ const productSchema = new Schema({
   unit: String,
   description: String,
   entryDate: {
-    Date, required: true},
+    type: Date, required: true
+  },
   expiryDate: {
-    Date, required: true},
+    type: Date, required: true
+  },
   price: Number,
   alerts: Boolean,
 });
