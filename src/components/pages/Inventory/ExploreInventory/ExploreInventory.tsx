@@ -3,6 +3,7 @@ import { productApi } from "../../../../services/products.api";
 import { Product } from "../../../../types/product";
 import { ProductCard } from "../../../molecules/ProductCard/ProductCard";
 import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
+import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";
 import styles from "./ExploreInventory.module.css";
 
 function formatCategoryTitle(category: string): string {
@@ -17,20 +18,21 @@ function formatCategoryTitle(category: string): string {
       }
       return word;
     })
-    .join(""); // No necesitamos más separadores porque ya agregamos la coma
+    .join("");
 }
 
 export function ExploreInventory() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showEmptyModal, setShowEmptyModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await productApi.getAll();
         setProducts(data);
-        
       } catch (error) {
         console.error("Error al obtener productos:", error);
       } finally {
@@ -41,21 +43,58 @@ export function ExploreInventory() {
     fetchProducts();
   }, []);
 
+  const handleEditProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setShowEmptyModal(true);
+  };
+
+
+  const handleSaveProduct = async (updatedProduct: Product) => {
+    console.log("😎handleSaveProduct llamado con:", updatedProduct);
+    try {
+      console.log("Guardando producto:", updatedProduct); // Verifica los datos antes de enviarlos
+      const response = await productApi.updateProduct(
+        updatedProduct._id,
+        updatedProduct
+      );
+      console.log("Respuesta del servidor:", response); // Llamamos a la API para actualizar el producto
+  
+      // Actualizamos el producto en el estado de productos
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product._id === updatedProduct._id ? { ...product, ...updatedProduct } : product
+        )
+      );
+      setShowModal(false); // Cerrar el modal después de guardar los cambios
+    } catch (error) {
+      console.error("Error al actualizar el producto:", error);
+    }
+  };
+  
+
   const handleDeleteProduct = async (productId: string) => {
     try {
       await productApi.deleteProduct(productId);
-      const updatedProducts = products.filter(product => product._id !== productId);
+      const updatedProducts = products.filter(
+        (product) => product._id !== productId
+      );
       setProducts(updatedProducts); // ¡Esto refresca la vista!
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
   };
 
-  const groupedByCategory = products.reduce((acc: { [key: string]: Product[] }, product) => {
-    if (!acc[product.category]) acc[product.category] = [];
-    acc[product.category].push(product);
-    return acc;
-  }, {});
+  const groupedByCategory = products.reduce(
+    (prodGroup: { [key: string]: Product[] }, product) => {
+      if (product.category) {
+        // Ensure category is defined
+        if (!prodGroup[product.category]) prodGroup[product.category] = [];
+        prodGroup[product.category].push(product);
+      }
+      return prodGroup;
+    },
+    {}
+  );
 
   if (loading) return <p>Cargando productos...</p>;
   if (products.length === 0 && showEmptyModal) {
@@ -66,18 +105,29 @@ export function ExploreInventory() {
     <div className={styles.container}>
       {Object.entries(groupedByCategory).map(([category, items]) => (
         <section key={category} className={styles.categorySection}>
-          <h2 className={styles.categoryTitle}>{formatCategoryTitle(category)}</h2>
+          <h2 className={styles.categoryTitle}>
+            {formatCategoryTitle(category)}
+          </h2>
           <div className={styles.carousel}>
-            {items.map(product => (
+            {items.map((product) => (
               <ProductCard
                 key={product._id}
-                image={product.image}
-                name={product.name}
-                quantity={product.quantity}
-                expirationDate={product.expirationDate}
+                {...product}
+                expiryDate={product.expiryDate}
+                onEdit={() => handleEditProduct(product)}
                 onDelete={() => handleDeleteProduct(product._id)}
+                onSave={handleSaveProduct}
+                
               />
             ))}
+            {/* Mostrar el modal si está habilitado */}
+            {showModal && selectedProduct && (
+              <EditProductModal
+                product={selectedProduct}
+                onSave={handleSaveProduct}
+                onClose={() => setShowModal(false)}   
+              />
+            )}
           </div>
         </section>
       ))}
