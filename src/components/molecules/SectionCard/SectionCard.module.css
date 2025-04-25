@@ -1,0 +1,92 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+  flex: 1 1 calc(50% - 20px); /* Dos tarjetas por fila con espacio entre ellas */
+  max-width: calc(50% - 20px); /* Asegura que no excedan el ancho */
+  min-width: 250px;
+  height: auto; 
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #fafafa;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  text-align: center;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+   
+}
+
+.imageWrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  
+}
+
+.textContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%; 
+  gap: 1rem; 
+  color: var(--text);
+  font-size: 1rem; 
+  word-wrap: break-word; /* Asegura que las palabras largas se rompan si es necesario */
+}
+
+.textContent h2 {
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin: 0; 
+}
+
+.textContent p {
+  font-family: var(--font-family-body);
+  font-size: 1rem;
+  color: var(--text);
+  margin: 0; 
+  padding-bottom: 1rem; 
+  overflow-wrap: break-word; 
+}
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+  padding: 1rem;
+}
+
+.buttonBtn {
+  padding: 0.6rem 1.2rem; 
+  background-color: var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  width: auto; /* Permite que el botón se ajuste al contenido */
+  max-width: 90%; 
+  transition: background-color 0.3s ease;
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total del botón */
+}
+
+.buttonBtn:hover {
+  background-color: var(--button-background-hover);
+  color: var(--button-text);
+}
