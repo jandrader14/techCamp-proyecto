@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ProductFormModal } from '../ProductFormModal/ProductFormModal';
-import { InventoryCard } from '../../molecules/InventoryCard/InventoryCard';
+import { SectionCard } from '../../molecules/SectionCard/SectionCard';
 import styles from './RecipesPage.module.css';
 import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
 
@@ -12,23 +12,23 @@ export function RecipesPage() {
   const navigate = useNavigate();
 
   const handleCardClick = async (cardName: string) => {
-    if (cardName === 'Registrar producto') {
+    if (cardName === 'Crear receta') {
       openModal();
     }
 
-    if (cardName === 'Ver Inventario') {
+    if (cardName === 'Ver recetas') {
       try {
-        const response = await axios.get('http://localhost:5000/api/products'); // Ajusta la URL a la de tu API
+        const response = await axios.get('http://localhost:5000/api/recipes'); // Ajusta la URL a la de tu API
         const products = response.data;
         console.log(response.data)
 
         if (products.length === 0) {
           setEmptyInventoryModal(true);
         } else {
-          navigate('/inventario/productos');
+          navigate('/recetas/productos');
         }
       } catch (error) {
-        console.error("Error al obtener productos:", error);
+        console.error("Error al obtener recetas:", error);
       }
     }
   };
@@ -39,38 +39,26 @@ export function RecipesPage() {
   return (
     <div className={styles.inventoryPage}>
       <div className={styles.header}>
-        <h2 className={styles.pageTitle}>Inventario</h2>
+        <h2 className={styles.pageTitle}>Recetas</h2>
       </div>
       <div className={styles.cardContainer}>
-        <InventoryCard
-          imageSrc="src/assets/cesta-de-la-compra.png"
-          title="Agregar productos"
-          description="Registra nuevos productos para incluirlos en tu inventario."
-          buttonLabel="Registrar producto"
-          onClick={() => handleCardClick('Registrar producto')}
+        <SectionCard
+          imageSrc="src/assets/cocinero.png"
+          title="Agregar recetas"
+          description="Registra nuevas recetas para incluirlas en tu inventario."
+          buttonLabel="Crear receta"
+          onClick={() => handleCardClick('Crear receta')}
         />
-        <InventoryCard
-          imageSrc="src/assets/mercado-cesta.png"
+        <SectionCard
+          imageSrc="src/assets/libro-de-cocina.png"
           title="Explorar Inventario"
-          description="Revisa fácilmente los productos disponibles y su estado actual."
-          buttonLabel="Ver productos"
-          onClick={() => handleCardClick('Ver Inventario')}
+          description="Consulta las recetas que hay en tu inventario ."
+          buttonLabel="Ver recetas"
+          onClick={() => handleCardClick('Ver recetas')}
         />
 
-        <InventoryCard
-          imageSrc="src/assets/advertencia.png"
-          title="Alertas"
-          description="Entérate cuando un producto esté por agotarse o haya cambios en tu inventario."
-          buttonLabel="Revisar ahora"
-          onClick={() => handleCardClick('Historial de Cambios')}
-        />
-        <InventoryCard
-          imageSrc="src/assets/ajuste.png"
-          title="Configuración Inventario"
-          description="Gestiona las reglas y preferencias de tu inventario."
-          buttonLabel="Ver más"
-          onClick={() => handleCardClick('Historial de Cambios')}
-        />
+        
+        
       </div>
 
       {isModalOpen && <ProductFormModal onClose={closeModal} />}

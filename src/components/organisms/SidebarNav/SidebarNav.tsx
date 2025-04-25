@@ -8,7 +8,7 @@ export function SidebarNav() {
     <nav className={styles.navContainer}>
       <div className={styles.navContent}>
         <NavLink to="/dashboard" className={styles.logo}>
-          <img src="src/assets/cesta.png" alt="Logo" />
+          <img src="https://res.cloudinary.com/dcgcixisy/image/upload/cesta_wbrudl.png" alt="Logo" />
         </NavLink>
 
         <NavLink to="/dashboard" className={styles.iconItem}>

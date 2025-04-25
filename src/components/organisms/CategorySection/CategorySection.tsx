@@ -17,7 +17,7 @@ export function CategorySection() {
     <section className={styles.section}>
       <div className={styles.header}>
         <h2 className={styles.title}>Categorías</h2>
-        <Link to="/inventory" className={styles.button}>
+        <Link to="/inventario/productos" className={styles.button}>
           Ver todas <ChevronRight size={18} className={styles.icon} />
         </Link>
       </div>

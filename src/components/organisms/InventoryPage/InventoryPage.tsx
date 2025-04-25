@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ProductFormModal } from '../ProductFormModal/ProductFormModal';
-import { InventoryCard } from '../../molecules/InventoryCard/InventoryCard';
+import { SectionCard } from '../../molecules/SectionCard/SectionCard';
 import styles from './InventoryPage.module.css';
 import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
 
@@ -42,14 +42,14 @@ export function InventoryPage() {
         <h2 className={styles.pageTitle}>Inventario</h2>
       </div>
       <div className={styles.cardContainer}>
-        <InventoryCard
+        <SectionCard
           imageSrc="src/assets/cesta-de-la-compra.png"
           title="Agregar productos"
           description="Registra nuevos productos para incluirlos en tu inventario."
           buttonLabel="Registrar producto"
           onClick={() => handleCardClick('Registrar producto')}
         />
-        <InventoryCard
+        <SectionCard
           imageSrc="src/assets/mercado-cesta.png"
           title="Explorar Inventario"
           description="Revisa fácilmente los productos disponibles y su estado actual."
@@ -57,20 +57,20 @@ export function InventoryPage() {
           onClick={() => handleCardClick('Ver Inventario')}
         />
 
-        <InventoryCard
+        {/* <SectionCard
           imageSrc="src/assets/advertencia.png"
           title="Alertas"
           description="Entérate cuando un producto esté por agotarse o haya cambios en tu inventario."
           buttonLabel="Revisar ahora"
           onClick={() => handleCardClick('Historial de Cambios')}
-        />
-        <InventoryCard
+        /> */}
+        {/* <SectionCard
           imageSrc="src/assets/ajuste.png"
           title="Configuración Inventario"
           description="Gestiona las reglas y preferencias de tu inventario."
           buttonLabel="Ver más"
           onClick={() => handleCardClick('Historial de Cambios')}
-        />
+        /> */}
       </div>
 
       {isModalOpen && <ProductFormModal onClose={closeModal} />}
