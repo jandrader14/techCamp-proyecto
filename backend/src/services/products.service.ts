@@ -59,6 +59,7 @@ export const productsService = {
 
   // Actualizar un producto
   update: async (id: string, body: object) => {
+    console.log("ID del producto actualizado", id);
     return await Product.findByIdAndUpdate(id, body, { new: true });
   },
 

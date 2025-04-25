@@ -40,6 +40,9 @@ export const productsController = {
     try {
       const { id } = req.params;
       const data = await productsService.update(id, req.body);
+      if(!data) {
+        return res.status(404).json({message: 'Producto no encontrado'})
+      }
       return res.json(data);
     } catch (error) {
       res.status(500).json({ message: (error as Error).message });
