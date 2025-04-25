@@ -1,15 +1,14 @@
 export interface Product {
-    _id: string;
-    image: string;
-    name: string;
-    quantity: number;
-    category: string;
-    unit: string;
-    description: string;
-    entryDate: string;
-    expirationDate: string;
-    price: number;
-    alerts: boolean;
-    __v?: number;
-  }
-  
+  _id: string;
+  image?: string;
+  name: string;
+  quantity: number; //Cantidades
+  category?: string;
+  unit?: string; // Unidad de medida
+  description?: string;
+  entryDate?: string | Date;
+  expiryDate: string | null | undefined | Date; // Cambiamos expirationDate a expiryDate
+  price?: number;
+  alerts?: boolean;
+  __v?: number;
+}

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Product } from "../types/product"
 
 const ProdEndpoint = "http://localhost:5000/api/products";
 
@@ -8,8 +9,15 @@ export const productApi = {
     return response.data;
   },
 
+  updateProduct: async (productId: string, updatedProduct: Product) =>{
+    const response = await axios.patch(`${ProdEndpoint}/${productId}`, updatedProduct);
+    return response.data;
+  },
+  
+
   deleteProduct: async (productId: string) => {
     const response = await axios.delete(`${ProdEndpoint}/${productId}`);
     return response.data;
   }
 };
+
