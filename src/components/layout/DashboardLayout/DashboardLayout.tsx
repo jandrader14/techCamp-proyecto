@@ -21,8 +21,12 @@ export function DashboardLayout() {
               </div>
 
               <div className={styles.widget}>
-                <h4>Alertas 🔔</h4>
+                <h2>Alertas 🔔</h2>
                 {/* Aquí luego insertamos el componente de alertas */}
+                <div className={styles.alerts}>
+                  <img src="src/assets/Animation - 1745601330602.gif" alt="gif" />
+                </div>
+                <p>¡Buenas noticias! La consulta de alertas de inventario está en camino. ¡Espérala! 🚀</p>
               </div>
             </aside>
           </div>
