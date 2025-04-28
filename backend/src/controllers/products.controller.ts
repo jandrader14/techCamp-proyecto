@@ -26,6 +26,23 @@ export const productsController = {
       });
     }
   },
+  update: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const updatedProduct = await productsService.update(id, req.body);
+      return res.status(200).json({
+        message: "Producto actualizado correctamente",
+        product: updatedProduct,
+      });
+    } catch (error) {
+      console.error('Error al actualizar producto:', error);
+      return res.status(500).json({
+        message: 'Error del servidor',
+        error: (error as Error).message,
+      });
+    }
+  },
+  
   delete: async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
