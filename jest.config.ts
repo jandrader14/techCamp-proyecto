@@ -7,6 +7,9 @@ const config: Config = {
   transform: {
     '^.+\\.(ts|tsx)$': 'babel-jest', // Usa Babel para transformar TypeScript + JSX
   },
+  moduleNameMapper: {
+    '\\.module\\.css$': 'identity-obj-proxy',
+  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'], // 👈 Agregamos el setup
   clearMocks: true,
