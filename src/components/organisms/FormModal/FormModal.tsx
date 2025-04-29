@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "./ProductFormModal.module.css";
+import styles from "./FormModal.module.css";
 import { ProductForm } from "../../molecules/ProductForm/ProductForm";
 import {X} from 'lucide-react'
 
@@ -7,7 +7,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function ProductFormModal({ onClose }: Props) {
+export function FormModal({ onClose }: Props) {
   // Cerrar con Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

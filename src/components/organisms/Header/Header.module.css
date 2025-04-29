@@ -129,3 +129,24 @@
   opacity: 1;
   transform: translateX(-50%) translateY(10px);
 }
+
+/* Estilo para el submenú */
+.submenu {
+  position: absolute;
+  top: 100%; /* Aparece debajo del ícono */
+  right: 0;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los botones */
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}

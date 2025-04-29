@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ProductFormModal } from '../ProductFormModal/ProductFormModal';
+import { FormModal } from '../FormModal/FormModal';
 import { SectionCard } from '../../molecules/SectionCard/SectionCard';
 import styles from './RecipesPage.module.css';
 import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
@@ -61,7 +61,7 @@ export function RecipesPage() {
         
       </div>
 
-      {isModalOpen && <ProductFormModal onClose={closeModal} />}
+      {isModalOpen && <FormModal onClose={closeModal} />}
       {showEmptyInventoryModal && <EmptyInventoryModal onClose={() => setEmptyInventoryModal(false)} />}
     </div>
   );

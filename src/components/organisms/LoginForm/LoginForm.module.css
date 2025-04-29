@@ -10,7 +10,7 @@ body{
   justify-content: start;
   align-content: center;
   gap: 0.5rem;
-  background-color: var(--white);
+  background-color: var(--background);
   width: 100%;
   max-width: 40rem; /* Controla el ancho máximo del formulario */
   padding: 3rem 2.5rem;

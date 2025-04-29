@@ -68,9 +68,9 @@ export const LoginForm: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Ingresa tu contraseña"
       />
-      <div className={styles.forgotPassword}>
+      {/* <div className={styles.forgotPassword}>
         <Link to="/forgotPassword">¿Olvidaste tu contraseña?</Link>
-      </div>
+      </div> */}
       <Button
         text={loading ? "Cargando..." : "Ingresar"}
         type="submit"
