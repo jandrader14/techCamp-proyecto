@@ -1,0 +1,72 @@
+/* src/components/ImageUploader/ImageUploader.module.css */
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--button-background);
+  color: var(--button-text);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-family-body);
+}
+
+.uploadButton:hover {
+  background-color: var(--button-background-hover);
+}
+
+.previewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  border-radius: 8px;
+  background-color: var(--preview-background);
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--preview-border);
+  box-sizing: border-box;
+  flex-direction: row; /* diseño horizontal por defecto */
+}
+
+.imagePreview {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.removeImageButton {
+  background-color: var(--button-background);
+  color: var(--button-text);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-family-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+}
+
+.removeImageButton:hover {
+  background-color: var(--button-background-hover);
+}
+
+/* Responsive: en pantallas pequeñas, diseño en columna */
+@media (max-width: 600px) {
+  .previewContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imagePreview {
+    max-width: 100%;
+  }
+}
