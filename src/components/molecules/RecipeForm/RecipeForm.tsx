@@ -1,7 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
-import { Button } from "../../atoms/Button/Button";
 
 import styles from "./RecipeForm.module.css";
 
@@ -10,7 +9,7 @@ interface RecipeFormProps {
   name: string;
   ingredients: string;
   preparation: string;
-  duration: string;
+  portions: string;
 }
 
 export const RecipeForm = () => {
@@ -19,36 +18,32 @@ export const RecipeForm = () => {
     name: "",
     ingredients: "",
     preparation: "",
-    duration: "",
+    portions: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  const handleChange = async (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
-    const { name, value } = e.target;
-    setFormData((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-    setErrors({
-      ...errors,
-      [name]: value ? "" : "Este campo es obligatorio",
-    });
-  };
+    const { name, type, value } = e.target;
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData({
-      ...formData,
-      image: file,
-    });
-    setErrors({
-      ...errors,
-      image: file ? "" : "La imagen es obligatoria",
-    });
+    if (type === "file" && e.target instanceof HTMLInputElement) {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFormData((prev) => ({
+            ...prev,
+            [name]: reader.result as string, // esto será la cadena base64
+          }));
+        };
+        reader.readAsDataURL(file); // convierte a base64 automáticamente
+      }
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +54,7 @@ export const RecipeForm = () => {
     for (const key in formData) {
       const value = formData[key as keyof typeof formData];
       if (value !== null) {
-        formDataToSend.append(key, value as string | Blob);
+        formDataToSend.append(key, value as string);
       }
     }
 
@@ -81,7 +76,7 @@ export const RecipeForm = () => {
         name: "",
         ingredients: "",
         preparation: "",
-        duration: "",
+        portions: "",
       });
     } catch (error) {
       console.error("Error al registrar la receta:", error);
@@ -89,69 +84,62 @@ export const RecipeForm = () => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>Registrar receta</h2>
-      {successMessage && <p className={styles.success}>{successMessage}</p>}
-      <div className={styles.inputGroup}>
-        <label htmlFor="image">Imagen:</label>
+    <form className={styles.recipe_form} onSubmit={handleSubmit}>
+      <h2 className={styles.recipe_form__title}>Registrar receta</h2>
+      <div className={styles.recipe_form__image}>
+        <label htmlFor="image">🖼️ Imagen:</label>
         <input
           type="file"
           id="image"
           name="image"
           accept="image/*"
-          onChange={handleFileChange}
+          onChange={handleChange}
         />
-        {errors.image && <span className={styles.error}>{errors.image}</span>}
       </div>
 
-      <div className={styles.inputGroup}>
-        <FormField
-          label="Nombre de la receta"
-          name="name"
-          type="text"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Ejm: Ajiaco con pollo"
-        />
-        {errors.name && <span className={styles.error}>{errors.name}</span>}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="ingredients">Ingredientes:</label>
+      <FormField
+        label="🥘 Nombre de la receta"
+        name="name"
+        type="text"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Ejm: Ajiaco con pollo"
+        required
+      />
+
+      <div className={styles.recipe_form__inputGroup}>
+        <label htmlFor="ingredients">🛒 Ingredientes:</label>
         <textarea
           id="ingredients"
           name="ingredients"
           value={formData.ingredients}
-          onChange={handleInputChange}
+          onChange={handleChange}
+          required
         />
-        {errors.ingredients && (
-          <span className={styles.error}>{errors.ingredients}</span>
-        )}
       </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="preparation">Preparación:</label>
+
+      <div className={styles.recipe_form__inputGroup}>
+        <label htmlFor="preparation">🍴 Preparación:</label>
         <textarea
           id="preparation"
           name="preparation"
           value={formData.preparation}
-          onChange={handleInputChange}
+          onChange={handleChange}
+          required
         />
-        {errors.preparation && (
-          <span className={styles.error}>{errors.preparation}</span>
-        )}
       </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="duration">Duración:</label>
-        <input
-          type="text"
-          id="duration"
-          name="duration"
-          value={formData.duration}
-          onChange={handleInputChange}
-        />
-        {errors.duration && (
-          <span className={styles.error}>{errors.duration}</span>
-        )}
-      </div>
+
+      <FormField
+        label="🍽️ Porciones:"
+        name="name"
+        type="text"
+        value={formData.portions}
+        onChange={handleChange}
+        placeholder="Ejm: 4 porciones"
+        required
+      />
+      {successMessage && <p className={styles.success}>{successMessage}</p>}
+
       <button type="submit" className={styles.submitButton}>
         Registrar receta
       </button>

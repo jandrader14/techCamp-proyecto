@@ -44,6 +44,33 @@
   border-color: var(--primary);
 }
 
+.product_form__inputGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.product_form__inputGroup label {
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.product_form__inputGroup textarea{
+  border-radius: 0.5rem; 
+  border: 1px solid #ddd; 
+  box-sizing: border-box; 
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.8rem;
+  transition: border-color 0.3s ease;
+  width: 100%; /* O el ancho que necesites */
+}
+
+.product_form__inputGroup textarea:focus{
+  border-color: #aaa; 
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.05);
+  outline: none; 
+}
+
 .checkboxField {
   display: flex;
   align-items: center;

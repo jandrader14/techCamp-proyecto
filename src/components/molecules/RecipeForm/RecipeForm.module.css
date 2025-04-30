@@ -1,0 +1,73 @@
+.recipe_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--form-background);
+  border-radius: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+.recipe_form .recipe_form__title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.recipe_form__image {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.recipe_form__image input[type="file"] {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+
+}
+
+.recipe_form__image input[type="file"]:hover {
+  background-color: #f1f1f1;
+}
+
+.recipe_form .recipe_form__inputGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.recipe_form__inputGroup label {
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.recipe_form__inputGroup textarea{
+  border-radius: 0.5rem; 
+  border: 1px solid #ddd; 
+  box-sizing: border-box; 
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.8rem;
+  transition: border-color 0.3s ease;
+  width: 100%; /* O el ancho que necesites */
+}
+
+.recipe_form__inputGroup textarea:focus{
+  border-color: #aaa; 
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.05);
+  outline: none; 
+}
+
+
+

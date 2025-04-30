@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import FormField from "../../molecules/FormField/FormField";
-import {Button} from "../../atoms/Button/Button";
+import { Button } from "../../atoms/Button/Button";
 import styles from "./ProductForm.module.css";
 
 export function ProductForm() {
@@ -58,7 +58,6 @@ export function ProductForm() {
         formDataToSend.append(key, value as string | Blob);
       }
     }
-    
 
     try {
       const endpoint = "http://localhost:5000/api/products";
@@ -152,14 +151,15 @@ export function ProductForm() {
         ]}
       />
 
-      <FormField
-        label="📝Descripción"
-        name="description"
-        type="textarea"
-        value={formData.description}
-        onChange={handleChange}
-        rows={4}
-      />
+      <div className={styles.product_form__inputGroup}>
+        <label htmlFor="preparation">📝 Descripción:</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
       <FormField
         label="🗓️ Fecha de ingreso"
@@ -199,10 +199,9 @@ export function ProductForm() {
         />
       </div>
       {successMessage && (
-  <p className={styles.successMessage}>{successMessage}</p>
-)}
+        <p className={styles.successMessage}>{successMessage}</p>
+      )}
       <Button type="submit" text="Registrar producto" />
     </form>
-    
   );
 }
