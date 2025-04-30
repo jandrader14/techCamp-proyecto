@@ -94,7 +94,7 @@ export function ProductForm() {
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.title}>Registrar producto</h2>
       <div className={styles.field}>
-        <label>Imagen del producto</label>
+        <label>🖼️ Imagen del producto</label>
         <input
           type="file"
           name="image"
@@ -104,7 +104,7 @@ export function ProductForm() {
       </div>
 
       <FormField
-        label="Nombre del producto"
+        label="🏷️ Nombre del producto"
         name="name"
         type="text"
         value={formData.name}
@@ -113,7 +113,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Cantidad"
+        label="🔢 Cantidad"
         name="quantity"
         type="number"
         value={formData.quantity}
@@ -123,7 +123,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Categoría"
+        label="📦 Categoría"
         name="category"
         type="select"
         value={formData.category}
@@ -139,7 +139,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Unidad de medida"
+        label="⚖️ Unidad de medida"
         name="unit"
         type="select"
         value={formData.unit}
@@ -153,7 +153,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Descripción"
+        label="📝Descripción"
         name="description"
         type="textarea"
         value={formData.description}
@@ -162,7 +162,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Fecha de ingreso"
+        label="🗓️ Fecha de ingreso"
         name="entryDate"
         type="date"
         value={formData.entryDate || ""}
@@ -170,7 +170,7 @@ export function ProductForm() {
         required
       />
       <FormField
-        label="Fecha de vencimiento"
+        label="📅Fecha de vencimiento"
         name="expiryDate"
         type="date"
         value={formData.expiryDate || ""}
@@ -179,7 +179,7 @@ export function ProductForm() {
       />
 
       <FormField
-        label="Precio 💰"
+        label="💰 Precio"
         name="price"
         type="number"
         placeholder="Ejm: 1000"
@@ -190,7 +190,7 @@ export function ProductForm() {
       />
 
       <div className={styles.checkboxField}>
-        <label>¿Deseas recibir alertas antes de vencer?</label>
+        <label>🔔 ¿Deseas recibir alertas antes de vencer?</label>
         <input
           type="checkbox"
           name="alerts"

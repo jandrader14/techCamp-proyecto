@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
-  background-color: var(--card-background);
+  background-color: var(--form-background);
   border-radius: 1rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
   width: 100%; 
@@ -25,15 +25,14 @@
 }
 
 .field input[type="file"] {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid var(--secondary, #ccc); 
-  border-radius: 8px; 
   background-color: #f9f9f9;
+  border-radius: 8px; 
   cursor: pointer;
-  width: 100%; 
   display: block;
+  font-size: 1rem;
   margin-top: 0.5rem; 
+  padding: 0.5rem;
+  width: 100%; 
 }
 
 .field input[type="file"]:hover {
