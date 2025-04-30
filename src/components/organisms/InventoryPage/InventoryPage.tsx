@@ -45,7 +45,7 @@ export function InventoryPage() {
       <div className={styles.cardContainer}>
         <SectionCard
           imageSrc="src/assets/cesta-de-la-compra.png"
-          title="Agregar productos"
+          title="Agregar nuevos productos"
           description="Registra nuevos productos para incluirlos en tu inventario."
           buttonLabel="Registrar producto"
           onClick={() => handleCardClick('Registrar producto')}
@@ -53,7 +53,7 @@ export function InventoryPage() {
         <SectionCard
           imageSrc="src/assets/mercado-cesta.png"
           title="Explorar Inventario"
-          description="Revisa fácilmente los productos disponibles y su estado actual."
+          description="Accede a la lista de productos y realiza modificaciones en tiempo real."
           buttonLabel="Ver productos"
           onClick={() => handleCardClick('Ver Inventario')}
         />

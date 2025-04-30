@@ -3,8 +3,9 @@
     "version": "1.0.0",
     "type": "commonjs",
     "scripts": {
-        "dev": "nodemon",
-        "start": "ts-node ./src/index.ts"
+        "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+        "dev:server": "nodemon --config backend/nodemon.json",
+        "dev:client": "vite"
     },
     "dependencies": {
         "cors": "^2.8.5",

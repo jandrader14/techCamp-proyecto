@@ -13,7 +13,7 @@ export function ProductForm() {
   >({
     image: null,
     name: "",
-    quantity: 1,
+    quantity: undefined,
     category: "",
     unit: "",
     description: "",
