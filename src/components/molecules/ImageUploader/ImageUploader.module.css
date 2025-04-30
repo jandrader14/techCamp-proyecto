@@ -30,10 +30,9 @@
   border-radius: 8px;
   background-color: var(--preview-background);
   padding: 1rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--preview-border);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
-  flex-direction: row; /* diseño horizontal por defecto */
+  flex-direction: row; 
 }
 
 .imagePreview {
