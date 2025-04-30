@@ -3,10 +3,14 @@ import axios from "axios";
 
 import FormField from "../../molecules/FormField/FormField";
 import { Button } from "../../atoms/Button/Button";
+import { ImageUploader } from "../../molecules/ImageUploader/ImageUploader";
+import { Product } from "../../../types/product";
 import styles from "./ProductForm.module.css";
 
 export function ProductForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<
+    Omit<Product, "_id" | "__v"> & { image: string | null }
+  >({
     image: null,
     name: "",
     quantity: 1,
@@ -15,7 +19,7 @@ export function ProductForm() {
     description: "",
     entryDate: "",
     expiryDate: "",
-    price: "",
+    price: undefined,
     alerts: false,
   });
   const [successMessage, setSuccessMessage] = useState("");
@@ -30,18 +34,10 @@ export function ProductForm() {
     if (type === "checkbox" && e.target instanceof HTMLInputElement) {
       const newValue = e.target.checked;
       setFormData((prev) => ({ ...prev, [name]: newValue }));
-    } else if (type === "file" && e.target instanceof HTMLInputElement) {
-      const file = e.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFormData((prev) => ({
-            ...prev,
-            [name]: reader.result as string, // esto será la cadena base64
-          }));
-        };
-        reader.readAsDataURL(file); // convierte a base64 automáticamente
-      }
+    } else if (type === "number") {
+      const numberValue = parseFloat(value);
+      if ((name === "price" || name === "quantity" ) && numberValue < 0) return; // Evita precios negativos
+      setFormData((prev) => ({ ...prev, [name]: numberValue }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -49,13 +45,20 @@ export function ProductForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
 
     const formDataToSend = new FormData();
+    
 
     for (const key in formData) {
       const value = formData[key as keyof typeof formData];
       if (value !== null) {
-        formDataToSend.append(key, value as string | Blob);
+        formDataToSend.append(key, value as string);
+      }
+
+      if (formData.price !== undefined && formData.price < 0) {
+        alert("El precio no puede ser negativo.");
+        return;
       }
     }
 
@@ -75,13 +78,13 @@ export function ProductForm() {
       setFormData({
         image: null,
         name: "",
-        quantity: 1,
+        quantity: 0,
         category: "",
         unit: "",
         description: "",
         entryDate: "",
         expiryDate: "",
-        price: "",
+        price: 0,
         alerts: false,
       });
     } catch (error) {
@@ -89,18 +92,15 @@ export function ProductForm() {
     }
   };
 
+  const handleImageChange = (image: string | null) => {
+    setFormData((prev) => ({ ...prev, image }));
+  };
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.title}>Registrar producto</h2>
-      <div className={styles.field}>
-        <label>🖼️ Imagen del producto</label>
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
-        />
-      </div>
+
+      <ImageUploader value={formData.image} onChange={handleImageChange} />
 
       <FormField
         label="🏷️ Nombre del producto"
@@ -157,6 +157,7 @@ export function ProductForm() {
           name="description"
           value={formData.description}
           onChange={handleChange}
+          placeholder="Ej: Manzana roja y dulce"
           required
         />
       </div>
@@ -182,7 +183,7 @@ export function ProductForm() {
         label="💰 Precio"
         name="price"
         type="number"
-        placeholder="Ejm: 1000"
+        placeholder="Ej: 1000"
         value={formData.price}
         onChange={handleChange}
         min={0}
@@ -201,7 +202,7 @@ export function ProductForm() {
       {successMessage && (
         <p className={styles.successMessage}>{successMessage}</p>
       )}
-      <Button type="submit" text="Registrar producto" />
+      <Button type="submit" text="Registrar producto" className={styles.form__button} />
     </form>
   );
 }
