@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
+import { ImageUploader } from "../..//molecules/ImageUploader/ImageUploader";
+import { Button } from "../../atoms/Button/Button";
 
 import styles from "./RecipeForm.module.css";
 
 interface RecipeFormProps {
-  image: File | null;
+  image: string | null;
   name: string;
   ingredients: string;
   preparation: string;
@@ -83,19 +85,15 @@ export const RecipeForm = () => {
     }
   };
 
+  const handleImageChange = (image: string | null) => {
+    setFormData((prev) => ({ ...prev, image }));
+  };
+
   return (
     <form className={styles.recipe_form} onSubmit={handleSubmit}>
       <h2 className={styles.recipe_form__title}>Registrar receta</h2>
-      <div className={styles.recipe_form__image}>
-        <label htmlFor="image">🖼️ Imagen:</label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
-        />
-      </div>
+
+      <ImageUploader value={formData.image} onChange={handleImageChange} />
 
       <FormField
         label="🥘 Nombre de la receta"
@@ -103,7 +101,17 @@ export const RecipeForm = () => {
         type="text"
         value={formData.name}
         onChange={handleChange}
-        placeholder="Ejm: Ajiaco con pollo"
+        placeholder="Ej: Torta de chocolate"
+        required
+      />
+
+      <FormField
+        label="🍽️ Porciones:"
+        name="name"
+        type="text"
+        value={formData.portions}
+        onChange={handleChange}
+        placeholder="Ejm: 4 porciones"
         required
       />
 
@@ -115,7 +123,12 @@ export const RecipeForm = () => {
           value={formData.ingredients}
           onChange={handleChange}
           required
+          placeholder="Ej: 200g de harina de trigo, 1 cucharadita de levadura en polvo, 1 huevo..."
         />
+        <small className="form-text text-muted">
+          Ingresa cada ingrediente en una línea separada, indicando la cantidad
+          y la unidad de medida.
+        </small>
       </div>
 
       <div className={styles.recipe_form__inputGroup}>
@@ -126,23 +139,17 @@ export const RecipeForm = () => {
           value={formData.preparation}
           onChange={handleChange}
           required
+          placeholder="Ej: 1. Precalentar el horno a 180°C. 2. Batir los huevos con el azúcar hasta que estén espumosos. 3. ..."
         />
+        <small className="form-text text-muted">
+          Describe la preparación en orden cronológico. Comienza cada paso con
+          un número (1., 2., etc.) para mayor claridad
+        </small>
       </div>
 
-      <FormField
-        label="🍽️ Porciones:"
-        name="name"
-        type="text"
-        value={formData.portions}
-        onChange={handleChange}
-        placeholder="Ejm: 4 porciones"
-        required
-      />
       {successMessage && <p className={styles.success}>{successMessage}</p>}
 
-      <button type="submit" className={styles.submitButton}>
-        Registrar receta
-      </button>
+      <Button type="submit" text="Registrar producto" className={styles.recipe_form__button}/>
     </form>
   );
 };

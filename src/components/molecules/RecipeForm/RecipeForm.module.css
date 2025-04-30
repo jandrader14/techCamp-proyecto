@@ -17,29 +17,6 @@
   margin-bottom: 1rem;
 }
 
-.recipe_form__image {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.recipe_form__image input[type="file"] {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  cursor: pointer;
-  display: block;
-  font-size: 1rem;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  width: 100%;
-
-}
-
-.recipe_form__image input[type="file"]:hover {
-  background-color: #f1f1f1;
-}
 
 .recipe_form .recipe_form__inputGroup{
   display: flex;
@@ -60,13 +37,29 @@
   line-height: 1.5;
   padding: 0.8rem;
   transition: border-color 0.3s ease;
-  width: 100%; /* O el ancho que necesites */
+  width: 100%;
 }
 
 .recipe_form__inputGroup textarea:focus{
   border-color: #aaa; 
   box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.05);
   outline: none; 
+}
+
+.recipe_form__button{
+  background-color: var(--primary);
+  border-radius: 0.5rem;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.recipe_form__button:hover{
+  background-color: var(--button-background-hover);
+  color: var(--button-text);
 }
 
 
