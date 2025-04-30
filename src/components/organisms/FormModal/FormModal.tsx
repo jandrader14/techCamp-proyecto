@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import styles from "./FormModal.module.css";
-import { ProductForm } from "../../molecules/ProductForm/ProductForm";
-import {X} from 'lucide-react'
+import { X } from "lucide-react";
 
 interface Props {
   onClose: () => void;
+  children: React.ReactNode; // Para pasar cualquier componente como hijo
 }
 
-export function FormModal({ onClose }: Props) {
+export function FormModal({ onClose, children }: Props) {
   // Cerrar con Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -20,8 +20,10 @@ export function FormModal({ onClose }: Props) {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}><X /></button>
-        <ProductForm />
+        <button className={styles.closeButton} onClick={onClose}>
+          <X />
+        </button>
+        {children} 
       </div>
     </div>
   );
