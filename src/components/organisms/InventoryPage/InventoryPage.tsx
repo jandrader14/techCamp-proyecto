@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FormModal } from '../FormModal/FormModal';
+import { ProductForm } from '../../molecules/ProductForm/ProductForm';
 import { SectionCard } from '../../molecules/SectionCard/SectionCard';
 import styles from './InventoryPage.module.css';
 import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
@@ -73,7 +74,11 @@ export function InventoryPage() {
         /> */}
       </div>
 
-      {isModalOpen && <FormModal onClose={closeModal} />}
+      {isModalOpen && (
+        <FormModal onClose={closeModal}>
+          <ProductForm />
+        </FormModal>
+      )}
       {showEmptyInventoryModal && <EmptyInventoryModal onClose={() => setEmptyInventoryModal(false)} />}
     </div>
   );
