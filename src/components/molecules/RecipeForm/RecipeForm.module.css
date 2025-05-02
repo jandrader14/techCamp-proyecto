@@ -70,9 +70,21 @@
 }
 
 .recipe_form__ingredientsHeader {
+  align-items: flex-start;
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
-  align-items: center;
+}
+
+.ingredientLabelWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.warningText {
+  color: #e63946;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
 }
 
 .recipe_form__ingredientsHeader label { /*Ingredientes: */
@@ -103,11 +115,7 @@
   opacity: 0.6;
 }
 
-.warningText {
-  color: #a94442; /* Rojo */
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
+
 
 
 /* Estilos para cada fila de ingrediente */

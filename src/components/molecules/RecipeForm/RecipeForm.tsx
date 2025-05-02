@@ -43,15 +43,15 @@ export const RecipeForm = () => {
       { id: crypto.randomUUID(), quantity: 0, unit: "", productId: "" },
     ]);
   };
-  
+
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   useEffect(() => {
     const selectedProductIds = ingredients
       .map((i) => i.productId)
       .filter(Boolean); // Solo los que han sido seleccionados
-  
+
     const uniqueSelected = new Set(selectedProductIds);
-  
+
     setIngredientLimitReached(uniqueSelected.size >= productOptions.length);
   }, [ingredients, productOptions.length]);
 
@@ -59,13 +59,13 @@ export const RecipeForm = () => {
     const updatedIngredients = ingredients.map((ingredient) =>
       ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
     );
-  
+
     // Si el campo modificado es el "productId", hacemos la validación
     if (field === "productId") {
       const selectedProductIds = updatedIngredients
         .map((i) => i.productId)
         .filter(Boolean); // Eliminamos los valores vacíos o nulos
-  
+
       // Verificar si se excedió el número de productos disponibles
       if (selectedProductIds.length >= productOptions.length) {
         setIngredientLimitReached(true);
@@ -73,23 +73,25 @@ export const RecipeForm = () => {
         setIngredientLimitReached(false);
       }
     }
-  
+
     setIngredients(updatedIngredients);
   };
 
   const handleRemoveIngredient = (id: string) => {
-    const updatedIngredients = ingredients.filter((ingredient) => ingredient.id !== id);
-  
+    const updatedIngredients = ingredients.filter(
+      (ingredient) => ingredient.id !== id
+    );
+
     // Recalcular si el límite de productos ha sido alcanzado
     const selectedProductIds = updatedIngredients
       .map((ingredient) => ingredient.productId)
       .filter(Boolean);
-  
+
     // Si el número de productos seleccionados es menor que el total de productos, habilitar el botón de agregar
     if (selectedProductIds.length < productOptions.length) {
       setIngredientLimitReached(false); // Habilitar el botón de agregar
     }
-  
+
     setIngredients(updatedIngredients);
   };
 
@@ -162,7 +164,7 @@ export const RecipeForm = () => {
   };
 
   const [successMessage, setSuccessMessage] = useState("");
- 
+
   useEffect(() => {
     // Get products from inventory
     const fetchProducts = async () => {
@@ -195,7 +197,7 @@ export const RecipeForm = () => {
 
       <FormField
         label="🍽️ Porciones:"
-        name="name"
+        name="portions"
         type="text"
         value={formData.portions}
         onChange={handleChange}
@@ -205,13 +207,15 @@ export const RecipeForm = () => {
 
       <div className={styles.recipe_form__ingredients}>
         <div className={styles.recipe_form__ingredientsHeader}>
-          <label>🛒 Ingredientes:</label>
+          <div className={styles.ingredientLabelWrapper}>
+            <label>🛒 Ingredientes:</label>
+            {ingredientLimitReached && (
+              <p className={styles.warningText}>
+                Ya no hay más productos disponibles para seleccionar.
+              </p>
+            )}
+          </div>
 
-          {ingredientLimitReached && (
-            <p className={styles.warningText}>
-              Ya no hay más productos disponibles para seleccionar.
-            </p>
-          )}
           <Button
             type="button"
             className={styles.addButton}
@@ -223,7 +227,6 @@ export const RecipeForm = () => {
           >
             <Plus size={16} />
           </Button>
-          
         </div>
 
         {ingredients.map((ingredient) => (
@@ -233,6 +236,7 @@ export const RecipeForm = () => {
               <input
                 id={`quantity-${ingredient.id}`}
                 type="number"
+                min={1}
                 value={ingredient.quantity}
                 onChange={(e) =>
                   handleChangeIngredient(
