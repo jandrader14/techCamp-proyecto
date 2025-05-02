@@ -20,11 +20,31 @@
   }
   
   .cardContainer {
-    display: flex;    
+    display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: space-between;
+    justify-content: center;
   }
+  
+  .cardContainer > * {
+    flex: 1 1 calc(33.333% - 1rem); /* 3 por fila con espacio */
+    max-width: calc(33.333% - 1rem);
+  }
+  
+  @media (max-width: 768px) {
+    .cardContainer > * {
+      flex: 1 1 calc(50% - 1rem); /* 2 por fila en tablets */
+      max-width: calc(50% - 1rem);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cardContainer > * {
+      flex: 1 1 100%; /* 1 por fila en móviles */
+      max-width: 100%;
+    }
+  }
+  
 
   .button {
     background-color: transparent;
