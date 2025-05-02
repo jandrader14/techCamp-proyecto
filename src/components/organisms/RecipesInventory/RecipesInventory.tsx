@@ -75,11 +75,12 @@ export function RecipeInventory() {
       <div className={styles.cardContainer}>
         {recipes.map((recipe) => (
           <RecipeCard
-            key={recipe._id}
-            id={recipe._id}
-            title={recipe.title}
-            description={recipe.description}
-            image={recipe.image}
+          key={recipe._id}
+          id={recipe._id}
+          title={recipe.title}
+          description={recipe.description}
+          image={recipe.image}
+          className={styles.recipeCard}
           />
         ))}
       </div>

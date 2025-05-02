@@ -4,22 +4,15 @@ import { Search } from "lucide-react";
 
 interface RecipeCardProps {
   id: string;
-  image: string;
   title: string;
   description: string;
+  image: string;
+  className?: string;
 }
 
-export function RecipeCard({
-  
-  image,
-  title,
-  description,
-  
-}: RecipeCardProps) {
- 
-
+export function RecipeCard({ id, title, description, image, className }: RecipeCardProps) {
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${className || ""}`}>
       <img src={image} alt={title} className={styles.image} />
 
       <div className={styles.content}>
