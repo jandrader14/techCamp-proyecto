@@ -1,3 +1,6 @@
+/* RecipeForm.module.css */
+
+/* Estilos generales para el formulario */
 .recipe_form {
   display: flex;
   flex-direction: column;
@@ -17,22 +20,22 @@
   margin-bottom: 1rem;
 }
 
-
-.recipe_form .recipe_form__inputGroup{
+.recipe_form .recipe_form__inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
+
 .recipe_form__inputGroup label {
   font-size: 1rem;
   color: var(--text);
   font-weight: 500;
 }
 
-.recipe_form__inputGroup textarea{
-  border-radius: 0.5rem; 
-  border: 1px solid #ddd; 
-  box-sizing: border-box; 
+.recipe_form__inputGroup textarea {
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
   font-size: 1rem;
   line-height: 1.5;
   padding: 0.8rem;
@@ -40,13 +43,13 @@
   width: 100%;
 }
 
-.recipe_form__inputGroup textarea:focus{
-  border-color: #aaa; 
+.recipe_form__inputGroup textarea:focus {
+  border-color: #aaa;
   box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.05);
-  outline: none; 
+  outline: none;
 }
 
-.recipe_form__button{
+.recipe_form__button {
   background-color: var(--primary);
   border-radius: 0.5rem;
   border: none;
@@ -57,10 +60,112 @@
   padding: 0.8rem 1.5rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-.recipe_form__button:hover{
+
+.recipe_form__button:hover {
   background-color: var(--button-background-hover);
   color: var(--button-text);
 }
 
+/* Estilos para los ingredientes */
+.recipe_form__ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
+.recipe_form__ingredients .ingredientsLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 500;
+}
 
+.recipe_form__ingredients .addIngredientButton {
+  margin-left: 1rem;
+  background-color: #4caf50;
+  color: white;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recipe_form__ingredients .addIngredientButton:hover {
+  background-color: #45a049;
+}
+
+/* Contenedor de los campos de cada ingrediente (cantidad, unidad, producto) */
+.recipe_form__ingredients .ingredientRow {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: nowrap;  /* No permite que los campos se apilen */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.recipe_form__ingredients .ingredientRow input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;  /* Por defecto, los inputs ocuparán el 100% de su contenedor */
+  max-width: 220px;  /* Limita el ancho de los campos para que no ocupen mucho espacio */
+  box-sizing: border-box;
+}
+
+.recipe_form__ingredients .ingredientRow input:nth-child(1) {
+  width: 60px;  /* Campo de cantidad más pequeño */
+}
+
+.recipe_form__ingredients .ingredientRow input:nth-child(2) {
+  flex-grow: 1;  /* El campo de unidad ocupa el espacio disponible */
+}
+
+.recipe_form__ingredients .ingredientRow input:nth-child(3) {
+  flex-grow: 2;  /* El campo de producto ocupará el doble de espacio que unidad */
+}
+
+.recipe_form__ingredients .ingredientRow button {
+  background-color: #f44336;
+  color: white;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem; /* Botón más pequeño */
+}
+
+.recipe_form__ingredients .ingredientRow button:hover {
+  background-color: #d32f2f;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .recipe_form__ingredients .ingredientRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .recipe_form__ingredients .ingredientRow input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .recipe_form__ingredients .ingredientRow button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe_form__ingredients .ingredientsLabel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .recipe_form__ingredients .ingredientRow input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

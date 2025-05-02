@@ -3,9 +3,17 @@ import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
 import { ImageUploader } from "../..//molecules/ImageUploader/ImageUploader";
 import { Button } from "../../atoms/Button/Button";
+import { Plus, Trash2 } from "lucide-react";
 
 import styles from "./RecipeForm.module.css";
 
+// Define interface for ingredients
+interface Ingredient {
+  id: string;
+  quantity: number;
+  unit: string;
+  productId: string;
+}
 interface RecipeFormProps {
   image: string | null;
   name: string;
@@ -15,6 +23,7 @@ interface RecipeFormProps {
 }
 
 export const RecipeForm = () => {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [formData, setFormData] = useState<RecipeFormProps>({
     image: null,
     name: "",
@@ -22,7 +31,25 @@ export const RecipeForm = () => {
     preparation: "",
     portions: "",
   });
-  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleAddIngredient = () => {
+    setIngredients((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), quantity: 0, unit: "", productId: "" },
+    ]);
+  };
+
+  const handleRemoveIngredient = (id: string) => {
+    setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
+  };
+
+  const handleChangeIngredient = (id: string, field: string, value: string) => {
+    setIngredients((prevIngredients) =>
+      prevIngredients.map((ingredient) =>
+        ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
+      )
+    );
+  };
 
   const handleChange = async (
     e: React.ChangeEvent<
@@ -52,6 +79,8 @@ export const RecipeForm = () => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
+    // Adicional: Manejo de ingredientes para enviarlos en el reques
+    formDataToSend.append("ingredients", JSON.stringify(ingredients));
 
     for (const key in formData) {
       const value = formData[key as keyof typeof formData];
@@ -80,6 +109,7 @@ export const RecipeForm = () => {
         preparation: "",
         portions: "",
       });
+      setIngredients([]); // Limpiar ingredientes después de enviar
     } catch (error) {
       console.error("Error al registrar la receta:", error);
     }
@@ -88,6 +118,8 @@ export const RecipeForm = () => {
   const handleImageChange = (image: string | null) => {
     setFormData((prev) => ({ ...prev, image }));
   };
+
+  const [successMessage, setSuccessMessage] = useState("");
 
   return (
     <form className={styles.recipe_form} onSubmit={handleSubmit}>
@@ -115,20 +147,64 @@ export const RecipeForm = () => {
         required
       />
 
-      <div className={styles.recipe_form__inputGroup}>
-        <label htmlFor="ingredients">🛒 Ingredientes:</label>
-        <textarea
-          id="ingredients"
-          name="ingredients"
-          value={formData.ingredients}
-          onChange={handleChange}
-          required
-          placeholder="Ej: 200g de harina de trigo, 1 cucharadita de levadura en polvo, 1 huevo..."
-        />
-        <small className="form-text text-muted">
-          Ingresa cada ingrediente en una línea separada, indicando la cantidad
-          y la unidad de medida.
-        </small>
+      <div className={styles.recipe_form__ingredients}>
+        <div className={styles.recipe_form__inputGroup}>
+          <label htmlFor="ingredients" className={styles.ingredientsLabel}>
+            🛒 Ingredientes:
+            <Button
+              type="button"
+              text="Agregar ingrediente"
+              className={styles.addIngredientButton}
+              onClick={handleAddIngredient}
+            >
+              <Plus />
+            </Button>
+          </label>
+
+          {ingredients.map((ingredient) => (
+            <div key={ingredient.id} className={styles.ingredientRow}>
+              <input
+                type="number"
+                value={ingredient.quantity}
+                onChange={(e) =>
+                  handleChangeIngredient(
+                    ingredient.id,
+                    "quantity",
+                    e.target.value
+                  )
+                }
+                placeholder="Cantidad"
+              />
+              <input
+                type="text"
+                value={ingredient.unit}
+                onChange={(e) =>
+                  handleChangeIngredient(ingredient.id, "unit", e.target.value)
+                }
+                placeholder="Unidad"
+              />
+              <input
+                type="text"
+                value={ingredient.productId}
+                onChange={(e) =>
+                  handleChangeIngredient(
+                    ingredient.id,
+                    "productId",
+                    e.target.value
+                  )
+                }
+                placeholder="Producto"
+              />
+              <Button
+                type="button"
+                text="Eliminar"
+                onClick={() => handleRemoveIngredient(ingredient.id)}
+              >
+                <Trash2 />
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.recipe_form__inputGroup}>
@@ -149,7 +225,11 @@ export const RecipeForm = () => {
 
       {successMessage && <p className={styles.success}>{successMessage}</p>}
 
-      <Button type="submit" text="Registrar producto" className={styles.recipe_form__button}/>
+      <Button
+        type="submit"
+        text="Registrar producto"
+        className={styles.recipe_form__button}
+      />
     </form>
   );
 };
