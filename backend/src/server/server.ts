@@ -33,8 +33,9 @@ export class Server{
     this.app.get('/', (req, res) => {
       res.json({ message: 'Welcome to the API, Johanna' });      
     });
-    this.app.use('/api/users', routes.UserRoute); // Ensure the route is correctly referenced
+    this.app.use('/api/users', routes.UserRoute);
     this.app.use('/api/products', routes.ProductRoute);
+    this.app.use('/api/recipes', routes.RecipeRoute);
   }
 
   listen(){
