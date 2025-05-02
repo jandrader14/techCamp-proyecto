@@ -13,6 +13,8 @@
   --icon-view: #1d3557;
   --card-title: #2e2e2e;
   --card-text: #5c5c5c;
+  --danger: #dc3545; /* Tu color rojo original */
+  --danger-icon: #fff;
   --form-background: #FFFDF6;
   --font-family: 'Poppins', sans-serif; /* Fuente para títulos */
   --font-family-body: 'Inter', sans-serif; /* Fuente para texto de párrafos */

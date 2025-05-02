@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
+import { Product } from "../../../types/product";
 import { ImageUploader } from "../..//molecules/ImageUploader/ImageUploader";
 import { Button } from "../../atoms/Button/Button";
 import { Plus, Trash2 } from "lucide-react";
 
 import styles from "./RecipeForm.module.css";
+
+type ProductOption = Pick<Product, "_id" | "name">;
 
 // Define interface for ingredients
 interface Ingredient {
@@ -120,6 +123,21 @@ export const RecipeForm = () => {
   };
 
   const [successMessage, setSuccessMessage] = useState("");
+  const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
+
+  useEffect(() => {
+    // Get products from inventory
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/products");
+        setProductOptions(res.data);
+      } catch (err) {
+        console.error("Error al cargar productos:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <form className={styles.recipe_form} onSubmit={handleSubmit}>
@@ -148,22 +166,23 @@ export const RecipeForm = () => {
       />
 
       <div className={styles.recipe_form__ingredients}>
-        <div className={styles.recipe_form__inputGroup}>
-          <label htmlFor="ingredients" className={styles.ingredientsLabel}>
-            🛒 Ingredientes:
-            <Button
-              type="button"
-              text="Agregar ingrediente"
-              className={styles.addIngredientButton}
-              onClick={handleAddIngredient}
-            >
-              <Plus />
-            </Button>
-          </label>
+        <div className={styles.recipe_form__ingredientsHeader}>
+          <label>🛒 Ingredientes:</label>
+          <Button
+            type="button"
+            onClick={handleAddIngredient}
+            className={styles.addButton}
+          >
+            <Plus size={16} />
+          </Button>
+        </div>
 
-          {ingredients.map((ingredient) => (
-            <div key={ingredient.id} className={styles.ingredientRow}>
+        {ingredients.map((ingredient) => (
+          <div key={ingredient.id} className={styles.ingredientRow}>
+            <div className={styles.ingredientField}>
+              <label htmlFor={`quantity-${ingredient.id}`}>Cantidad</label>
               <input
+                id={`quantity-${ingredient.id}`}
                 type="number"
                 value={ingredient.quantity}
                 onChange={(e) =>
@@ -173,18 +192,27 @@ export const RecipeForm = () => {
                     e.target.value
                   )
                 }
-                placeholder="Cantidad"
+                placeholder="Ej: 1"
               />
+            </div>
+
+            <div className={styles.ingredientField}>
+              <label htmlFor={`unit-${ingredient.id}`}>Unidad</label>
               <input
+                id={`unit-${ingredient.id}`}
                 type="text"
                 value={ingredient.unit}
                 onChange={(e) =>
                   handleChangeIngredient(ingredient.id, "unit", e.target.value)
                 }
-                placeholder="Unidad"
+                placeholder="Ej: kg, taza"
               />
-              <input
-                type="text"
+            </div>
+
+            <div className={styles.ingredientField}>
+              <label htmlFor={`product-${ingredient.id}`}>Producto</label>
+              <select
+                id={`product-${ingredient.id}`}
                 value={ingredient.productId}
                 onChange={(e) =>
                   handleChangeIngredient(
@@ -193,18 +221,25 @@ export const RecipeForm = () => {
                     e.target.value
                   )
                 }
-                placeholder="Producto"
-              />
-              <Button
-                type="button"
-                text="Eliminar"
-                onClick={() => handleRemoveIngredient(ingredient.id)}
               >
-                <Trash2 />
-              </Button>
+                <option value="">Selecciona</option>
+                {productOptions.map((product) => (
+                  <option key={product._id} value={product._id}>
+                    {product.name}
+                  </option>
+                ))}
+              </select>
             </div>
-          ))}
-        </div>
+
+            <Button
+              type="button"
+              onClick={() => handleRemoveIngredient(ingredient.id)}
+              className={styles.deleteButton}
+            >
+              <Trash2 size={16} />
+            </Button>
+          </div>
+        ))}
       </div>
 
       <div className={styles.recipe_form__inputGroup}>
