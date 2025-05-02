@@ -35,23 +35,56 @@ export const RecipeForm = () => {
     portions: "",
   });
 
+  const [ingredientLimitReached, setIngredientLimitReached] = useState(false);
+
   const handleAddIngredient = () => {
+    const selectedProductIds = ingredients
+      .map((i) => i.productId)
+      .filter(Boolean);
+  
+    console.log('Productos seleccionados:', selectedProductIds.length); // Ver cuántos productos han sido seleccionados
+  
+    if (selectedProductIds.length >= productOptions.length) {
+      console.log('Límite de productos alcanzado, no puedes agregar más ingredientes.');
+      setIngredientLimitReached(true); // Esto debería activar el mensaje y deshabilitar el botón
+      return;
+    }
+  
+    console.log('Agregando ingrediente...');
+    setIngredientLimitReached(false); // Reseteamos cuando se agrega un nuevo ingrediente
     setIngredients((prev) => [
       ...prev,
       { id: crypto.randomUUID(), quantity: 0, unit: "", productId: "" },
     ]);
   };
+  // DEBUGGING
+  useEffect(() => {
+    console.log('ingredientLimitReached', ingredientLimitReached);
+  }, [ingredientLimitReached]);
 
   const handleRemoveIngredient = (id: string) => {
-    setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
+    const updatedIngredients = ingredients.filter((ingredient) => ingredient.id !== id);
+  
+    // Recalcular si el límite de productos ha sido alcanzado
+    const selectedProductIds = updatedIngredients
+      .map((ingredient) => ingredient.productId)
+      .filter(Boolean);
+  
+    // Si el número de productos seleccionados es menor que el total de productos, habilitar el botón de agregar
+    if (selectedProductIds.length < productOptions.length) {
+      setIngredientLimitReached(false); // Habilitar el botón de agregar
+    }
+  
+    setIngredients(updatedIngredients);
   };
+  
 
   const handleChangeIngredient = (id: string, field: string, value: string) => {
-    setIngredients((prevIngredients) =>
-      prevIngredients.map((ingredient) =>
-        ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
-      )
+    const updatedIngredients = ingredients.map((ingredient) =>
+      ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
     );
+
+    setIngredients(updatedIngredients);
   };
 
   const handleChange = async (
@@ -168,13 +201,24 @@ export const RecipeForm = () => {
       <div className={styles.recipe_form__ingredients}>
         <div className={styles.recipe_form__ingredientsHeader}>
           <label>🛒 Ingredientes:</label>
+
+          {ingredientLimitReached && (
+            <p className={styles.warningText}>
+              Ya no hay más productos disponibles para seleccionar.
+            </p>
+          )}
           <Button
             type="button"
-            onClick={handleAddIngredient}
             className={styles.addButton}
+            onClick={handleAddIngredient}
+            disabled={
+              ingredientLimitReached ||
+              ingredients.length >= productOptions.length
+            }
           >
             <Plus size={16} />
           </Button>
+          
         </div>
 
         {ingredients.map((ingredient) => (
@@ -222,12 +266,22 @@ export const RecipeForm = () => {
                   )
                 }
               >
-                <option value="">Selecciona</option>
-                {productOptions.map((product) => (
-                  <option key={product._id} value={product._id}>
-                    {product.name}
-                  </option>
-                ))}
+                <option value="">Selecciona un producto</option>
+                {productOptions.map((product) => {
+                  const isSelectedElsewhere = ingredients.some(
+                    (i) => i.productId === product._id && i.id !== ingredient.id
+                  );
+
+                  return (
+                    <option
+                      key={product._id}
+                      value={product._id}
+                      disabled={isSelectedElsewhere}
+                    >
+                      {product.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 

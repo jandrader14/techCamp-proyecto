@@ -3,75 +3,107 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { RecipeForm } from "../RecipeForm";
 
-// Mock the axios module
+// Mock de Axios
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("RecipeForm Component", () => {
-  it("renders the form fields correctly", () => {
+  beforeEach(() => {
+    mockedAxios.get.mockResolvedValueOnce({
+      data: [
+        { _id: "1", name: "Harina" },
+        { _id: "2", name: "Azúcar" },
+      ],
+    });
+  });
+
+  it("renders the form fields correctly", async () => {
     render(<RecipeForm />);
 
-    // Check for the form title
-    expect(screen.getByText("Registrar receta")).toBeInTheDocument();
+    // Esperar a que se carguen los productos
+    await waitFor(() => {
+      expect(screen.getByText("Harina")).toBeInTheDocument();
+      expect(screen.getByText("Azúcar")).toBeInTheDocument();
+    });
 
-    // Check for the input fields
+    // Verificar que los campos del formulario se renderizan
     expect(screen.getByLabelText("🥘 Nombre de la receta")).toBeInTheDocument();
     expect(screen.getByLabelText("🍽️ Porciones:")).toBeInTheDocument();
-    expect(screen.getByLabelText("🛒 Ingredientes:")).toBeInTheDocument();
     expect(screen.getByLabelText("🍴 Preparación:")).toBeInTheDocument();
-
-    // Check for the submit button
+    expect(screen.getByText("🛒 Ingredientes:")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /registrar producto/i })).toBeInTheDocument();
   });
 
-  it("updates form fields on user input", () => {
+  it("allows the user to add and remove ingredients", async () => {
     render(<RecipeForm />);
 
-    // Simulate user input for the name field
-    const nameInput = screen.getByLabelText("🥘 Nombre de la receta") as HTMLInputElement;
-    fireEvent.change(nameInput, { target: { value: "Torta de chocolate" } });
-    expect(nameInput.value).toBe("Torta de chocolate");
+    // Esperar a que se carguen los productos
+    await waitFor(() => {
+      expect(screen.getByText("Harina")).toBeInTheDocument();
+    });
 
-    // Simulate user input for the portions field
-    const portionsInput = screen.getByLabelText("🍽️ Porciones:") as HTMLInputElement;
-    fireEvent.change(portionsInput, { target: { value: "4 porciones" } });
-    expect(portionsInput.value).toBe("4 porciones");
+    // Agregar un ingrediente
+    const addButton = screen.getByRole("button", { name: /plus/i });
+    fireEvent.click(addButton);
 
-    // Simulate user input for the ingredients field
-    const ingredientsTextarea = screen.getByLabelText("🛒 Ingredientes:") as HTMLTextAreaElement;
-    fireEvent.change(ingredientsTextarea, { target: { value: "200g de harina" } });
-    expect(ingredientsTextarea.value).toBe("200g de harina");
+    // Verificar que se agregó un ingrediente
+    expect(screen.getByLabelText("Cantidad")).toBeInTheDocument();
+    expect(screen.getByLabelText("Unidad")).toBeInTheDocument();
+    expect(screen.getByLabelText("Producto")).toBeInTheDocument();
 
-    // Simulate user input for the preparation field
-    const preparationTextarea = screen.getByLabelText("🍴 Preparación:") as HTMLTextAreaElement;
-    fireEvent.change(preparationTextarea, { target: { value: "1. Mezclar los ingredientes" } });
-    expect(preparationTextarea.value).toBe("1. Mezclar los ingredientes");
+    // Eliminar el ingrediente
+    const deleteButton = screen.getByRole("button", { name: /trash2/i });
+    fireEvent.click(deleteButton);
+
+    // Verificar que se eliminó el ingrediente
+    expect(screen.queryByLabelText("Cantidad")).not.toBeInTheDocument();
   });
 
-  it("submits the form and shows success message", async () => {
-    mockedAxios.post.mockResolvedValueOnce({ data: { message: "Receta registrada con éxito" } });
+  it("handles form submission successfully", async () => {
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { message: "Receta registrada con éxito" },
+    });
 
     render(<RecipeForm />);
 
-    // Fill out the form
-    fireEvent.change(screen.getByLabelText("🥘 Nombre de la receta"), { target: { value: "Torta de chocolate" } });
-    fireEvent.change(screen.getByLabelText("🍽️ Porciones:"), { target: { value: "4 porciones" } });
-    fireEvent.change(screen.getByLabelText("🛒 Ingredientes:"), { target: { value: "200g de harina" } });
-    fireEvent.change(screen.getByLabelText("🍴 Preparación:"), { target: { value: "1. Mezclar los ingredientes" } });
+    // Llenar los campos del formulario
+    fireEvent.change(screen.getByLabelText("🥘 Nombre de la receta"), {
+      target: { value: "Torta de chocolate" },
+    });
+    fireEvent.change(screen.getByLabelText("🍽️ Porciones:"), {
+      target: { value: "4 porciones" },
+    });
+    fireEvent.change(screen.getByLabelText("🍴 Preparación:"), {
+      target: { value: "1. Mezclar los ingredientes" },
+    });
 
-    // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: /registrar producto/i }));
+    // Agregar un ingrediente
+    const addButton = screen.getByRole("button", { name: /plus/i });
+    fireEvent.click(addButton);
+    fireEvent.change(screen.getByLabelText("Cantidad"), {
+      target: { value: "200" },
+    });
+    fireEvent.change(screen.getByLabelText("Unidad"), {
+      target: { value: "gramos" },
+    });
+    fireEvent.change(screen.getByLabelText("Producto"), {
+      target: { value: "1" },
+    });
 
-    // Wait for the success message to appear
+    // Enviar el formulario
+    const submitButton = screen.getByRole("button", { name: /registrar producto/i });
+    fireEvent.click(submitButton);
+
+    // Esperar a que se muestre el mensaje de éxito
     await waitFor(() => {
       expect(screen.getByText("✅ Receta guardada correctamente")).toBeInTheDocument();
     });
 
-    // Ensure the form fields are reset
+    // Verificar que los campos del formulario se reinician
     expect(screen.getByLabelText("🥘 Nombre de la receta")).toHaveValue("");
     expect(screen.getByLabelText("🍽️ Porciones:")).toHaveValue("");
-    expect(screen.getByLabelText("🛒 Ingredientes:")).toHaveValue("");
     expect(screen.getByLabelText("🍴 Preparación:")).toHaveValue("");
+    expect(screen.queryByLabelText("Cantidad")).not.toBeInTheDocument();
   });
 
   it("handles API errors gracefully", async () => {
@@ -79,16 +111,22 @@ describe("RecipeForm Component", () => {
 
     render(<RecipeForm />);
 
-    // Fill out the form
-    fireEvent.change(screen.getByLabelText("🥘 Nombre de la receta"), { target: { value: "Torta de chocolate" } });
-    fireEvent.change(screen.getByLabelText("🍽️ Porciones:"), { target: { value: "4 porciones" } });
-    fireEvent.change(screen.getByLabelText("🛒 Ingredientes:"), { target: { value: "200g de harina" } });
-    fireEvent.change(screen.getByLabelText("🍴 Preparación:"), { target: { value: "1. Mezclar los ingredientes" } });
+    // Llenar los campos del formulario
+    fireEvent.change(screen.getByLabelText("🥘 Nombre de la receta"), {
+      target: { value: "Torta de chocolate" },
+    });
+    fireEvent.change(screen.getByLabelText("🍽️ Porciones:"), {
+      target: { value: "4 porciones" },
+    });
+    fireEvent.change(screen.getByLabelText("🍴 Preparación:"), {
+      target: { value: "1. Mezclar los ingredientes" },
+    });
 
-    // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: /registrar producto/i }));
+    // Enviar el formulario
+    const submitButton = screen.getByRole("button", { name: /registrar producto/i });
+    fireEvent.click(submitButton);
 
-    // Wait for the error to be logged
+    // Esperar a que se registre el error en la consola
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith(expect.stringContaining("Error al registrar la receta"));
     });

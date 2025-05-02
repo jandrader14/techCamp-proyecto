@@ -97,6 +97,18 @@
 .addButton:hover {
   background-color: var(--button-background-hover);
 }
+.addButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.warningText {
+  color: #a94442; /* Rojo */
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
 
 /* Estilos para cada fila de ingrediente */
 .ingredientRow {
@@ -151,23 +163,23 @@
 
 /* Estilos para el botón de eliminar */
 .deleteButton {
+  align-items: center;
   background-color: #ffe0e0;
+  border-radius: 50%;
   border: none;
   color: var(--danger);
   cursor: pointer;
   display: flex;
-  align-items: center;
+  height: 2.2rem;
   justify-content: center;
   transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   width: 2.2rem; 
-  height: 2.2rem;
-  border-radius: 50%;
 }
 
 .deleteButton:hover {
-  transform: scale(1.1);
   background-color: #f5baba;
   color: #a94442;
+  transform: scale(1.1);
 }
 
 .deleteButton svg {
@@ -175,7 +187,6 @@
   height: 1.2rem;
   
 }
-
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
