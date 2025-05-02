@@ -38,29 +38,44 @@ export const RecipeForm = () => {
   const [ingredientLimitReached, setIngredientLimitReached] = useState(false);
 
   const handleAddIngredient = () => {
-    const selectedProductIds = ingredients
-      .map((i) => i.productId)
-      .filter(Boolean);
-  
-    console.log('Productos seleccionados:', selectedProductIds.length); // Ver cuántos productos han sido seleccionados
-  
-    if (selectedProductIds.length >= productOptions.length) {
-      console.log('Límite de productos alcanzado, no puedes agregar más ingredientes.');
-      setIngredientLimitReached(true); // Esto debería activar el mensaje y deshabilitar el botón
-      return;
-    }
-  
-    console.log('Agregando ingrediente...');
-    setIngredientLimitReached(false); // Reseteamos cuando se agrega un nuevo ingrediente
     setIngredients((prev) => [
       ...prev,
       { id: crypto.randomUUID(), quantity: 0, unit: "", productId: "" },
     ]);
   };
-  // DEBUGGING
+  
+  const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   useEffect(() => {
-    console.log('ingredientLimitReached', ingredientLimitReached);
-  }, [ingredientLimitReached]);
+    const selectedProductIds = ingredients
+      .map((i) => i.productId)
+      .filter(Boolean); // Solo los que han sido seleccionados
+  
+    const uniqueSelected = new Set(selectedProductIds);
+  
+    setIngredientLimitReached(uniqueSelected.size >= productOptions.length);
+  }, [ingredients, productOptions.length]);
+
+  const handleChangeIngredient = (id: string, field: string, value: string) => {
+    const updatedIngredients = ingredients.map((ingredient) =>
+      ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
+    );
+  
+    // Si el campo modificado es el "productId", hacemos la validación
+    if (field === "productId") {
+      const selectedProductIds = updatedIngredients
+        .map((i) => i.productId)
+        .filter(Boolean); // Eliminamos los valores vacíos o nulos
+  
+      // Verificar si se excedió el número de productos disponibles
+      if (selectedProductIds.length >= productOptions.length) {
+        setIngredientLimitReached(true);
+      } else {
+        setIngredientLimitReached(false);
+      }
+    }
+  
+    setIngredients(updatedIngredients);
+  };
 
   const handleRemoveIngredient = (id: string) => {
     const updatedIngredients = ingredients.filter((ingredient) => ingredient.id !== id);
@@ -75,15 +90,6 @@ export const RecipeForm = () => {
       setIngredientLimitReached(false); // Habilitar el botón de agregar
     }
   
-    setIngredients(updatedIngredients);
-  };
-  
-
-  const handleChangeIngredient = (id: string, field: string, value: string) => {
-    const updatedIngredients = ingredients.map((ingredient) =>
-      ingredient.id === id ? { ...ingredient, [field]: value } : ingredient
-    );
-
     setIngredients(updatedIngredients);
   };
 
@@ -156,8 +162,7 @@ export const RecipeForm = () => {
   };
 
   const [successMessage, setSuccessMessage] = useState("");
-  const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
-
+ 
   useEffect(() => {
     // Get products from inventory
     const fetchProducts = async () => {
