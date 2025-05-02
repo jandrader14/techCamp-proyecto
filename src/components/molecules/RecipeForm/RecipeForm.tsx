@@ -20,7 +20,7 @@ interface Ingredient {
 interface RecipeFormProps {
   image: string | null;
   name: string;
-  ingredients: string;
+  ingredients: Ingredient[];
   preparation: string;
   portions: string;
 }
@@ -28,12 +28,14 @@ interface RecipeFormProps {
 export const RecipeForm = () => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [formData, setFormData] = useState<RecipeFormProps>({
-    image: null,
+    image: null as string | null,
     name: "",
-    ingredients: "",
+    ingredients: [],
     preparation: "",
     portions: "",
   });
+
+  
 
   const [ingredientLimitReached, setIngredientLimitReached] = useState(false);
 
@@ -121,47 +123,43 @@ export const RecipeForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formDataToSend = new FormData();
-    // Adicional: Manejo de ingredientes para enviarlos en el reques
-    formDataToSend.append("ingredients", JSON.stringify(ingredients));
-
-    for (const key in formData) {
-      const value = formData[key as keyof typeof formData];
-      if (value !== null) {
-        formDataToSend.append(key, value as string);
-      }
-    }
-
+  
+    const dataToSend = {
+      ...formData,
+      ingredients: ingredients.map((ingredient) => ({
+        productId: ingredient.productId,
+        quantity: ingredient.quantity,
+        unit: ingredient.unit,
+      })),
+    };
+  
     try {
-      const endpoint = "http://localhost:5000/api/recipes";
-      console.log("📦 URL:", JSON.stringify(endpoint)); // Para ver si tiene \n
-      const response = await axios.post(endpoint, formData);
-
-      console.log("📦 URL enviada:", "http://localhost:5000/api/recipes");
-
+      const response = await axios.post("http://localhost:5000/api/recipes", dataToSend, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
       console.log("Receta registrada con éxito:", response.data);
       setSuccessMessage("✅ Receta guardada correctamente");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 4000);
-
+      setTimeout(() => setSuccessMessage(""), 4000);
+  
       setFormData({
-        image: null,
-        name: "",
-        ingredients: "",
-        preparation: "",
-        portions: "",
+        image: '',
+        name: '',
+        ingredients: [],
+        preparation: '',
+        portions: '',
       });
-      setIngredients([]); // Limpiar ingredientes después de enviar
+      setIngredients([]);
     } catch (error) {
       console.error("Error al registrar la receta:", error);
     }
   };
+  
 
   const handleImageChange = (image: string | null) => {
     setFormData((prev) => ({ ...prev, image }));
   };
+  
 
   const [successMessage, setSuccessMessage] = useState("");
 

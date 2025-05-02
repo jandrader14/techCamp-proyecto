@@ -46,7 +46,6 @@ export function ProductForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-
     const formDataToSend = new FormData();
     
 
