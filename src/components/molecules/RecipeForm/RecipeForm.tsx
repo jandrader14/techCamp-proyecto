@@ -48,12 +48,14 @@ export const RecipeForm = () => {
 
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   useEffect(() => {
+    if (productOptions.length === 0) return; // No hacer nada si aún no se cargaron productos
+  
     const selectedProductIds = ingredients
       .map((i) => i.productId)
-      .filter(Boolean); // Solo los que han sido seleccionados
-
+      .filter(Boolean);
+  
     const uniqueSelected = new Set(selectedProductIds);
-
+  
     setIngredientLimitReached(uniqueSelected.size >= productOptions.length);
   }, [ingredients, productOptions.length]);
 
