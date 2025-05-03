@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { OpenAI } from 'openai';
 import axios from 'axios';
+import { extraerNombreReceta, extraerIngredientes, extraerPasos } from '../utils/openAI.helpers';
 
 // Configuración de la API de OpenAI
 const openai = new OpenAI({
@@ -12,11 +13,11 @@ const openai = new OpenAI({
 // Configuración de la API de Pixabay
 const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 
-// Definir los tipos de la respuesta
+// Tipo para la respuesta de receta
 interface RecipeResponse {
   ingredients: string[];
   steps: string[];
-  imageUrl: string; // Agregamos el campo para la URL de la imagen
+  imageUrl: string;
 }
 
 // Función para buscar una imagen en Pixabay
@@ -24,71 +25,58 @@ const obtenerImagenDeReceta = async (nombreReceta: string) => {
   const url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${nombreReceta}&image_type=photo&pretty=true`;
   try {
     const respuesta = await axios.get(url);
-    const imagen = respuesta.data.hits[0]; // Obtiene la primera imagen
-    return imagen ? imagen.webformatURL : null; // Devuelve la URL de la imagen
+    const imagen = respuesta.data.hits[0];
+    return imagen ? imagen.webformatURL : null;
   } catch (error) {
     console.error('Error al obtener la imagen:', error);
     return null;
   }
 };
 
-// Función para generar la receta y buscar la imagen
+// Función para generar la receta y buscar imagen
 export const generarRecetas = async (productos: string[]): Promise<RecipeResponse> => {
-  const prompt = `Tengo los siguientes productos: ${productos.join(', ')}. Sugiere una receta colombiana y creativa con ingredientes y pasos.`;
+  const prompt = `Tengo los siguientes productos: ${productos.join(', ')}.
 
-  // Realiza la solicitud a la API de OpenAI para generar la receta
+Con base en ellos, sugiere una receta colombiana y creativa.
+
+Devuélvela en el siguiente formato ESTRICTO:
+
+Nombre de la receta: [nombre]
+
+Ingredientes:
+- [ingrediente 1]
+- [ingrediente 2]
+- [ingrediente 3]
+
+Pasos de preparación:
+1. [Paso 1]
+2. [Paso 2]
+3. [Paso 3]
+
+Solo devuelve el texto exactamente en ese formato, sin explicaciones.`;
+
+
   const respuesta = await openai.chat.completions.create({
-    model: 'o4-mini', 
+    model: 'o4-mini',
     messages: [{ role: 'user', content: prompt }],
     temperature: 1.0,
   });
 
-  const content = respuesta.choices[0].message?.content;
+  const content = respuesta.choices[0].message?.content ?? '';
   console.log('Contenido de la receta:', content);
 
-  // Extraer el nombre de la receta desde el contenido (supuesto que la receta comienza con un nombre claro)
-  const nombreReceta = extraerNombreReceta(content ?? '');
+  const nombreReceta = extraerNombreReceta(content);
+  // Aquí extraemos los ingredientes y pasos de la respuesta de la IA
+  const ingredientes = extraerIngredientes(content); // Función que extrae ingredientes
+  const pasos = extraerPasos(content); // Función que extrae pasos
 
-  // Parsear la respuesta para obtener ingredientes y pasos
   const parsedReceta: RecipeResponse = {
-    ingredients: ['Ingrediente 1', 'Ingrediente 2'], // Aquí deberías parsear los ingredientes reales
-    steps: ['Paso 1', 'Paso 2'], // Aquí deberías parsear los pasos reales
-    imageUrl: '', // Lo llenaremos después con la URL de la imagen
+    ingredients: ingredientes,
+    steps: pasos,
+    imageUrl: '',
   };
 
-  // Buscar la imagen de la receta usando el nombre de la receta (extraído dinámicamente)
   parsedReceta.imageUrl = await obtenerImagenDeReceta(nombreReceta);
 
   return parsedReceta;
 };
-
-// Función para extraer el nombre de la receta del contenido de OpenAI
-const extraerNombreReceta = (content: string): string => {
-  if (!content) return 'Receta desconocida'; // Si content es null o vacío, devuelve un valor predeterminado.
-
-  const regex = /(?:Receta:|Nombre de la receta:)\s*([A-Za-z\s]+)/i;
-  const match = content.match(regex);
-  
-  if (match) {
-    return match[1].trim(); // Devuelve el nombre de la receta
-  }
-
-  // Si no encontramos una coincidencia, devolvemos un valor predeterminado
-  return 'Receta desconocida';
-};
-
-//-------------------------
-
-// Función principal para probar la funcionalidad
-// const main = async () => {
-//   try {
-//     const productos = ['pollo', 'tomate', 'papa', 'sal', 'agua']; // Lista de productos de ejemplo
-//     const receta = await generarRecetas(productos);
-//     console.log('Receta generada:', receta);
-//   } catch (error) {
-//     console.error('Error al generar la receta:', error);
-//   }
-// };
-
-// // Ejecutar la función principal
-// main();

@@ -33,9 +33,11 @@ export class Server{
     this.app.get('/', (req, res) => {
       res.json({ message: 'Welcome to the API, Johanna' });      
     });
+    console.log("Cargando rutas...");
     this.app.use('/api/users', routes.UserRoute);
     this.app.use('/api/products', routes.ProductRoute);
     this.app.use('/api/recipes', routes.RecipeRoute);
+    this.app.use('/api/recipes/suggest', routes.RecetasIARoutes);
   }
 
   listen(){
