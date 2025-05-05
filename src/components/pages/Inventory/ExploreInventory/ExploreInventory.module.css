@@ -1,38 +1,131 @@
+.bannerTopPage {
+  width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.bannerTopPage img {
+  max-width: 100%; /* La imagen no excederá el ancho del contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+  display: block; /* Elimina el espacio en blanco debajo de la imagen */
+}
+
+.categoryMainContainer{
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.categoryContent{
+  position: relative;
+}
+
+.filter_list{
+  display: flex;
+  flex-wrap:wrap;
+  overflow-x: scroll;
+  width:100;
+  list-style:none;
+  gap:0.5rem;
+  padding: 0 1rem;
+}
+
+.categoryContainer .filter_list .itemCategory a{
+  align-items: center;
+  background-color: var(--primary);
+  border-radius: 50px;
+  color: #fff;
+  cursor: pointer;
+  display:flex;
+  font-weight: 400;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  white-space: wrap;
+  width: 100%;
+}
+
+.titleSection{
+  font-weight: 800;
+  font-size: 1.375rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.categoryContainer{
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.categoryContainer>.container{
+  padding: 0;
+}
+
+.categoryContent{
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  background-color: transparent;
+
+}
+
 .container {
-    padding: 2rem;
+  padding: 2rem;
+  max-width: 100%; /* Asegura que el contenido no exceda el ancho del contenedor padre */
+  box-sizing: border-box; /* Incluye padding en el ancho total */
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+.categorySection {
+  margin-bottom: 3rem;
+}
+
+.categoryTitle {
+  color: var(--primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+}
+
+.carousel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto; /* Permite el scroll horizontal solo dentro del carrusel */
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  max-width: 100%; /* Asegura que el carrusel no exceda el ancho del contenedor */
+  box-sizing: border-box; /* Incluye padding en el ancho total */
+}
+
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.carousel > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  max-width: 100%; /* Asegura que los elementos no excedan el ancho del carrusel */
+}
+
+@media (max-width: 768px) {
+  .bannerTopPage img {
+    max-width: 100%; /* Asegura que la imagen se ajuste al ancho del contenedor */
+    height: auto; /* Mantiene la proporción */
   }
-  
-  .categorySection {
-    margin-bottom: 3rem;
-  }
-  
-  .categoryTitle {
-    color: var(--primary);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    text-transform: capitalize;
-  }
-  
   .carousel {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-    scroll-snap-type: x mandatory;
+    gap: 0.5rem; /* Reduce el espacio entre elementos */
   }
-  
-  .carousel::-webkit-scrollbar {
-    height: 8px;
+
+  .container {
+    padding: 1rem; /* Reduce el padding en pantallas pequeñas */
   }
+
   
-  .carousel::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-  }
-  
-  .carousel > * {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-  }
-  
+}

@@ -48,7 +48,6 @@ export function ExploreInventory() {
     setShowEmptyModal(true);
   };
 
-
   const handleSaveProduct = async (updatedProduct: Product) => {
     console.log("😎handleSaveProduct llamado con:", updatedProduct);
     try {
@@ -58,11 +57,13 @@ export function ExploreInventory() {
         updatedProduct
       );
       console.log("Respuesta del servidor:", response); // Llamamos a la API para actualizar el producto
-  
+
       // Actualizamos el producto en el estado de productos
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
-          product._id === updatedProduct._id ? { ...product, ...updatedProduct } : product
+          product._id === updatedProduct._id
+            ? { ...product, ...updatedProduct }
+            : product
         )
       );
       setShowModal(false); // Cerrar el modal después de guardar los cambios
@@ -70,7 +71,6 @@ export function ExploreInventory() {
       console.error("Error al actualizar el producto:", error);
     }
   };
-  
 
   const handleDeleteProduct = async (productId: string) => {
     try {
@@ -102,35 +102,88 @@ export function ExploreInventory() {
   }
 
   return (
-    <div className={styles.container}>
-      {Object.entries(groupedByCategory).map(([category, items]) => (
-        <section key={category} className={styles.categorySection}>
-          <h2 className={styles.categoryTitle}>
-            {formatCategoryTitle(category)}
-          </h2>
-          <div className={styles.carousel}>
-            {items.map((product) => (
-              <ProductCard
-                key={product._id}
-                {...product}
-                expiryDate={product.expiryDate}
-                onEdit={() => handleEditProduct(product)}
-                onDelete={() => handleDeleteProduct(product._id)}
-                onSave={handleSaveProduct}
-                
-              />
-            ))}
-            {/* Mostrar el modal si está habilitado */}
-            {showModal && selectedProduct && (
-              <EditProductModal
-                product={selectedProduct}
-                onSave={handleSaveProduct}
-                onClose={() => setShowModal(false)}   
-              />
-            )}
+    <>
+      <section className={styles.bannerTopPage}>
+        <picture>
+          <source
+            media="(max-width: 768px)"
+            srcSet="https://res.cloudinary.com/dcgcixisy/image/upload/v1746463169/header-all-categories-mobile.jpg"
+          />
+          <img
+            src="https://res.cloudinary.com/dcgcixisy/image/upload/v1746463169/header-all-categories-desktop_0.jpg_tomd96.webp"
+            alt="Categorías"
+          />
+        </picture>
+      </section>
+
+      <section>
+        <div className={styles.categoryMainContainer}>
+          <h1 className={styles.titleSection}>¡Conoce tus productos!</h1>
+          <div className={styles.categoryContainer}>
+            <div className={styles.categoryContent}>
+              <ul className={styles.filter_list}>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Todas</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Frutas</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Verduras</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Granos y Pastas</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Carnes, Pollo y Pescado</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Lácteos y Huevos</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Aceites, Sal, Endulzantes</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Pan, Arepas, Galletas</a>
+                </li>
+                <li className={styles.itemCategory}>
+                  <a href="http://">Café, Té, Chocolate</a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </section>
-      ))}
-    </div>
+        </div>
+      </section>
+
+      <div className={styles.container}>
+        {Object.entries(groupedByCategory).map(([category, items]) => (
+          <section key={category} className={styles.categorySection}>
+            <h2 className={styles.categoryTitle}>
+              {formatCategoryTitle(category)}
+            </h2>
+            <div className={styles.carousel}>
+              {items.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  {...product}
+                  expiryDate={product.expiryDate}
+                  onEdit={() => handleEditProduct(product)}
+                  onDelete={() => handleDeleteProduct(product._id)}
+                  onSave={handleSaveProduct}
+                />
+              ))}
+              {/* Mostrar el modal si está habilitado */}
+              {showModal && selectedProduct && (
+                <EditProductModal
+                  product={selectedProduct}
+                  onSave={handleSaveProduct}
+                  onClose={() => setShowModal(false)}
+                />
+              )}
+            </div>
+          </section>
+        ))}
+      </div>
+    </>
   );
 }
