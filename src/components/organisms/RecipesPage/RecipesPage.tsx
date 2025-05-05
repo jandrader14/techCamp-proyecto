@@ -57,6 +57,20 @@ export function RecipesPage() {
           buttonLabel="Ver recetas"
           onClick={() => handleCardClick("Ver recetas")}
         />
+        <SectionCard
+          imageSrc="https://res.cloudinary.com/dcgcixisy/image/upload/v1746453571/ChatGPT_Image_May_5_2025_08_58_21_AM_xt5va2.png"
+          title="Recetas recomendadas"
+          description="Maximiza tus ingredientes. La IA te presenta recetas recomendadas, creadas a partir de lo que ya tienes en tu inventario."
+          buttonLabel="Saber más"
+          onClick={() => handleCardClick("Ver recetas IA")}
+        />
+        <SectionCard
+          imageSrc="https://res.cloudinary.com/dcgcixisy/image/upload/balanza_a576kd.png"
+          title="Unidades y Equivalencias"
+          description="Consulta nuestra guía de unidades de medida y equivalencias para cocinar con precisión."
+          buttonLabel="Ver unidades"
+          onClick={() => handleCardClick("Unidades")}
+        />
       </div>
 
       {isModalOpen && (

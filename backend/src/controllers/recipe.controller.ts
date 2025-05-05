@@ -13,10 +13,10 @@ export const recipeController = {
         }
     },
     create: async (req: Request, res: Response) => {
-        const { name, image, portions, preparation, ingredients } = req.body;
+        const { name, image, portions, category, preparation, ingredients } = req.body;
 
         try {
-            const newRecipe = await recipeService.createRecipe(name, image, portions, preparation, ingredients); // Llamamos al service
+            const newRecipe = await recipeService.createRecipe(name, image, portions, category, preparation, ingredients); // Llamamos al service
             res.status(201).json(newRecipe); // Respondemos con la receta creada
         } catch (error) {
             res.status(500).json({

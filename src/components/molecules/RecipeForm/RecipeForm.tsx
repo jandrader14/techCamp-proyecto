@@ -21,6 +21,7 @@ interface RecipeFormProps {
   image: string | null;
   name: string;
   ingredients: Ingredient[];
+  category: string;
   preparation: string;
   portions: string;
 }
@@ -31,11 +32,10 @@ export const RecipeForm = () => {
     image: null as string | null,
     name: "",
     ingredients: [],
+    category: "",
     preparation: "",
     portions: "",
   });
-
-  
 
   const [ingredientLimitReached, setIngredientLimitReached] = useState(false);
 
@@ -49,13 +49,13 @@ export const RecipeForm = () => {
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   useEffect(() => {
     if (productOptions.length === 0) return; // No hacer nada si aún no se cargaron productos
-  
+
     const selectedProductIds = ingredients
       .map((i) => i.productId)
       .filter(Boolean);
-  
+
     const uniqueSelected = new Set(selectedProductIds);
-  
+
     setIngredientLimitReached(uniqueSelected.size >= productOptions.length);
   }, [ingredients, productOptions.length]);
 
@@ -125,7 +125,7 @@ export const RecipeForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const dataToSend = {
       ...formData,
       ingredients: ingredients.map((ingredient) => ({
@@ -134,34 +134,37 @@ export const RecipeForm = () => {
         unit: ingredient.unit,
       })),
     };
-  
+
     try {
-      const response = await axios.post("http://localhost:5000/api/recipes", dataToSend, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
+      const response = await axios.post(
+        "http://localhost:5000/api/recipes",
+        dataToSend,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
       console.log("Receta registrada con éxito:", response.data);
       setSuccessMessage("✅ Receta guardada correctamente");
       setTimeout(() => setSuccessMessage(""), 4000);
-  
+
       setFormData({
-        image: '',
-        name: '',
+        image: "",
+        name: "",
         ingredients: [],
-        preparation: '',
-        portions: '',
+        category: "",
+        preparation: "",
+        portions: "",
       });
       setIngredients([]);
     } catch (error) {
       console.error("Error al registrar la receta:", error);
     }
   };
-  
 
   const handleImageChange = (image: string | null) => {
     setFormData((prev) => ({ ...prev, image }));
   };
-  
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -203,6 +206,21 @@ export const RecipeForm = () => {
         onChange={handleChange}
         placeholder="Ejm: 4 porciones"
         required
+      />
+
+      <FormField
+        label="🥣 Categoría"
+        name="category"
+        type="select"
+        value={formData.category}
+        onChange={handleChange}
+        required
+        options={[
+          { value: "entradas", label: "Entradas" },
+          { value: "platos fuertes", label: "Platos Fuertes" },
+          { value: "postres", label: "Postres" },
+          { value: "sopas y salsas", label: "Sopas y Salsas" },
+        ]}
       />
 
       <div className={styles.recipe_form__ingredients}>

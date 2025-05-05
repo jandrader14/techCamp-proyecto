@@ -1,20 +1,25 @@
 .card {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between; 
-  flex: 1 1 calc(50% - 20px); /* Dos tarjetas por fila con espacio entre ellas */
-  max-width: calc(50% - 20px); /* Asegura que no excedan el ancho */
-  min-width: 250px;
-  height: auto; 
-  gap: 1rem;
-  padding: 1.5rem;
   background-color: #fafafa;
   border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 calc(50% - 20px); /* Dos tarjetas por fila con espacio entre ellas */
+  gap: 1rem;
+  height: auto; 
+  justify-content: space-between; 
+  max-width: calc(50% - 20px); /* Asegura que no excedan el ancho */
+  min-width: 250px;
   overflow: hidden;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Mueve la tarjeta hacia arriba 5px */
+  background-color: #FFFFF0; /* Cambia el color de fondo al pasar el mouse */
 }
 
 .imageWrapper {

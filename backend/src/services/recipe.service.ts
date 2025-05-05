@@ -9,10 +9,11 @@ export const recipeService = {
     name: string,
     image: string,
     portions: string,
+    category: string,
     preparation: string,
     ingredients: { productId: string; quantity: number; unit: string }[]
   ) => {
-    if (!name || !image || !portions || !preparation || ingredients.length === 0) {
+    if (!name || !image || !portions || !category || !preparation || ingredients.length === 0) {
       throw new Error("Todos los campos son obligatorios");
     }
   
@@ -26,6 +27,7 @@ export const recipeService = {
       name,
       image,
       portions,
+      category,
       preparation,
       ingredients: formattedIngredients,
     });
