@@ -112,12 +112,13 @@ export function ProductForm() {
 
       <FormField
         label="🔢 Cantidad"
+        min={1}
         name="quantity"
+        onChange={handleChange}
+        placeholder="Ej: 10"
+        required
         type="number"
         value={formData.quantity}
-        onChange={handleChange}
-        min={1}
-        required
       />
 
       <FormField
@@ -128,11 +129,14 @@ export function ProductForm() {
         onChange={handleChange}
         required
         options={[
-          { value: "frutas", label: "Frutas" },
-          { value: "verduras", label: "Verduras" },
-          { value: "granos", label: "Granos" },
-          { value: "carnes-pollo-pescado", label: "Carne, Pollo y Pescado" },
-          { value: "lácteos-huevos", label: "Lácteos y Huevos" },
+          { value: "frutas", label: "🍇 Frutas" },
+          { value: "verduras", label: "🫑 Verduras" },
+          { value: "granos", label: "🫘 Granos" },
+          { value: "carnes-pollo-pescado", label: " 🥩 Carne, Pollo y Pescado" },
+          { value: "lácteos-huevos", label: "🐮 Lácteos y 🐔 Huevos" },
+          { value: "aceites-sal", label: "🧂 Aceites, Sal, Endulzantes" },
+          { value: "pan-arepas-galletas", label: "🍞 Pan, Arepas, Galletas" },
+          { value: "cafe-chocolate", label: "☕ Café, Té, Chocolate" },
         ]}
       />
 
