@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import { productApi } from "../../../../services/products.api";
 import { Product } from "../../../../types/product";
-import { ProductCard } from "../../../molecules/ProductCard/ProductCard";
 import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
+import { ProductsListTable } from "../../../organisms/ProductsListTable/ProductsListTable";
 import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";
 import styles from "./ExploreInventory.module.css";
 
-function formatCategoryTitle(category: string): string {
-  return category
-    .split("-")
-    .map((word, index, arr) => {
-      // Capitaliza la primera letra de cada palabra
-      word = word.charAt(0).toUpperCase() + word.slice(1);
-      // Si no es la última palabra, agrega la coma
-      if (index < arr.length - 1) {
-        word += ", ";
-      }
-      return word;
-    })
-    .join("");
-}
+// function formatCategoryTitle(category: string): string {
+//   return category
+//     .split("-")
+//     .map((word, index, arr) => {
+//       // Capitaliza la primera letra de cada palabra
+//       word = word.charAt(0).toUpperCase() + word.slice(1);
+//       // Si no es la última palabra, agrega la coma
+//       if (index < arr.length - 1) {
+//         word += ", ";
+//       }
+//       return word;
+//     })
+//     .join("");
+// }
 
 export function ExploreInventory() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -123,67 +123,49 @@ export function ExploreInventory() {
             <div className={styles.categoryContent}>
               <ul className={styles.filter_list}>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Todas</a>
+                  <a href="#">Todas</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Frutas</a>
+                  <a href="#">Frutas y Verduras</a>
+                </li>
+
+                <li className={styles.itemCategory}>
+                  <a href="#">Granos y Pastas</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Verduras</a>
+                  <a href="#">Carnes, Pollo y Pescado</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Granos y Pastas</a>
+                  <a href="#">Lácteos y Huevos</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Carnes, Pollo y Pescado</a>
+                  <a href="#">Aceites, Sal, Endulzantes</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Lácteos y Huevos</a>
+                  <a href="#">Pan, Arepas, Galletas</a>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="http://">Aceites, Sal, Endulzantes</a>
-                </li>
-                <li className={styles.itemCategory}>
-                  <a href="http://">Pan, Arepas, Galletas</a>
-                </li>
-                <li className={styles.itemCategory}>
-                  <a href="http://">Café, Té, Chocolate</a>
+                  <a href="3">Café, Té, Chocolate</a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </section>
+      <ProductsListTable
+        products={Object.values(groupedByCategory).flat()}
+        onEdit={(product) => handleEditProduct(product)}
+        onDelete={(id) => handleDeleteProduct(id)}
+      />
 
-      <div className={styles.container}>
-        {Object.entries(groupedByCategory).map(([category, items]) => (
-          <section key={category} className={styles.categorySection}>
-            <h2 className={styles.categoryTitle}>
-              {formatCategoryTitle(category)}
-            </h2>
-            <div className={styles.carousel}>
-              {items.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  {...product}
-                  expiryDate={product.expiryDate}
-                  onEdit={() => handleEditProduct(product)}
-                  onDelete={() => handleDeleteProduct(product._id)}
-                  onSave={handleSaveProduct}
-                />
-              ))}
-              {/* Mostrar el modal si está habilitado */}
-              {showModal && selectedProduct && (
-                <EditProductModal
-                  product={selectedProduct}
-                  onSave={handleSaveProduct}
-                  onClose={() => setShowModal(false)}
-                />
-              )}
-            </div>
-          </section>
-        ))}
-      </div>
+      {/* Mostrar el modal si está habilitado */}
+      {showModal && selectedProduct && (
+        <EditProductModal
+          product={selectedProduct}
+          onSave={handleSaveProduct}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </>
   );
 }
