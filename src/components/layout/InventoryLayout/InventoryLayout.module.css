@@ -16,7 +16,7 @@
   flex: 1;
   overflow-y: auto; /* Mantiene el scroll vertical */
   overflow-x: hidden; /* Evita el scroll horizontal */
-  background-color: #f8f8f8;
+  background-color: white;
   max-width: 100%; /* Asegura que el contenido no exceda el ancho del contenedor */
   box-sizing: border-box; /* Incluye padding y border en el ancho total */
 }
