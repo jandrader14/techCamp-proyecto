@@ -129,14 +129,13 @@ export function ProductForm() {
         onChange={handleChange}
         required
         options={[
-          { value: "frutas", label: "🍇 Frutas" },
-          { value: "verduras", label: "🫑 Verduras" },
-          { value: "granos", label: "🫘 Granos" },
-          { value: "carnes-pollo-pescado", label: " 🥩 Carne, Pollo y Pescado" },
-          { value: "lácteos-huevos", label: "🐮 Lácteos y 🐔 Huevos" },
-          { value: "aceites-sal", label: "🧂 Aceites, Sal, Endulzantes" },
-          { value: "pan-arepas-galletas", label: "🍞 Pan, Arepas, Galletas" },
-          { value: "cafe-chocolate", label: "☕ Café, Té, Chocolate" },
+          { value: "Frutas y Verduras", label: "🍇 Frutas y 🫑 Verduras" },
+          { value: "Granos", label: "🫘 Granos" },
+          { value: "Carnes, Pollo y Pescado", label: " 🥩 Carne, Pollo y Pescado" },
+          { value: "Lácteos y Huevos", label: "🐮 Lácteos y 🐔 Huevos" },
+          { value: "Aceites, Sal, Endulzantes", label: "🧂 Aceites, Sal, Endulzantes" },
+          { value: "Pan, Arepas, Galletas", label: "🍞 Pan, Arepas, Galletas" },
+          { value: "Café, Té, Chocolate", label: "☕ Café, Té, Chocolate" },
         ]}
       />
 
