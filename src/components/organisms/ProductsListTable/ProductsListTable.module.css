@@ -1,0 +1,125 @@
+.container {
+  align-items: center;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.headerRow {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select {
+  border-color: var(--primary);
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.exportButton {
+  align-items: center;
+  background-color: var(--button-background);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+}
+
+.exportButton:hover {
+  background-color: var(--button-background-hover);
+  color: #fff;
+}
+/*----------------------------------*/
+.tableContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  padding: 0 1rem;
+  width: 100%;
+  margin-left: 1rem;
+  max-width: calc(100% - 2rem);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  color: var(--primary);
+  font-family: var(--font-family);
+  font-weight: bold;
+  padding: 1rem;
+  text-transform: capitalize;
+}
+
+.table td {
+  border-bottom: 1px solid #e5e7eb;
+  font-family: var(--font-family-body);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.productImage {
+  border-radius: 6px;
+  height: 40px;
+  object-fit: cover;
+  width: 40px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.editButton,
+.deleteButton {
+  align-items: center;
+  background: transparent;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 6px;
+  transition: background 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: rgba(76, 175, 80, 0.1); /* verde suave */
+}
+
+.deleteButton:hover {
+  background-color: rgba(244, 67, 54, 0.1); /* rojo suave */
+}
+
+/* Opcional: colores base del ícono */
+.editButton svg {
+  color: #4caf50;
+}
+
+.deleteButton svg {
+  color: #f44336;
+}
