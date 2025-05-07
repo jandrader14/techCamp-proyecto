@@ -9,6 +9,12 @@ export const productApi = {
     return response.data;
   },
 
+  createProduct: async (newProduct: Omit<Product, "_id" | "__v">) => {
+    const response = await axios.post(ProdEndpoint, newProduct);
+    console.log("Producto creado ✈️:", response.data);
+    return response.data;
+  },
+
   updateProduct: async (productId: string, updatedProduct: Product) =>{
     const response = await axios.patch(`${ProdEndpoint}/${productId}`, updatedProduct);
     return response.data;
