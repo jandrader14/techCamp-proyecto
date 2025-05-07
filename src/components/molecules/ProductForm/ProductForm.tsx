@@ -7,7 +7,11 @@ import { ImageUploader } from "../../molecules/ImageUploader/ImageUploader";
 import { Product } from "../../../types/product";
 import styles from "./ProductForm.module.css";
 
-export function ProductForm() {
+interface ProductFormProps {
+  onSubmit: (product: Omit<Product, "_id" | "__v">) => void;
+}
+
+export function ProductForm({ onSubmit}: ProductFormProps) {
   const [formData, setFormData] = useState<
     Omit<Product, "_id" | "__v"> & { image: string | null }
   >({
@@ -23,28 +27,10 @@ export function ProductForm() {
     alerts: false,
   });
   const [successMessage, setSuccessMessage] = useState("");
-
-  const handleChange = async (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, type, value } = e.target;
-
-    if (type === "checkbox" && e.target instanceof HTMLInputElement) {
-      const newValue = e.target.checked;
-      setFormData((prev) => ({ ...prev, [name]: newValue }));
-    } else if (type === "number") {
-      const numberValue = parseFloat(value);
-      if ((name === "price" || name === "quantity" ) && numberValue < 0) return; // Evita precios negativos
-      setFormData((prev) => ({ ...prev, [name]: numberValue }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    onSubmit(formData);
     
     const formDataToSend = new FormData();
     
@@ -91,13 +77,32 @@ export function ProductForm() {
     }
   };
 
+  const handleChange = async (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, type, value } = e.target;
+
+    if (type === "checkbox" && e.target instanceof HTMLInputElement) {
+      const newValue = e.target.checked;
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
+    } else if (type === "number") {
+      const numberValue = parseFloat(value);
+      if ((name === "price" || name === "quantity" ) && numberValue < 0) return; // Evita precios negativos
+      setFormData((prev) => ({ ...prev, [name]: numberValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   const handleImageChange = (image: string | null) => {
     setFormData((prev) => ({ ...prev, image }));
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>Registrar producto</h2>
+      <h2 className={styles.title}>Agregar producto</h2>
 
       <ImageUploader value={formData.image} onChange={handleImageChange} />
 
@@ -204,7 +209,7 @@ export function ProductForm() {
       {successMessage && (
         <p className={styles.successMessage}>{successMessage}</p>
       )}
-      <Button type="submit" text="Registrar producto" className={styles.form__button} />
+      <Button type="submit" text="Registrar producto" className={styles.form__button}  />
     </form>
   );
 }
