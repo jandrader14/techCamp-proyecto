@@ -26,6 +26,16 @@ export const ProductsListTable: React.FC<ProductsListTableProps> = ({
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const formatDate = (isoDateString: string | null | undefined) => {
+    if (!isoDateString) return 'N/A';
+    const date = new Date(isoDateString);
+    return date.toLocaleDateString('es-CO', { // 'es-CO' para la configuración regional colombiana
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  };
+
   const handleExport = () => {
     alert("Exportar productos aún no implementado");
   };
@@ -85,8 +95,8 @@ export const ProductsListTable: React.FC<ProductsListTableProps> = ({
                     <td>{product.category || "N/A"}</td>
                     <td>{product.quantity ?? "0"}</td>
                     <td>{product.unit || "N/A"}</td>
-                    <td>{product.entryDate}</td>
-                    <td>{product.expiryDate}</td>
+                    <td>{formatDate(product.entryDate)}</td>
+                    <td>{formatDate(product.expiryDate)}</td>
                     <td>
                       <div className={styles.actions}>
                         <Button
