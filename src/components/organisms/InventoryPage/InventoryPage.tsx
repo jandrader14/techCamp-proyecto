@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import  { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Product } from '../../../types/product';
+import { useNavigate, useOutletContext } from 'react-router-dom'; // Importa useOutletContext
 import { FormModal } from '../FormModal/FormModal';
 import { ProductForm } from '../../molecules/ProductForm/ProductForm';
 import { SectionCard } from '../../molecules/SectionCard/SectionCard';
 import styles from './InventoryPage.module.css';
-import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal'; // Este es el modal amigable
+import { EmptyInventoryModal } from '../../molecules/EmptyInventoryModal/EmptyInventoryModal';
+
+interface InventoryContext {
+  products: Product[];
+  fetchProducts: () => Promise<void>;
+  onAddProduct: (newProduct: Omit<Product, "_id" | "__v">) => Promise<void>;
+}
 
 export function InventoryPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showEmptyInventoryModal, setEmptyInventoryModal] = useState(false);
   const navigate = useNavigate();
+  const { onAddProduct } = useOutletContext<InventoryContext>(); // Accede a la función del context
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const handleCardClick = async (cardName: string) => {
     if (cardName === 'Registrar producto') {
@@ -21,7 +32,7 @@ export function InventoryPage() {
       try {
         const response = await axios.get('http://localhost:5000/api/products'); // Ajusta la URL a la de tu API
         const products = response.data;
-        console.log(response.data)
+        console.log(response.data);
 
         if (products.length === 0) {
           setEmptyInventoryModal(true);
@@ -33,9 +44,6 @@ export function InventoryPage() {
       }
     }
   };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className={styles.inventoryPage}>
@@ -76,7 +84,7 @@ export function InventoryPage() {
 
       {isModalOpen && (
         <FormModal onClose={closeModal}>
-          <ProductForm />
+          <ProductForm onSubmit={onAddProduct} /> {/* Usa la función del context */}
         </FormModal>
       )}
       {showEmptyInventoryModal && <EmptyInventoryModal onClose={() => setEmptyInventoryModal(false)} />}

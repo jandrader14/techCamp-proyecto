@@ -1,105 +1,53 @@
-import { useEffect, useState } from "react";
-import { productApi } from "../../../../services/products.api";
+import { useState } from "react";
+import { useOutletContext } from "react-router-dom"; 
 import { Product } from "../../../../types/product";
-import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
+//import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
 import { ProductsListTable } from "../../../organisms/ProductsListTable/ProductsListTable";
 import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";
 import styles from "./ExploreInventory.module.css";
+import { productApi } from "../../../../services/products.api";
 
-// function formatCategoryTitle(category: string): string {
-//   return category
-//     .split("-")
-//     .map((word, index, arr) => {
-//       // Capitaliza la primera letra de cada palabra
-//       word = word.charAt(0).toUpperCase() + word.slice(1);
-//       // Si no es la última palabra, agrega la coma
-//       if (index < arr.length - 1) {
-//         word += ", ";
-//       }
-//       return word;
-//     })
-//     .join("");
-// }
+interface InventoryContext {
+  products: Product[];
+  fetchProducts: () => Promise<void>;
+  onAddProduct: (newProduct: Omit<Product, "_id" | "__v">) => Promise<void>;
+  onUpdateProduct: (updatedProduct: Product) => Promise<void>;
+}
 
 export function ExploreInventory() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showEmptyModal, setShowEmptyModal] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const { products, fetchProducts, onAddProduct, onUpdateProduct } = useOutletContext<InventoryContext>(); // Accede a los datos del context
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await productApi.getAll();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await productApi.deleteProduct(productId);
+      await fetchProducts(); // Recarga la lista después de eliminar
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+      // Aquí podrías mostrar un mensaje de error al usuario
+    }
+  };
 
   const handleEditProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setShowEmptyModal(true);
+    setSelectedProduct(product); // Establece el producto seleccionado
+    setShowModal(true); // Muestra el modal
   };
 
   const handleSaveProduct = async (updatedProduct: Product) => {
-    console.log("😎handleSaveProduct llamado con:", updatedProduct);
     try {
-      console.log("Guardando producto:", updatedProduct); // Verifica los datos antes de enviarlos
-      const response = await productApi.updateProduct(
-        updatedProduct._id,
-        updatedProduct
-      );
-      console.log("Respuesta del servidor:", response); // Llamamos a la API para actualizar el producto
-
-      // Actualizamos el producto en el estado de productos
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product._id === updatedProduct._id
-            ? { ...product, ...updatedProduct }
-            : product
-        )
-      );
-      setShowModal(false); // Cerrar el modal después de guardar los cambios
+      await onUpdateProduct(updatedProduct); // Llama a la función del context
+      setShowModal(false);
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
     }
   };
 
-  const handleDeleteProduct = async (productId: string) => {
-    try {
-      await productApi.deleteProduct(productId);
-      const updatedProducts = products.filter(
-        (product) => product._id !== productId
-      );
-      setProducts(updatedProducts); // ¡Esto refresca la vista!
-    } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-    }
-  };
-
-  const groupedByCategory = products.reduce(
-    (prodGroup: { [key: string]: Product[] }, product) => {
-      if (product.category) {
-        // Ensure category is defined
-        if (!prodGroup[product.category]) prodGroup[product.category] = [];
-        prodGroup[product.category].push(product);
-      }
-      return prodGroup;
-    },
-    {}
-  );
-
-  if (loading) return <p>Cargando productos...</p>;
-  if (products.length === 0 && showEmptyModal) {
-    return <EmptyInventoryModal onClose={() => setShowEmptyModal(false)} />;
-  }
+  const filteredProducts =
+    selectedCategory === "Todas"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
 
   return (
     <>
@@ -123,39 +71,75 @@ export function ExploreInventory() {
             <div className={styles.categoryContent}>
               <ul className={styles.filter_list}>
                 <li className={styles.itemCategory}>
-                  <a href="#">Todas</a>
+                  <button onClick={() => setSelectedCategory("Todas")}>
+                    Todas
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="#">Frutas y Verduras</a>
+                  <button
+                    onClick={() => setSelectedCategory("Frutas y Verduras")}
+                  >
+                    Frutas y Verduras
+                  </button>
                 </li>
 
                 <li className={styles.itemCategory}>
-                  <a href="#">Granos y Pastas</a>
+                  <button
+                    onClick={() => setSelectedCategory("Granos y Pastas")}
+                  >
+                    Granos y Pastas
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="#">Carnes, Pollo y Pescado</a>
+                  <button
+                    onClick={() =>
+                      setSelectedCategory("Carnes, Pollo y Pescado")
+                    }
+                  >
+                    Carnes, Pollo y Pescado
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="#">Lácteos y Huevos</a>
+                  <button
+                    onClick={() => setSelectedCategory("Lácteos y Huevos")}
+                  >
+                    Lácteos y Huevos
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="#">Aceites, Sal, Endulzantes</a>
+                  <button
+                    onClick={() =>
+                      setSelectedCategory("Aceites, Sal, Endulzantes")
+                    }
+                  >
+                    Aceites, Sal, Endulzantes
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="#">Pan, Arepas, Galletas</a>
+                  <button
+                    onClick={() => setSelectedCategory("Pan, Arepas, Galletas")}
+                  >
+                    Pan, Arepas, Galletas
+                  </button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <a href="3">Café, Té, Chocolate</a>
+                  <button
+                    onClick={() => setSelectedCategory("Café, Té, Chocolate")}
+                  >
+                    Café, Té, Chocolate
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </section>
+
       <ProductsListTable
-        products={Object.values(groupedByCategory).flat()}
-        onEdit={(product) => handleEditProduct(product)}
-        onDelete={(id) => handleDeleteProduct(id)}
+        products={filteredProducts}
+        onEdit={handleEditProduct}
+        onDelete={handleDeleteProduct}
+        onAddProduct={onAddProduct} // Pasa la función al ProductsListTable
       />
 
       {/* Mostrar el modal si está habilitado */}

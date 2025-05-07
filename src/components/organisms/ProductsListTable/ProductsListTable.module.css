@@ -29,6 +29,24 @@
   border-radius: 6px;
   border: 1px solid #d1d5db;
 }
+.addButton{
+  align-items: center;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+}
+
+.addButton:hover{
+  background-color: #5A7A1D;
+  color: #fff;
+}
 
 .exportButton {
   align-items: center;

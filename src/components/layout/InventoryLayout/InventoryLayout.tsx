@@ -1,10 +1,17 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarNav } from "../../organisms/SidebarNav/SidebarNav";
 import { Header } from "../../organisms/Header/Header";
 import { productApi } from "../../../services/products.api"; // Importa tu servicio de API
 import { Product } from "../../../types/product"; // Importa tu tipo de Product
 import styles from "./InventoryLayout.module.css";
+
+interface InventoryContext {
+  products: Product[];
+  fetchProducts: () => Promise<void>;
+  onAddProduct: (newProduct: Omit<Product, "_id" | "__v">) => Promise<void>;
+  onUpdateProduct: (updatedProduct: Product) => Promise<void>; // Añadimos onUpdateProduct a la interfaz
+}
 
 export function InventoryLayout() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,6 +43,15 @@ export function InventoryLayout() {
     }
   };
 
+  const handleUpdateProduct = async (updatedProduct: Product) => {
+    try {
+      await productApi.updateProduct(updatedProduct._id, updatedProduct);
+      await fetchProducts(); // Recarga la lista después de la actualización
+    } catch (error) {
+      console.error("Error al actualizar el producto:", error);
+    }
+  };
+
   return (
     <div className={styles.inventoryContainer}>
       <SidebarNav />
@@ -47,11 +63,14 @@ export function InventoryLayout() {
               <p>Cargando productos...</p>
             ) : (
               <Outlet
-                context={{
-                  products: products,
-                  fetchProducts: fetchProducts,
-                  onAddProduct: handleAddNewProduct,
-                }}
+                context={
+                  {
+                    products: products,
+                    fetchProducts: fetchProducts,
+                    onAddProduct: handleAddNewProduct,
+                    onUpdateProduct: handleUpdateProduct,
+                  } as InventoryContext
+                }
               />
             )}
           </div>
