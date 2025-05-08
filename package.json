@@ -14,6 +14,7 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.13.5",
     "@tailwindcss/vite": "^4.0.17",
     "arg": "^5.0.2",
     "axios": "^1.8.4",

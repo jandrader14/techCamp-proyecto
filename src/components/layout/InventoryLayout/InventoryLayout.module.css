@@ -20,3 +20,14 @@
   max-width: 100%; /* Asegura que el contenido no exceda el ancho del contenedor */
   box-sizing: border-box; /* Incluye padding y border en el ancho total */
 }
+
+.loaderContainer {
+  display: flex;
+  flex-direction: column; /* Coloca el texto debajo del GIF */
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la pantalla */
+  background-color: white; /* Fondo blanco */
+  overflow: hidden;
+}
+

@@ -4,6 +4,7 @@ import { SidebarNav } from "../../organisms/SidebarNav/SidebarNav";
 import { Header } from "../../organisms/Header/Header";
 import { productApi } from "../../../services/products.api"; // Importa tu servicio de API
 import { Product } from "../../../types/product"; // Importa tu tipo de Product
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import styles from "./InventoryLayout.module.css";
 
 interface InventoryContext {
@@ -24,7 +25,7 @@ export function InventoryLayout() {
     } catch (error) {
       console.error("Error al obtener productos:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 4000);
     }
   };
 
@@ -60,7 +61,13 @@ export function InventoryLayout() {
         <main className={styles.mainSection}>
           <div className={styles.mainContent}>
             {loading ? (
-              <p>Cargando productos...</p>
+              <div className={styles.loaderContainer}>
+                <DotLottieReact
+                  src="https://lottie.host/66534f5d-de93-4a82-844b-75619edda472/1LTVmxJQ4e.lottie"
+                  loop
+                  autoplay
+                />
+              </div>
             ) : (
               <Outlet
                 context={
