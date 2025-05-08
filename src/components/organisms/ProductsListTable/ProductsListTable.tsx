@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
-
+import { autoTable  } from 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
 import { Product } from "../../../types/product";
 import { Button } from "../../atoms/Button/Button";
 import { FormModal } from "../FormModal/FormModal";
@@ -14,6 +14,7 @@ interface ProductsListTableProps {
   onDelete: (productId: string) => void;
   onAddProduct: (newProduct: Omit<Product, "_id" | "__v">) => Promise<void>;
 }
+
 
 export const ProductsListTable: React.FC<ProductsListTableProps> = ({
   products,
@@ -36,9 +37,39 @@ export const ProductsListTable: React.FC<ProductsListTableProps> = ({
     });
   };
 
+
   const handleExport = () => {
-    alert("Exportar productos aún no implementado");
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Inventario de productos", 14, 20);
+  
+    const tableColumn = [
+      "Nombre",
+      "Categoría",
+      "Cantidad",
+      "Unidad",
+      "Fecha de ingreso",
+      "Fecha de vencimiento",
+    ];
+  
+    const tableRows = products.map((product) => [
+      product.name,
+      product.category || "N/A",
+      product.quantity ?? "0",
+      product.unit || "N/A",
+      formatDate(product.entryDate) || "N/A",
+      formatDate(product.expiryDate) || "N/A",
+    ]);
+  
+    autoTable(doc, {
+      startY: 30,
+      head: [tableColumn],
+      body: tableRows,
+    });
+  
+    doc.save("Listado_productos.pdf");
   };
+  
 
   return (
     <>
@@ -70,7 +101,7 @@ export const ProductsListTable: React.FC<ProductsListTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {products.length === 0 ? ( // Usamos la prop 'products' directamente
+            {products.length === 0 ? ( 
               <tr>
                 <td colSpan={8}>No hay productos para mostrar</td>
               </tr>
