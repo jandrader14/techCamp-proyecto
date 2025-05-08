@@ -10,8 +10,8 @@ import styles from "./EditProductModal.module.css";
 
 interface EditProductModalProps {
   product: Product;
-  onClose: () => void;
   onSave: (updatedProduct: Product) => void;
+  onClose: () => void;
 }
 
 export function EditProductModal({
@@ -24,17 +24,19 @@ export function EditProductModal({
     quantity: product.quantity,
     expiryDate: product.expiryDate
       ? format(new Date(product.expiryDate), "yyyy-MM-dd")
-      : "", // Ensure expiryDate is a string
+      : "",
   });
 
   useEffect(() => {
-    setFormData({
-      name: product.name,
-      quantity: product.quantity,
-      expiryDate: product.expiryDate
-        ? format(new Date(product.expiryDate), "yyyy-MM-dd")
-        : "", // Ensure expiryDate is a string
-    });
+    if (product) {
+      setFormData({
+        name: product.name,
+        quantity: product.quantity,
+        expiryDate: product.expiryDate
+          ? format(new Date(product.expiryDate), "yyyy-MM-dd")
+          : "",
+      });
+    }
   }, [product]);
 
   const handleChange = (
@@ -46,49 +48,13 @@ export function EditProductModal({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+ // const [errorMessage, setErrorMessage] = useState("");
   const handleSave = () => {
-    try {
-      const selectedDateString = formData.expiryDate;
-
-      if (!selectedDateString) {
-        const updatedProduct: Product = { ...formData, _id: product._id };
-        onSave(updatedProduct);
-        return;
-      }
-
-      // Interpretamos la fecha seleccionada como si fuera UTC (sin ajuste de zona horaria)
-      const expiryDateLocal = new Date(selectedDateString);
-
-      if (isNaN(expiryDateLocal.getTime())) {
-        console.error("Fecha de vencimiento inválida:", formData.expiryDate);
-        return;
-      }
-
-      const updatedProduct: Product = {
-        ...formData,
-        expiryDate: expiryDateLocal.toISOString(), // Guarda en formato ISO 8601 UTC
-        _id: product._id,
-      };
-
-      onSave(updatedProduct);
-    } catch (error) {
-      console.error("Error al guardar el producto:", error);
-    }
-  };
-
-  const formatDateForInput = (
-    dateString: string | null | undefined
-  ): string => {
-    if (!dateString) {
-      return "";
-    }
-    try {
-      const utcDate = new Date(dateString); // Convert ISO string to Date
-      return format(utcDate, "yyyy-MM-dd"); // Format the date for the input
-    } catch (error) {
-      console.error("Error al formatear la fecha para el input:", error);
-      return "";
-    }
+    const updatedProduct: Product = {
+      ...formData,
+      _id: product._id,
+    };
+    onSave(updatedProduct);
   };
 
   return (
@@ -119,7 +85,7 @@ export function EditProductModal({
           label="Fecha de vencimiento"
           name="expiryDate"
           type="date"
-          value={formatDateForInput(formData.expiryDate)}
+          value={formData.expiryDate}
           onChange={handleChange}
           required
         />
@@ -128,6 +94,7 @@ export function EditProductModal({
           <Button type="button" text="Cancelar" onClick={onClose} className={styles.btnCancel}><Ban size={16} /></Button>
         </div>
       </div>
+      
     </div>
   );
 }

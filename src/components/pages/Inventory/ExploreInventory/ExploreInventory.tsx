@@ -4,6 +4,7 @@ import { Product } from "../../../../types/product";
 //import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
 import { ProductsListTable } from "../../../organisms/ProductsListTable/ProductsListTable";
 import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";
+import { Button } from "../../../atoms/Button/Button";
 import styles from "./ExploreInventory.module.css";
 import { productApi } from "../../../../services/products.api";
 
@@ -71,63 +72,73 @@ export function ExploreInventory() {
             <div className={styles.categoryContent}>
               <ul className={styles.filter_list}>
                 <li className={styles.itemCategory}>
-                  <button onClick={() => setSelectedCategory("Todas")}>
+                  <Button
+                  className={styles.buttonCategory}
+                   onClick={() => setSelectedCategory("Todas")}>
                     Todas
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  text="Frutas y Verduras"
+                  className={styles.buttonCategory}
                     onClick={() => setSelectedCategory("Frutas y Verduras")}
-                  >
-                    Frutas y Verduras
-                  </button>
+                  />
+                    
+                  
                 </li>
 
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() => setSelectedCategory("Granos y Pastas")}
                   >
                     Granos y Pastas
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() =>
                       setSelectedCategory("Carnes, Pollo y Pescado")
                     }
                   >
                     Carnes, Pollo y Pescado
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() => setSelectedCategory("Lácteos y Huevos")}
                   >
                     Lácteos y Huevos
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() =>
                       setSelectedCategory("Aceites, Sal, Endulzantes")
                     }
                   >
                     Aceites, Sal, Endulzantes
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() => setSelectedCategory("Pan, Arepas, Galletas")}
                   >
                     Pan, Arepas, Galletas
-                  </button>
+                  </Button>
                 </li>
                 <li className={styles.itemCategory}>
-                  <button
+                  <Button
+                  className={styles.buttonCategory}
                     onClick={() => setSelectedCategory("Café, Té, Chocolate")}
                   >
                     Café, Té, Chocolate
-                  </button>
+                  </Button>
                 </li>
               </ul>
             </div>
