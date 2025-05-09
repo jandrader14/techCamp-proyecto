@@ -58,21 +58,46 @@ body{
 }
 
 .forgotPassword a {
-  margin: 0; /* Remove default margins */
-  text-align: center; /* Align text to the center */
+  margin: 0; 
+  text-align: center; 
 }
 
 .register {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end; /* Align the div to the right */
-  align-items: center; /* Ensure vertical alignment */
+  justify-content: flex-end;
+  align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 
 .register p,
 .register a {
-  margin: 0; /* Remove default margins */
-  text-align: right; /* Align text to the right */
+  margin: 0;
+  text-align: right; 
+  text-decoration: none;
+  color: 'inherit';
+}
+.register a:visited {
+  color: inherit;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--button-background);
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: var(--button-background-hover);
+  color: white;
+  cursor: pointer;
 }

@@ -89,6 +89,7 @@ export const RegisterForm: React.FC = () => {
         text={loading ? "Registrando..." : "Registrarse"}
         type="submit"
         disabled={loading}
+        className={styles.button}
       />
       {error && <p className={styles.error}>{error}</p>}
       {successMessage && <p className={styles.success}>{successMessage}</p>}

@@ -10,7 +10,7 @@ body{
     justify-content: start;
     align-content: center;
     gap: 0.5rem;
-    background-color: var(--white);
+    background-color: var(--background);
     width: 100%;
     max-width: 40rem; /* Controla el ancho máximo del formulario */
     padding: 3rem 2.5rem;
@@ -69,3 +69,27 @@ body{
     text-align: right;
     text-decoration: none;
   }
+
+  .loginRedirect:visited {
+    color: var(--text);
+  }
+
+  .button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--button-background);
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: var(--button-background-hover);
+  color: white;
+  cursor: pointer;
+}

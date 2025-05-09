@@ -75,6 +75,7 @@ export const LoginForm: React.FC = () => {
         text={loading ? "Cargando..." : "Ingresar"}
         type="submit"
         disabled={loading}
+        className={styles.button}
       />
       {error && <p className={styles.error}>{error}</p>}{" "}
       {/* Mostrar mensaje de error */}
