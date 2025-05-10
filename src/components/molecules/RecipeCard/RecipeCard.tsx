@@ -1,16 +1,18 @@
 import styles from "./RecipeCard.module.css";
 //import axios from "axios";
+import { Button } from "../../atoms/Button/Button";
 import { Search } from "lucide-react";
 
 interface RecipeCardProps {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   image: string;
+  onViewDetails: () => void;
   className?: string;
 }
 
-export function RecipeCard({ id, title, description, image, className }: RecipeCardProps) {
+export const RecipeCard: React.FC<RecipeCardProps> = ({  title, description, image, onViewDetails, className }) => {
   return (
     <div className={`${styles.card} ${className || ""}`}>
       <img src={image} alt={title} className={styles.image} />
@@ -20,9 +22,9 @@ export function RecipeCard({ id, title, description, image, className }: RecipeC
         <p className={styles.description}>{description}</p>
 
         <div className={styles.buttons}>
-          <button className={styles.iconButton}>
+          <Button className={styles.iconButton} onClick={onViewDetails}>
             <Search size={18} />
-          </button>
+          </Button>
         </div>
       </div>
     </div>

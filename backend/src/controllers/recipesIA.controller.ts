@@ -5,9 +5,7 @@ import { productsService } from '../services/products.service';
 export const recipesIAController = {
   generarDesdeInventario: async (req: Request, res: Response) => {
     try {
-      //Get products from the inventory
-      const productos = await productsService.getAll(); // ← usamos el service directo aquí
-      console.log("Productos del inventario:", productos);
+      const productos = await productsService.getAll();
 
       if (!productos || productos.length === 0) {
         return res.status(404).json({ error: 'No se encontraron productos en el inventario' });
@@ -15,12 +13,24 @@ export const recipesIAController = {
 
       const nombres = productos.map(p => p.name).filter((nombre): nombre is string => !!nombre);
 
-      const receta = await generarRecetas(nombres);
+      const recetas = await Promise.all(
+        Array.from({ length: 5 }).map(() => generarRecetas(nombres)) // Generar 5 recetas
+      );
 
-      res.status(200).json(receta);
+      // Adaptamos la respuesta para que la propiedad del título sea 'title'
+      const recetasFormateadas = recetas.map(receta => ({
+        _id: `ia-${Date.now()}-${Math.random()}`, // Genera un ID temporal en el backend
+        title: receta.nombre, // Usamos 'nombre' de la respuesta de la IA como 'title'
+        description: receta.pasos ? receta.pasos.slice(0, 1).join('') + '...' : 'Descripción generada por IA.', // Tomamos el primer paso como descripción breve
+        image: receta.imageUrl || "src/assets/img/placeholder.png", // Usa la URL de la imagen
+        ingredients: receta.ingredientes,
+        steps: receta.pasos,
+      }));
+
+      res.status(200).json({ recetas: recetasFormateadas });
     } catch (error) {
-      console.error('Error al generar la receta con IA:', error);
-      res.status(500).json({ error: 'No se pudo generar la receta con IA' });
+      console.error('Error al generar las recetas con IA:', error);
+      res.status(500).json({ error: 'No se pudieron generar recetas con IA' });
     }
   }
 };

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { OpenAI } from 'openai';
 import axios from 'axios';
-import { extraerNombreReceta, extraerIngredientes, extraerPasos } from '../utils/openAI.helpers';
+//import { extraerNombreReceta, extraerIngredientes, extraerPasos } from '../utils/openAI.helpers';
 
 // Configuración de la API de OpenAI
 const openai = new OpenAI({
@@ -15,9 +15,10 @@ const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 
 // Tipo para la respuesta de receta
 interface RecipeResponse {
-  ingredients: string[];
-  steps: string[];
-  imageUrl: string;
+  nombre: string;
+  ingredientes: string[];
+  pasos: string[];
+  imageUrl: string | null;
 }
 
 // Función para buscar una imagen en Pixabay
@@ -35,48 +36,53 @@ const obtenerImagenDeReceta = async (nombreReceta: string) => {
 
 // Función para generar la receta y buscar imagen
 export const generarRecetas = async (productos: string[]): Promise<RecipeResponse> => {
+  console.log('Generando receta para los productos:', productos);
   const prompt = `Tengo los siguientes productos: ${productos.join(', ')}.
 
-Con base en ellos, sugiere una receta colombiana y creativa.
+Sugiere una receta colombiana y creativa.
 
-Devuélvela en el siguiente formato ESTRICTO:
+Responde de la siguiente manera:
 
-Nombre de la receta: [nombre]
+{"nombre": "[Nombre de la receta]", "ingredientes": ["...", "..."], "pasos": ["...", "..."]}
 
-Ingredientes:
-- [ingrediente 1]
-- [ingrediente 2]
-- [ingrediente 3]
+Solo devuelve un objeto JSON válido, sin texto adicional.`;
 
-Pasos de preparación:
-1. [Paso 1]
-2. [Paso 2]
-3. [Paso 3]
+  try {
+    const respuesta = await openai.chat.completions.create({
+      model: 'gpt-4.1-mini',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 1.0,
+    });
 
-Solo devuelve el texto exactamente en ese formato, sin explicaciones.`;
+    const content = respuesta.choices[0].message?.content ?? '';
+    console.log('Respuesta JSON de la IA:', content); // Para ver la respuesta JSON
 
+    // Intentamos parsear la respuesta JSON
+    const recetaAI = JSON.parse(content) as { nombre: string; ingredientes: string[]; pasos: string[] };
+    const imageUrl = await obtenerImagenDeReceta(recetaAI.nombre);
 
-  const respuesta = await openai.chat.completions.create({
-    model: 'o4-mini',
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 1.0,
-  });
+    const parsedReceta: RecipeResponse = {
+      nombre: recetaAI.nombre,
+      ingredientes: recetaAI.ingredientes,
+      pasos: recetaAI.pasos,
+      imageUrl: imageUrl,
+    };
 
-  const content = respuesta.choices[0].message?.content ?? '';
-  console.log('Contenido de la receta:', content);
+    return parsedReceta;
 
-  const nombreReceta = extraerNombreReceta(content);
-  // Aquí extraemos los ingredientes y pasos de la respuesta de la IA
-  const ingredientes = extraerIngredientes(content); // Función que extrae ingredientes
-  const pasos = extraerPasos(content); // Función que extrae pasos
-
-  const parsedReceta: RecipeResponse = {
-    ingredients: ingredientes,
-    steps: pasos,
-    imageUrl: '',
-  };
-
-  parsedReceta.imageUrl = await obtenerImagenDeReceta(nombreReceta);
-
-  return parsedReceta;
+  } catch (error) {
+    console.error('Error al generar o parsear la receta con IA:', error);
+    // En caso de error, podrías devolver un objeto con valores por defecto o lanzar el error
+    return {
+      nombre: 'Error al generar receta',
+      ingredientes: [],
+      pasos: [],
+      imageUrl: null,
+    };
+  }
 };
+
+ // parsedReceta.imageUrl = await obtenerImagenDeReceta(nombreReceta);
+
+ // return parsedReceta;
+
