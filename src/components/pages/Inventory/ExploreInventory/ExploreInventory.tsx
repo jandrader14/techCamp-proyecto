@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom"; 
+import { useOutletContext } from "react-router-dom";
 import { Product } from "../../../../types/product";
 //import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
 import { ProductsListTable } from "../../../organisms/ProductsListTable/ProductsListTable";
 import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";
-import { Button } from "../../../atoms/Button/Button";
+import { CategoryFilter } from "../../../molecules/CategoryFilter/CategoryFilter";
+
 import styles from "./ExploreInventory.module.css";
 import { productApi } from "../../../../services/products.api";
 
@@ -16,7 +17,8 @@ interface InventoryContext {
 }
 
 export function ExploreInventory() {
-  const { products, fetchProducts, onAddProduct, onUpdateProduct } = useOutletContext<InventoryContext>(); // Accede a los datos del context
+  const { products, fetchProducts, onAddProduct, onUpdateProduct } =
+    useOutletContext<InventoryContext>(); // Accede a los datos del context
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
@@ -45,6 +47,22 @@ export function ExploreInventory() {
     }
   };
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    console.log(`Categoría seleccionada en ExploreInventory: ${category}`);
+  };
+
+  const categoryOptionsForExplore = [
+    { label: "Todas", value: "Todas" },
+    { label: "Frutas y Verduras", value: "Frutas y Verduras" },
+    { label: "Granos y Pastas", value: "Granos y Pastas" },
+    { label: "Carnes, Pollo y Pescado", value: "Carnes, Pollo y Pescado" },
+    { label: "Lácteos y Huevos", value: "Lácteos y Huevos" },
+    { label: "Aceites, Sal, Endulzantes", value: "Aceites, Sal, Endulzantes" },
+    { label: "Pan, Arepas, Galletas", value: "Pan, Arepas, Galletas" },
+    { label: "Café, Té, Chocolate", value: "Café, Té, Chocolate" },
+  ];
+
   const filteredProducts =
     selectedCategory === "Todas"
       ? products
@@ -65,86 +83,13 @@ export function ExploreInventory() {
         </picture>
       </section>
 
-      <section>
-        <div className={styles.categoryMainContainer}>
-          <h1 className={styles.titleSection}>¡Conoce tus productos!</h1>
-          <div className={styles.categoryContainer}>
-            <div className={styles.categoryContent}>
-              <ul className={styles.filter_list}>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                   onClick={() => setSelectedCategory("Todas")}>
-                    Todas
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  text="Frutas y Verduras"
-                  className={styles.buttonCategory}
-                    onClick={() => setSelectedCategory("Frutas y Verduras")}
-                  />
-                    
-                  
-                </li>
-
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() => setSelectedCategory("Granos y Pastas")}
-                  >
-                    Granos y Pastas
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() =>
-                      setSelectedCategory("Carnes, Pollo y Pescado")
-                    }
-                  >
-                    Carnes, Pollo y Pescado
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() => setSelectedCategory("Lácteos y Huevos")}
-                  >
-                    Lácteos y Huevos
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() =>
-                      setSelectedCategory("Aceites, Sal, Endulzantes")
-                    }
-                  >
-                    Aceites, Sal, Endulzantes
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() => setSelectedCategory("Pan, Arepas, Galletas")}
-                  >
-                    Pan, Arepas, Galletas
-                  </Button>
-                </li>
-                <li className={styles.itemCategory}>
-                  <Button
-                  className={styles.buttonCategory}
-                    onClick={() => setSelectedCategory("Café, Té, Chocolate")}
-                  >
-                    Café, Té, Chocolate
-                  </Button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className={styles.exploreInventoryContainer}>
+        <CategoryFilter
+          title="¡Conoce tus productos!"
+          categories={categoryOptionsForExplore}
+          onCategoryChange={handleCategoryChange}
+        />
+      </div>
 
       <ProductsListTable
         products={filteredProducts}
