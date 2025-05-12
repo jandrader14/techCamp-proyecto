@@ -13,22 +13,31 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
   }
 
   return (
-    <div>
-      <h3>{recipe.title}</h3>
-      <img src={recipe.image} alt={recipe.title}  className={styles.recipeImg} style={{ maxWidth: '100%', height: 'auto' }} />
-      <h4>Ingredientes:</h4>
-      <ul>
-        {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-      <h4>Preparación:</h4>
-      <ol>
-        {recipe.steps && recipe.steps.map((step, index) => (
-          <li key={index}>{step}</li>
-        ))}
-      </ol>
-      {/* Puedes agregar más detalles aquí */}
+    <div className={styles.recipeDetail}>
+      <h3 className={styles.title}>{recipe.title}</h3>
+      <img
+        src={recipe.image}
+        alt={recipe.title}
+        className={styles.recipeImg}
+      />
+
+      <section className={styles.section}>
+        <h4 className={styles.subtitle}>Ingredientes:</h4>
+        <ul className={styles.list}>
+          {recipe.ingredients?.map((ingredient, index) => (
+            <li key={index}>{ingredient}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.section}>
+        <h4 className={styles.subtitle}>Preparación:</h4>
+        <ol className={styles.list}>
+          {recipe.steps?.map((step, index) => (
+            <li key={index}>{step}</li>
+          ))}
+        </ol>
+      </section>
     </div>
   );
 };
