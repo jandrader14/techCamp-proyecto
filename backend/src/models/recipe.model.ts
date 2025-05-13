@@ -2,7 +2,7 @@
 import { Schema, Document, model } from 'mongoose';
 
 interface IIngredient {
-  product: string; // ID del producto (referencia a tu inventario)
+  product: string;
   quantity: number;
   unit: string;
 }
