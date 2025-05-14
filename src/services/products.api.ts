@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Product } from "../types/product"
+import { Product } from "../../shared/types/product";
 
 const ProdEndpoint = "http://localhost:5000/api/products";
 

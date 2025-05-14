@@ -11,6 +11,8 @@ import { Inventory } from "../components/pages/Inventory/Inventory";
 import { ExploreInventory } from "../components/pages/Inventory/ExploreInventory/ExploreInventory";
 import { RecipesLayout } from "../components/layout/RecipesLayout/RecipesLayout";
 import { Recipes } from "../components/pages/Recipes/Recipes";
+import { MyRecipes } from "../components/pages/Recipes/MyRecipes/MyRecipes";
+import { RecipesIA } from "../components/pages/Recipes/RecipesIA/RecipesIA";
 
 export const FormRoute: React.FC = () => {
   return (
@@ -31,6 +33,9 @@ export const FormRoute: React.FC = () => {
       </Route>
       <Route path="/recetas" element={<RecipesLayout />}>
         <Route index element={<Recipes />} />
+        <Route path="mis-recetas" element={<MyRecipes />} />
+        <Route path="recomendadas" element={<RecipesIA />} />
+       
       </Route>
     </Routes>
   );
