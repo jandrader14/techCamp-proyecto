@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../../atoms/Button/Button";
-import { Product } from "../../../types/product";
+import { Product } from "../../../../shared/types/product";
 import styles from "./ProductCard.module.css";
 import { Pencil, Trash2 } from "lucide-react";
 import { EditProductModal } from "../../molecules/EditProductModal/EditProductModal";

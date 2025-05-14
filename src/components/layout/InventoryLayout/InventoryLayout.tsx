@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { SidebarNav } from "../../organisms/SidebarNav/SidebarNav";
 import { Header } from "../../organisms/Header/Header";
 import { productApi } from "../../../services/products.api"; // Importa tu servicio de API
-import { Product } from "../../../types/product"; // Importa tu tipo de Product
+import { Product } from "../../../../shared/types/product"; // Importa tu tipo de Product
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import styles from "./InventoryLayout.module.css";
 
@@ -25,7 +25,7 @@ export function InventoryLayout() {
     } catch (error) {
       console.error("Error al obtener productos:", error);
     } finally {
-      setTimeout(() => setLoading(false), 4000);
+      setTimeout(() => setLoading(false), 2000);
     }
   };
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 
-import { Product } from "../../../types/product";
+import { Product } from "../../../../shared/types/product.ts";
 import FormField from "../../molecules/FormField/FormField.tsx";
 import { Button } from "../../atoms/Button/Button.tsx"
 import { Save, Ban } from "lucide-react";

@@ -10,15 +10,19 @@ interface RecipeCardProps {
   image: string;
   onViewDetails: () => void;
   className?: string;
+  maxTitleLength?: number;
 }
 
-export const RecipeCard: React.FC<RecipeCardProps> = ({  title, description, image, onViewDetails, className }) => {
+export const RecipeCard: React.FC<RecipeCardProps> = ({id,  title, description, image, onViewDetails, className, maxTitleLength }) => {
+  const shortTitle = maxTitleLength && title.length > maxTitleLength
+    ? title.substring(0, maxTitleLength) + "..."
+    : title;
   return (
     <div className={`${styles.card} ${className || ""}`}>
       <img src={image} alt={title} className={styles.image} />
 
       <div className={styles.content}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{shortTitle}</h3>
         <p className={styles.description}>{description}</p>
 
         <div className={styles.buttons}>

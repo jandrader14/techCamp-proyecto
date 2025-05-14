@@ -4,7 +4,7 @@ import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
 import { Button } from "../../atoms/Button/Button";
 import { ImageUploader } from "../../molecules/ImageUploader/ImageUploader";
-import { Product } from "../../../types/product";
+import { Product } from "../../../../shared/types/product";
 import styles from "./ProductForm.module.css";
 
 interface ProductFormProps {

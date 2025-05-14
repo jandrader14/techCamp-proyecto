@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import FormField from "../../molecules/FormField/FormField";
-import { Product } from "../../../types/product";
+import { Product } from "../../../../shared/types/product";
 import { ImageUploader } from "../..//molecules/ImageUploader/ImageUploader";
 import { Button } from "../../atoms/Button/Button";
 import { Plus, Trash2 } from "lucide-react";

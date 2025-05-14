@@ -1,6 +1,6 @@
 import  { useState } from 'react';
 import axios from 'axios';
-import { Product } from '../../../types/product';
+import { Product } from '../../../../shared/types/product';
 import { useNavigate, useOutletContext } from 'react-router-dom'; // Importa useOutletContext
 import { FormModal } from '../FormModal/FormModal';
 import { ProductForm } from '../../molecules/ProductForm/ProductForm';
@@ -60,7 +60,7 @@ export function InventoryPage() {
         />
         <SectionCard
           imageSrc="src/assets/mercado-cesta.png"
-          title="Explorar Inventario"
+          title="Explorar Inventario de productos"
           description="Accede a la lista de productos y realiza modificaciones en tiempo real."
           buttonLabel="Ver productos"
           onClick={() => handleCardClick('Ver Inventario')}

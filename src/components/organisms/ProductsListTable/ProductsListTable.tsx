@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { autoTable  } from 'jspdf-autotable';
 import { jsPDF } from 'jspdf';
-import { Product } from "../../../types/product";
+import { Product } from "../../../../shared/types/product";
 import { Button } from "../../atoms/Button/Button";
 import { FormModal } from "../FormModal/FormModal";
 import { ProductForm } from "../../molecules/ProductForm/ProductForm";

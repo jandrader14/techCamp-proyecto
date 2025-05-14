@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Product } from "../../../../types/product";
+import { Product } from "../../../../../shared/types/product";
 //import { EmptyInventoryModal } from "../../../molecules/EmptyInventoryModal/EmptyInventoryModal";
 import { ProductsListTable } from "../../../organisms/ProductsListTable/ProductsListTable";
 import { EditProductModal } from "../../../molecules/EditProductModal/EditProductModal";

@@ -19,14 +19,14 @@ export function RecipesPage() {
 
     if (cardName === "Ver recetas") {
       try {
-        const response = await axios.get("http://localhost:5000/api/recipes"); // Ajusta la URL a la de tu API
+        const response = await axios.get("http://localhost:5000/api/recipes");
         const products = response.data;
         console.log(response.data);
 
         if (products.length === 0) {
           setEmptyInventoryModal(true);
         } else {
-          navigate("/recetas/productos");
+          navigate("/recetas/mis-recetas");
         }
       } catch (error) {
         console.error("Error al obtener recetas:", error);
@@ -52,8 +52,8 @@ export function RecipesPage() {
         />
         <SectionCard
           imageSrc="src/assets/libro-de-cocina.png"
-          title="Explorar Inventario"
-          description="Consulta las recetas que hay en tu inventario ."
+          title="Visualiza tus recetas"
+          description="Consulta las recetas creadas en tu inventario."
           buttonLabel="Ver recetas"
           onClick={() => handleCardClick("Ver recetas")}
         />
