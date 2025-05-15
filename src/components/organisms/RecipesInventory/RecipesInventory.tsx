@@ -6,6 +6,7 @@ import { RecipeCard } from "../../molecules/RecipeCard/RecipeCard";
 import { ChevronRight } from "lucide-react";
 import { FormModal } from "../FormModal/FormModal";
 import { RecipeDetail } from "../../molecules/RecipeDetail/RecipeDetail";
+import { useModal } from "../../../hooks/useModal";
 
 interface Recipe {
   _id: string;
@@ -31,20 +32,9 @@ export function RecipeInventory() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen: isModalOpen, selectedItem: selectedRecipe, openModal: openRecipeModal, closeModal: closeRecipeModal } = useModal<Recipe>();
 
   const MAX_TITLE_LENGTH = 40;
-
-  const openRecipeModal = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setIsModalOpen(true);
-  };
-
-  const closeRecipeModal = () => {
-    setSelectedRecipe(null);
-    setIsModalOpen(false);
-  };
 
   useEffect(() => {
     const fetchIARecipes = async () => {
@@ -68,7 +58,7 @@ export function RecipeInventory() {
             steps: recipe.pasos || [],
           }));
           setRecipes(mappedRecipes);
-          console.log("Estado recipes después de setRecipes:", mappedRecipes); // <---- AGREGA ESTE LOG
+          console.log("Estado recipes después de setRecipes:", mappedRecipes);
         } else {
           setError("No se encontraron recetas en la respuesta.");
           setRecipes([]);
@@ -101,12 +91,12 @@ export function RecipeInventory() {
           <RecipeCard
             key={recipe._id}
             id={recipe._id}
-            title={recipe.title} // Pasamos el título completo
+            title={recipe.title}
             description={recipe.description}
             image={recipe.image}
             onViewDetails={() => openRecipeModal(recipe)}
             className={styles.recipeCard}
-            maxTitleLength={MAX_TITLE_LENGTH} // Pasamos la longitud máxima como prop
+            maxTitleLength={MAX_TITLE_LENGTH} 
           />
         ))}
         {recipes.length === 0 && !loading && !error && <p>No hay recetas recomendadas en este momento.</p>}
@@ -114,7 +104,7 @@ export function RecipeInventory() {
 
       {isModalOpen && selectedRecipe && (
         <FormModal onClose={closeRecipeModal}>
-          <RecipeDetail recipe={selectedRecipe} /> {/* El título en el detalle será completo */}
+          <RecipeDetail recipe={selectedRecipe} />
         </FormModal>
       )}
     </section>
