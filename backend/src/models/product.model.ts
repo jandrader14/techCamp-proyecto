@@ -17,5 +17,5 @@ const productSchema = new Schema({
   alerts: Boolean,
 });
 
-export const Product = model('Products', productSchema);
+export const Product = model('Product', productSchema);
 

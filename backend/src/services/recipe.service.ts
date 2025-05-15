@@ -3,7 +3,10 @@ import { Recipe } from "../models/recipe.model";
 
 export const recipeService = {
   getAllRecipes: async () => {
-    return await Recipe.find(); // Obtenemos todas las recetas de la base de datos
+    return await Recipe.find().populate({
+      path: 'ingredients.product',
+      select: 'name'
+    });
   },
   createRecipe: async (
     name: string,
