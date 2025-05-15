@@ -1,35 +1,47 @@
 .card {
-  background-color: var(--background);
+  background-color: #f4f1eb;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eae7dd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+  height: 350px;
+  justify-content: space-between;
+  max-height: 350px;
+  min-height: 350px;
   padding: 1rem;
   width: 100%;
+  flex: 0 0 280px;
+  max-width: 280px;
+}
+.card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
-.imageContainer { 
-  background-color: transparent;
+.imageContainer {
   width: 100%;
-  height: 200px; 
+  height: 180px;
   border-radius: 1rem;
   overflow: hidden;
   margin-bottom: 0.75rem;
 }
 
 .image {
-  display: block; 
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: space-between;
   flex-grow: 1;
+  gap: 0.5rem;
 }
 
 .title {
@@ -37,17 +49,26 @@
   font-weight: 600;
   color: var(--primary);
   text-align: left;
-}
-
-.description {
-  -webkit-box-orient: vertical;
-  color: var(--card-text);
-  display: -webkit-box;
-  font-size: 0.95rem;
-  font-weight: 450;
-  line-clamp: 3;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: var(--card-text);
+  margin-top: 0.25rem;
+}
+
+.badge {
+  background-color: #eee2c0;
+  color: #4a4035;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .buttons {
@@ -72,6 +93,5 @@
 
 .iconButton:hover {
   background-color: var(--icon-view);
-  color: var(--background);
   transform: scale(1.05);
 }
