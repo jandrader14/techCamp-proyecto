@@ -216,10 +216,10 @@ export const RecipeForm = () => {
         onChange={handleChange}
         required
         options={[
-          { value: "entradas", label: "Entradas" },
-          { value: "platos fuertes", label: "Platos Fuertes" },
-          { value: "postres", label: "Postres" },
-          { value: "sopas y salsas", label: "Sopas y Salsas" },
+          { value: "Entradas", label: "Entradas" },
+          { value: "Platos Fuertes", label: "Platos Fuertes" },
+          { value: "Postres", label: "Postres" },
+          { value: "Sopas y Salsas", label: "Sopas y Salsas" },
         ]}
       />
 
@@ -343,7 +343,7 @@ export const RecipeForm = () => {
 
       <Button
         type="submit"
-        text="Registrar producto"
+        text="Agregar receta"
         className={styles.recipe_form__button}
       />
     </form>
