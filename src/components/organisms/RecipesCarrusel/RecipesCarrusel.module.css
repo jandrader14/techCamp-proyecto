@@ -98,10 +98,86 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
+  width: calc(100% - 4rem); /* Ajusta el ancho del slide para que ocupe el contenedor menos el padding del slider */
 }
 
 .card {
-  width: 280px;
-  height: 350px;
-  flex-shrink: 0;
+  width: 100%; /* La tarjeta ocupa todo el ancho del slide en pantallas pequeñas */
+  height: auto; /* Ajusta la altura automáticamente según el contenido */
+  flex-shrink: 1; /* Permite que la tarjeta se encoja si es necesario */
+}
+
+/* Media query para pantallas muy pequeñas (móviles pequeños) */
+@media (max-width: 576px) {
+  .slider {
+    /* Mostrar solo 1 tarjeta */
+    max-width: calc(280px + 4rem);
+  }
+  .slide {
+    width: calc(100% - 4rem);
+  }
+}
+
+/* Media query para pantallas pequeñas (móviles más grandes) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .slider {
+    /* Mostrar 1 o 2 tarjetas dependiendo del ancho */
+    max-width: calc((2 * 280px) + (1 * 1.5rem) + 4rem);
+  }
+  .slide {
+    width: calc(50% - 2.75rem);
+  }
+}
+
+/* Media query para pantallas medianas (tablets) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .slider {
+    /* Mostrar 2 o 3 tarjetas */
+    max-width: calc((3 * 280px) + (2 * 1.5rem) + 4rem);
+  }
+  .slide {
+    width: calc(33.33% - 2.33rem);
+  }
+}
+
+/* Media query para pantallas grandes (desktops pequeños) */
+@media (min-width: 993px) and (max-width: 1200px) {
+  .slider {
+    /* Mostrar 3 o 4 tarjetas */
+    max-width: calc((3 * 280px) + (3 * 1.5rem) + 4rem);
+  }
+  .slide {
+    width: calc(25% - 1.9rem);
+  }
+}
+
+/* Media query para pantallas extra grandes (desktops grandes) */
+@media (min-width: 1201px) {
+  .slider {
+    max-width: calc((4 * 280px) + (1 * 1rem) + 4rem); /* Ajustado para 3 tarjetas */
+  }
+  .slide {
+    width: calc(33.33% - 2.33rem); /* Ajustado para ocupar 1/3 del ancho */
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1919px) {
+  .slider {
+    max-width: calc((4 * 280px) + (3 * 1.5rem) + 4rem); /* Ajuste para mostrar 4 tarjetas */
+  }
+  .slide {
+    width: calc(25% - 1.9rem); /* Ajuste para que quepan 4 tarjetas */
+  }
+}
+
+/* Media query para pantallas Full HD (1920px de ancho) */
+@media (min-width: 1920px) {
+  .slider {
+    /* Ajusta el max-width para mostrar más tarjetas en pantallas Full HD */
+    max-width: calc((5 * 280px) + (4 * 3rem) + 4rem); /* Ejemplo para mostrar 5 tarjetas */
+  }
+  .slide {
+    /* Ajusta el ancho del slide para que quepan más tarjetas */
+    width: calc(20% - 1.7rem); /* Ejemplo para que quepan 5 tarjetas */
+  }
 }
