@@ -1,5 +1,7 @@
+import { Product } from "./product";
+
 export interface Ingredient {
-    product: string; 
+    product: Product | null; 
     quantity: number;
     unit: string;
 }
