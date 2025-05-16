@@ -22,7 +22,24 @@ export const recipeController = {
             res.status(500).json({
                 message: "Error al crear la receta",
                 error: (error as Error).message, // ✅ muestra mensaje más claro
-              });
+            });
+        }
+    },
+    delete: async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        try {
+            const deleted = await recipeService.deleteRecipe(id);
+            if (!deleted) {
+                return res.status(404).json({ message: "Receta no encontrada" });
+            }
+
+            return res.status(200).json({ message: "Receta eliminada correctamente" });
+        } catch (error) {
+            res.status(500).json({
+                message: "Error al eliminar la receta",
+                error: (error as Error).message,
+            });
         }
     },
 };

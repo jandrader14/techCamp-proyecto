@@ -14,4 +14,8 @@ router.post('/', (req, res, next) => {
     recipeController.create(req, res).catch(next);
 });
 
+router.delete('/:id', (req, res, next) => {
+  recipeController.delete(req, res).catch(next);
+});
+
 export default router;

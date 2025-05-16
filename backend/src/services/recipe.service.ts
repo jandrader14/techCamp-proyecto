@@ -19,13 +19,13 @@ export const recipeService = {
     if (!name || !image || !portions || !category || !preparation || ingredients.length === 0) {
       throw new Error("Todos los campos son obligatorios");
     }
-  
+
     const formattedIngredients = ingredients.map((ing) => ({
       product: ing.productId,
       quantity: ing.quantity,
       unit: ing.unit,
     }));
-  
+
     const newRecipe = new Recipe({
       name,
       image,
@@ -34,11 +34,16 @@ export const recipeService = {
       preparation,
       ingredients: formattedIngredients,
     });
-  
+
     await newRecipe.save();
     return newRecipe;
+  },
+  deleteRecipe: async (id: string) => {
+    if (!id) throw new Error("ID requerido");
+
+    return await Recipe.findByIdAndDelete(id);
   }
-  
+
 
 }
 
