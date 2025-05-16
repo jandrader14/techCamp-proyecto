@@ -9,6 +9,10 @@ router.get('/', (req, res, next) => {
     recipeController.getAllRecipes(req, res).catch(next);
 });
 
+router.get('/:id', (req, res, next) => {
+  recipeController.getById(req, res).catch(next);
+});
+
 // Crear una nueva receta
 router.post('/', (req, res, next) => {
     recipeController.create(req, res).catch(next);

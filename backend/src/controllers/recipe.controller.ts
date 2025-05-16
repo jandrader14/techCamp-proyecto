@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import { recipeService } from "../services/recipe.service";
 
 
@@ -11,6 +12,21 @@ export const recipeController = {
         } catch (error) {
             res.status(500).json({ message: (error as Error).message });
         }
+    },
+    getById: async (req: Request, res: Response) => {
+        console.log("📥 Entrando a getById con ID:", req.params.id);
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID inválido" });
+        }
+
+        const recipe = await recipeService.getRecipeById(id);
+        if (!recipe) {
+            return res.status(404).json({ message: "Receta no encontrada" });
+        }
+
+        return res.status(200).json(recipe);
     },
     create: async (req: Request, res: Response) => {
         const { name, image, portions, category, preparation, ingredients } = req.body;

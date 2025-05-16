@@ -1,4 +1,6 @@
 import { Recipe } from "../models/recipe.model";
+import mongoose from "mongoose";
+
 
 
 export const recipeService = {
@@ -8,6 +10,12 @@ export const recipeService = {
       select: 'name'
     });
   },
+  getRecipeById: async (id: string) => {
+  return await Recipe.findOne({ _id: new mongoose.Types.ObjectId(id) }).populate({
+    path: 'ingredients.product',
+    select: 'name'
+  });
+},
   createRecipe: async (
     name: string,
     image: string,

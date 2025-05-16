@@ -76,7 +76,8 @@ export const MyRecipes: React.FC = () => {
         currentCategory={selectedCategory}
         onDeleteRecipe={(id) => {
           handleDeleteRecipe(id, setRecipes);
-          setShowToast(true); 
+          setShowModal(false);
+          setShowToast(true);
           setTimeout(() => setShowToast(false), 3000);
         }}
       />
@@ -92,9 +93,12 @@ export const MyRecipes: React.FC = () => {
         >
           <RecipeDetail
             recipe={selectedRecipe}
-            onDeleteRecipe={(recipeId: string) =>
-              handleDeleteRecipe(recipeId, setRecipes)
-            }
+            onDeleteRecipe={(recipeId: string) => {
+              handleDeleteRecipe(recipeId, setRecipes);
+              setShowModal(false); // 👈 aquí cierras el modal correctamente
+              setShowToast(true);
+              setTimeout(() => setShowToast(false), 3000);
+            }}
           />
         </FormModal>
       )}

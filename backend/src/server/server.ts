@@ -36,8 +36,9 @@ export class Server{
     console.log("Cargando rutas...");
     this.app.use('/api/users', routes.UserRoute);
     this.app.use('/api/products', routes.ProductRoute);
-    this.app.use('/api/recipes', routes.RecipeRoute);
     this.app.use('/api/recipes/suggest', routes.RecetasIARoutes);
+    this.app.use('/api/recipes', routes.RecipeRoute);
+    
   }
 
   listen(){
