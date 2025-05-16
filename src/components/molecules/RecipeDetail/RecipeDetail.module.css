@@ -15,11 +15,13 @@
 }
 
 .recipeImg {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
+  display: block;
+  width: 100%; /* O un ancho fijo, por ejemplo: 500px */
+  max-width: 500px;
+  height: auto; /* O una altura fija, por ejemplo: 300px */
+  max-height: 300px;
+  object-fit: contain;
+  margin: 0 auto 1rem;
 }
 
 .section {

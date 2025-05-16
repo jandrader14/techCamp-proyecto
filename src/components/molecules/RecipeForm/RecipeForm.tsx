@@ -277,6 +277,7 @@ export const RecipeForm = () => {
                   handleChangeIngredient(ingredient.id, "unit", e.target.value)
                 }
                 placeholder="Ej: kg, taza"
+                required
               />
             </div>
 
@@ -292,6 +293,7 @@ export const RecipeForm = () => {
                     e.target.value
                   )
                 }
+                required
               >
                 <option value="">Selecciona un producto</option>
                 {productOptions.map((product) => {
@@ -304,6 +306,7 @@ export const RecipeForm = () => {
                       key={product._id}
                       value={product._id}
                       disabled={isSelectedElsewhere}
+                      
                     >
                       {product.name}
                     </option>
@@ -333,10 +336,10 @@ export const RecipeForm = () => {
           required
           placeholder="Ej: 1. Precalentar el horno a 180°C. 2. Batir los huevos con el azúcar hasta que estén espumosos. 3. ..."
         />
-        <small className="form-text text-muted">
+        <span className="form-text text-muted">
           Describe la preparación en orden cronológico. Comienza cada paso con
           un número (1., 2., etc.) para mayor claridad
-        </small>
+        </span>
       </div>
 
       {successMessage && <p className={styles.success}>{successMessage}</p>}

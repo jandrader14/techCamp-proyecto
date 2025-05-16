@@ -6,15 +6,12 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   flex-shrink: 0;
   height: 350px;
-  justify-content: space-between;
-  max-height: 350px;
-  min-height: 350px;
-  padding: 1rem;
-  width: 100%;
-  flex: 0 0 280px;
+  width: 280px;
   max-width: 280px;
+  padding: 1rem;
 }
 .card:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);

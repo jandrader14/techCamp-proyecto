@@ -12,11 +12,13 @@ import styles from "./RecipesCarrusel.module.css";
 interface RecipesCarruselProps {
   recipes: Recipe[];
   currentCategory: string;
+  onDeleteRecipe: (id: string) => void;
 }
 
 export const RecipesCarrusel: React.FC<RecipesCarruselProps> = ({
   recipes,
   currentCategory,
+  onDeleteRecipe
 }) => {
   const {
     isOpen: isModalOpen,
@@ -75,7 +77,10 @@ export const RecipesCarrusel: React.FC<RecipesCarruselProps> = ({
 
       {isModalOpen && selectedRecipe && (
         <FormModal onClose={closeRecipeModal}>
-          <RecipeDetail recipe={selectedRecipe} />
+          <RecipeDetail
+            recipe={selectedRecipe}
+            onDeleteRecipe={onDeleteRecipe} // ✅ solucionado
+          />
         </FormModal>
       )}
     </div>

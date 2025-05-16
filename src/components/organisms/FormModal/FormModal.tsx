@@ -3,8 +3,10 @@ import styles from "./FormModal.module.css";
 import { X } from "lucide-react";
 
 interface Props {
+  isOpen?: boolean;
   onClose: () => void;
   children: React.ReactNode; // Para pasar cualquier componente como hijo
+  title?: string;
 }
 
 export function FormModal({ onClose, children }: Props) {

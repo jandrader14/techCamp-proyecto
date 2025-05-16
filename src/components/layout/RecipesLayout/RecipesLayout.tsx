@@ -20,11 +20,15 @@ export function RecipesLayout() {
   const [loading, setLoading] = useState(true);
 
   const fetchRecipes = async () => {
+    console.log("RecipesLayout: fetchRecipes ejecutado.");
     try {
       const data = await recipeApi.getAll();
       setRecipes(data);
+      console.log(
+        "RecipesLayout: Recetas obtenidas de la API y estado actualizado."
+      );
     } catch (error) {
-      console.error("Error al obtener recetas:", error);
+      console.error("RecipesLayout: Error al obtener recetas:", error);
     } finally {
       setTimeout(() => setLoading(false), 2000);
     }
@@ -34,16 +38,14 @@ export function RecipesLayout() {
     fetchRecipes();
   }, []);
 
-  const handleAddNewRecipe = async (
-      newRecipe: Omit<Recipe, "_id" | "__v">
-    ) => {
-      try {
-        await recipeApi.createRecipe(newRecipe);
-        await fetchRecipes(); // Recarga la lista después de agregar
-      } catch (error) {
-        console.error("Error al guardar la nueva receta:", error);
-      }
-    };
+  const handleAddNewRecipe = async (newRecipe: Omit<Recipe, "_id" | "__v">) => {
+    try {
+      await recipeApi.createRecipe(newRecipe);
+      await fetchRecipes(); // Recarga la lista después de agregar
+    } catch (error) {
+      console.error("Error al guardar la nueva receta:", error);
+    }
+  };
 
   const handleUpdateRecipe = async (updatedRecipe: Recipe) => {
     try {
