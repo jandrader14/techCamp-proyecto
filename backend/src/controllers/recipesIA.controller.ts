@@ -1,6 +1,8 @@
-import { Request, Response } from 'express';
-import { generarRecetas } from '../apis/openAI.service';
-import { productsService } from '../services/products.service';
+import { Request, Response } from "express";
+import { generarRecetas } from "../apis/openAI.service";
+import { productsService } from "../services/products.service";
+
+import { generarImagenParaReceta } from '../utils/generarImagenParaReceta';
 
 export const recipesIAController = {
   generarDesdeInventario: async (req: Request, res: Response) => {
@@ -8,13 +10,19 @@ export const recipesIAController = {
       const productos = await productsService.getAll();
 
       if (!productos || productos.length === 0) {
-        return res.status(404).json({ error: 'No se encontraron productos en el inventario' });
+        return res
+          .status(404)
+          .json({ error: "No se encontraron productos en el inventario" });
       }
 
-      const nombres = productos.map(p => p.name).filter((nombre): nombre is string => !!nombre);
+      const nombres = productos
+        .map((p) => p.name)
+        .filter((nombre): nombre is string => !!nombre);
 
       // Generar una receta salada
-      const recetaSaladaPrompt = `Tengo los siguientes productos: ${nombres.join(', ')}.
+      const recetaSaladaPrompt = `Tengo los siguientes productos: ${nombres.join(
+        ", "
+      )}.
 Sugiere una receta colombiana salada y creativa.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
@@ -26,8 +34,17 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
 
       const recetaSalada = await generarRecetas(nombres, recetaSaladaPrompt);
 
+      recetaSalada.imageUrl = await generarImagenParaReceta({
+        nombre: recetaSalada.nombre,
+        ingredientes: recetaSalada.ingredientes,
+        tipo: 'salada',
+      });
+
+
       // Generar una receta dulce
-      const recetaDulcePrompt = `Tengo los siguientes productos: ${nombres.join(', ')}.
+      const recetaDulcePrompt = `Tengo los siguientes productos: ${nombres.join(
+        ", "
+      )}.
 
 Sugiere una receta colombiana dulce y creativa.
 
@@ -39,14 +56,23 @@ Devuelve únicamente un objeto JSON válido con las siguientes claves:
 
 No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON.`;
 
-
       const recetaDulce = await generarRecetas(nombres, recetaDulcePrompt);
+
+      recetaDulce.imageUrl = await generarImagenParaReceta({
+        nombre: recetaDulce.nombre,
+        ingredientes: recetaDulce.ingredientes,
+        tipo: 'dulce',
+      });
+      
+
 
       const recetasFormateadas = [
         {
           _id: `salada-${Date.now()}-${Math.random()}`,
           title: recetaSalada.nombre, // Accede a la propiedad 'nombre' del objeto recetaSalada
-          description: recetaSalada.pasos ? recetaSalada.pasos.slice(0, 1).join('') + '...' : 'Receta salada.',
+          description: recetaSalada.pasos
+            ? recetaSalada.pasos.slice(0, 1).join("") + "..."
+            : "Receta salada.",
           image: recetaSalada.imageUrl || "src/assets/img/placeholder.png",
           ingredients: recetaSalada.ingredientes, // Accede a la propiedad 'ingredientes'
           steps: recetaSalada.pasos,
@@ -55,19 +81,20 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
         {
           _id: `dulce-${Date.now()}-${Math.random()}`,
           title: recetaDulce.nombre,
-          description: recetaDulce.pasos ? recetaDulce.pasos.slice(0, 1).join('') + '...' : 'Receta dulce.',
+          description: recetaDulce.pasos
+            ? recetaDulce.pasos.slice(0, 1).join("") + "..."
+            : "Receta dulce.",
           image: recetaDulce.imageUrl || "src/assets/img/placeholder.png",
-          ingredients: recetaDulce.ingredientes, 
-          steps: recetaDulce.pasos, 
+          ingredients: recetaDulce.ingredientes,
+          steps: recetaDulce.pasos,
           category: recetaDulce.categoria || "Postres",
         },
-        
       ];
 
       res.status(200).json({ recetas: recetasFormateadas });
     } catch (error) {
-      console.error('Error al generar las recetas con IA:', error);
-      res.status(500).json({ error: 'No se pudieron generar recetas con IA' });
+      console.error("Error al generar las recetas con IA:", error);
+      res.status(500).json({ error: "No se pudieron generar recetas con IA" });
     }
   },
 };
