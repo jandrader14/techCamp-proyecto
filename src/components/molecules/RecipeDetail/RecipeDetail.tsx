@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Recipe, Ingredient } from "../../../../shared/types/Recipe";
 import { Button } from "../../atoms/Button/Button";
 
@@ -40,13 +40,9 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         <ul className={styles.list}>
           {recipe.ingredients?.map((ingredient: Ingredient, index) => (
             <li key={index}>
-              {ingredient.product ? (
-                `${ingredient.quantity} ${ingredient.unit} de ${ingredient.product.name}`
-              ) : (
-                <span className={styles.missingIngredient}>
-                  Producto no especificado
-                </span>
-              )}
+              {ingredient.product?._id === ""
+                ? ingredient.product.name
+                : `${ingredient.quantity} ${ingredient.unit} de ${ingredient.product?.name}`}
             </li>
           ))}
         </ul>
@@ -75,9 +71,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
             );
             onDeleteRecipe(recipe._id);
           }}
-        >
-          
-        </Button>
+        ></Button>
       </div>
     </div>
   );
