@@ -19,6 +19,7 @@ interface RecipeResponse {
   ingredientes: string[];
   pasos: string[];
   imageUrl: string | null;
+  categoria: string;
 }
 
 // Función para buscar una imagen en Pixabay
@@ -46,7 +47,7 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
     const content = respuesta.choices[0].message?.content ?? '';
     console.log('Respuesta JSON de la IA:', content);
 
-    const recetaAI = JSON.parse(content) as { nombre: string; ingredientes: string[]; pasos: string[] };
+    const recetaAI = JSON.parse(content) as { nombre: string; ingredientes: string[]; pasos: string[]; categoria: string };
     const imageUrl = await obtenerImagenDeReceta(recetaAI.nombre);
 
     return {
@@ -54,6 +55,7 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
       ingredientes: recetaAI.ingredientes,
       pasos: recetaAI.pasos,
       imageUrl: imageUrl,
+      categoria: recetaAI.categoria || 'Platos Fuertes', // Asignar una categoría por defecto
     };
 
   } catch (error) {
@@ -63,6 +65,7 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
       ingredientes: [],
       pasos: [],
       imageUrl: null,
+      categoria: 'Error',
     };
   }
 };

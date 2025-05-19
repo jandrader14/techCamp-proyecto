@@ -15,15 +15,14 @@ export const recipesIAController = {
 
       // Generar una receta salada
       const recetaSaladaPrompt = `Tengo los siguientes productos: ${nombres.join(', ')}.
-
 Sugiere una receta colombiana salada y creativa.
+Devuelve únicamente un objeto JSON válido con las siguientes claves:
+- "nombre" (string),
+- "ingredientes" (array de strings, cada uno con cantidad y unidad, por ejemplo: "2 tazas de harina de trigo"),
+- "pasos" (array de strings),
+- "categoria" (string, debe ser UNA de las siguientes: "Entradas", "Platos Fuertes", "Sopas y Salsas").
 
-Devuelve **únicamente** un objeto JSON válido con las siguientes claves:
-"nombre" (string),
-"ingredientes" (array de strings, **donde cada string incluya la cantidad y la unidad de medida del ingrediente. Por ejemplo: "2 tazas de harina de trigo", "500 gramos de carne de res"**),
-"pasos" (array de strings).
-
-No incluyas ningún texto adicional, explicaciones ni bloques de código.`;
+No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON.`;
 
       const recetaSalada = await generarRecetas(nombres, recetaSaladaPrompt);
 
@@ -32,12 +31,14 @@ No incluyas ningún texto adicional, explicaciones ni bloques de código.`;
 
 Sugiere una receta colombiana dulce y creativa.
 
-Devuelve **únicamente** un objeto JSON válido con las siguientes claves:
-"nombre" (string),
-"ingredientes" (array de strings, **donde cada string incluya la cantidad y la unidad de medida del ingrediente. Por ejemplo: "1 taza de azúcar", "2 huevos grandes"**),
-"pasos" (array de strings).
+Devuelve únicamente un objeto JSON válido con las siguientes claves:
+- "nombre" (string),
+- "ingredientes" (array de strings, cada uno con cantidad y unidad, por ejemplo: "1 taza de azúcar"),
+- "pasos" (array de strings),
+- "categoria" (string, debe ser "Postres").
 
-No incluyas ningún texto adicional, explicaciones ni bloques de código.`;
+No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON.`;
+
 
       const recetaDulce = await generarRecetas(nombres, recetaDulcePrompt);
 
@@ -48,17 +49,19 @@ No incluyas ningún texto adicional, explicaciones ni bloques de código.`;
           description: recetaSalada.pasos ? recetaSalada.pasos.slice(0, 1).join('') + '...' : 'Receta salada.',
           image: recetaSalada.imageUrl || "src/assets/img/placeholder.png",
           ingredients: recetaSalada.ingredientes, // Accede a la propiedad 'ingredientes'
-          steps: recetaSalada.pasos, // Accede a la propiedad 'pasos'
+          steps: recetaSalada.pasos,
+          category: recetaSalada.categoria || "Platos Fuertes",
         },
         {
           _id: `dulce-${Date.now()}-${Math.random()}`,
-          title: recetaDulce.nombre, // Accede a la propiedad 'nombre' del objeto recetaDulce
+          title: recetaDulce.nombre,
           description: recetaDulce.pasos ? recetaDulce.pasos.slice(0, 1).join('') + '...' : 'Receta dulce.',
           image: recetaDulce.imageUrl || "src/assets/img/placeholder.png",
-          ingredients: recetaDulce.ingredientes, // Accede a la propiedad 'ingredientes'
-          steps: recetaDulce.pasos, // Accede a la propiedad 'pasos'
+          ingredients: recetaDulce.ingredientes, 
+          steps: recetaDulce.pasos, 
+          category: recetaDulce.categoria || "Postres",
         },
-        // Puedes agregar más recetas si lo deseas
+        
       ];
 
       res.status(200).json({ recetas: recetasFormateadas });
