@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { generarRecetas } from "../apis/openAI.service";
 import { productsService } from "../services/products.service";
-
+import { CachedRecipe } from "../models/cachedRecipeIA";
 import { generarImagenParaReceta } from '../utils/generarImagenParaReceta';
 
 export const recipesIAController = {
@@ -40,6 +40,12 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
         tipo: 'salada',
       });
 
+      await CachedRecipe.create({
+        tipo: 'salada',
+        ingredientes: nombres,
+        receta: recetaSalada,
+      });
+
 
       // Generar una receta dulce
       const recetaDulcePrompt = `Tengo los siguientes productos: ${nombres.join(
@@ -63,7 +69,13 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
         ingredientes: recetaDulce.ingredientes,
         tipo: 'dulce',
       });
-      
+
+      await CachedRecipe.create({
+        tipo: 'dulce',
+        ingredientes: nombres,
+        receta: recetaDulce,
+      });
+
 
 
       const recetasFormateadas = [
@@ -97,4 +109,28 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
       res.status(500).json({ error: "No se pudieron generar recetas con IA" });
     }
   },
+
+  obtenerHistorial: async (req: Request, res: Response) => {
+    try {
+      const recetas = await CachedRecipe.find().sort({ createdAt: -1 });
+
+      // Formatear las recetas para que sean compatibles con tu componente
+      const recetasFormateadas = recetas.map((r) => ({
+        _id: r._id,
+        title: r.receta.nombre,
+        description: r.receta.pasos?.[0] ? r.receta.pasos[0] + "..." : "Receta IA.",
+        image: r.receta.imageUrl,
+        ingredients: r.receta.ingredientes,
+        steps: r.receta.pasos,
+        category: r.receta.categoria,
+        tipo: r.tipo, // útil si quieres distinguir visualmente entre salada o dulce
+      }));
+
+      res.status(200).json({ recetas: recetasFormateadas });
+    } catch (error) {
+      console.error("Error al obtener historial IA:", error);
+      res.status(500).json({ error: "No se pudo obtener el historial de recetas IA" });
+    }
+  },
 };
+

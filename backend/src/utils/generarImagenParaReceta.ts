@@ -27,7 +27,7 @@ export const generarImagenParaReceta = async (
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.OPEN_AI_API_KEY}`,
           'Content-Type': 'application/json',
         },
       }
@@ -40,8 +40,15 @@ export const generarImagenParaReceta = async (
     });
 
     return uploadResult.secure_url;
+
   } catch (error) {
-    console.error('Error generando o subiendo imagen:', error);
-    return null;
+  if (axios.isAxiosError(error)) {
+    console.error('❌ Error generando o subiendo imagen (Axios):', error.response?.data || error.message);
+  } else if (error instanceof Error) {
+    console.error('❌ Error generando o subiendo imagen:', error.message);
+  } else {
+    console.error('❌ Error inesperado generando imagen:', error);
   }
+  return null;
+}
 };
