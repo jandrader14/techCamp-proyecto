@@ -1,18 +1,18 @@
 // models/CachedRecipe.ts
-import { Schema, Document, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
+import { RecetaIA } from '../../../shared/types/Recipe';
 
-interface RecetaIACacheada extends Document {
+
+
+export interface RecetaIACacheada {
   tipo: 'salada' | 'dulce';
   ingredientes: string[];
-  receta: {
-    nombre: string;
-    ingredientes: string[];
-    pasos: string[];
-    categoria: string;
-    imageUrl: string;
-  };
+  receta: RecetaIA;
   createdAt: Date;
 }
+
+// Documento de mongoose con todos los campos + _id, etc.
+export type RecetaIADoc = Document & RecetaIACacheada;
 
 const cachedRecipeSchema = new Schema<RecetaIACacheada>({
   tipo: { type: String, enum: ['salada', 'dulce'], required: true },
@@ -27,7 +27,7 @@ const cachedRecipeSchema = new Schema<RecetaIACacheada>({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 60 * 60 * 24, // expira en 24 horas
+    expires: 60 * 60 * 24,
   },
 });
 

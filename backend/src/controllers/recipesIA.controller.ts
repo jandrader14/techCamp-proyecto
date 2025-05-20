@@ -1,8 +1,17 @@
 import { Request, Response } from "express";
 import { generarRecetas } from "../apis/openAI.service";
 import { productsService } from "../services/products.service";
-import { CachedRecipe } from "../models/cachedRecipeIA";
-import { generarImagenParaReceta } from '../utils/generarImagenParaReceta';
+import { generarImagenParaReceta } from "../utils/generarImagenParaReceta";
+import { cacheRecipeService } from "../services/cacheRecipe.service";
+import { RecetaIADoc, CachedRecipe } from "../models/cachedRecipeIA";
+
+interface RecetaIA {
+  nombre: string;
+  ingredientes: string[];
+  pasos: string[];
+  categoria: string;
+  imageUrl: string;
+}
 
 export const recipesIAController = {
   generarDesdeInventario: async (req: Request, res: Response) => {
@@ -10,96 +19,93 @@ export const recipesIAController = {
       const productos = await productsService.getAll();
 
       if (!productos || productos.length === 0) {
-        return res
-          .status(404)
-          .json({ error: "No se encontraron productos en el inventario" });
+        return res.status(404).json({ error: "No se encontraron productos en el inventario" });
       }
 
       const nombres = productos
         .map((p) => p.name)
         .filter((nombre): nombre is string => !!nombre);
 
-      // Generar una receta salada
-      const recetaSaladaPrompt = `Tengo los siguientes productos: ${nombres.join(
-        ", "
-      )}.
+      // === SALADA ===
+      const recetaSaladaCache = await cacheRecipeService.buscar(nombres, "salada");
+      let recetaSalada: RecetaIA;
+
+      if (recetaSaladaCache) {
+        recetaSalada = recetaSaladaCache.receta;
+      } else {
+        const promptSalada = `Tengo los siguientes productos: ${nombres.join(", ")}.
 Sugiere una receta colombiana salada y creativa.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
-- "ingredientes" (array de strings, cada uno con cantidad y unidad, por ejemplo: "2 tazas de harina de trigo"),
+- "ingredientes" (array de strings, cada uno con cantidad y unidad),
 - "pasos" (array de strings),
-- "categoria" (string, debe ser UNA de las siguientes: "Entradas", "Platos Fuertes", "Sopas y Salsas").
+- "categoria" (string, debe ser UNA de: "Entradas", "Platos Fuertes", "Sopas y Salsas").
+No incluyas texto adicional ni explicaciones. Solo el JSON.`;
 
-No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON.`;
+        const nueva = await generarRecetas(nombres, promptSalada);
+        const image = await generarImagenParaReceta({
+          nombre: nueva.nombre,
+          ingredientes: nueva.ingredientes,
+          tipo: "salada",
+        });
 
-      const recetaSalada = await generarRecetas(nombres, recetaSaladaPrompt);
+        recetaSalada = {
+          ...nueva,
+          imageUrl: image ?? "",
+        };
 
-      recetaSalada.imageUrl = await generarImagenParaReceta({
-        nombre: recetaSalada.nombre,
-        ingredientes: recetaSalada.ingredientes,
-        tipo: 'salada',
-      });
+        await cacheRecipeService.guardar(nombres, "salada", recetaSalada);
+      }
 
-      await CachedRecipe.create({
-        tipo: 'salada',
-        ingredientes: nombres,
-        receta: recetaSalada,
-      });
+      // === DULCE ===
+      const recetaDulceCache = await cacheRecipeService.buscar(nombres, "dulce");
+      let recetaDulce: RecetaIA;
 
-
-      // Generar una receta dulce
-      const recetaDulcePrompt = `Tengo los siguientes productos: ${nombres.join(
-        ", "
-      )}.
-
+      if (recetaDulceCache) {
+        recetaDulce = recetaDulceCache.receta;
+      } else {
+        const promptDulce = `Tengo los siguientes productos: ${nombres.join(", ")}.
 Sugiere una receta colombiana dulce y creativa.
-
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
-- "ingredientes" (array de strings, cada uno con cantidad y unidad, por ejemplo: "1 taza de azúcar"),
+- "ingredientes" (array de strings),
 - "pasos" (array de strings),
 - "categoria" (string, debe ser "Postres").
+No incluyas texto adicional ni explicaciones. Solo el JSON.`;
 
-No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON.`;
+        const nueva = await generarRecetas(nombres, promptDulce);
+        const image = await generarImagenParaReceta({
+          nombre: nueva.nombre,
+          ingredientes: nueva.ingredientes,
+          tipo: "dulce",
+        });
 
-      const recetaDulce = await generarRecetas(nombres, recetaDulcePrompt);
+        recetaDulce = {
+          ...nueva,
+          imageUrl: image ?? "",
+        };
 
-      recetaDulce.imageUrl = await generarImagenParaReceta({
-        nombre: recetaDulce.nombre,
-        ingredientes: recetaDulce.ingredientes,
-        tipo: 'dulce',
-      });
-
-      await CachedRecipe.create({
-        tipo: 'dulce',
-        ingredientes: nombres,
-        receta: recetaDulce,
-      });
-
-
+        await cacheRecipeService.guardar(nombres, "dulce", recetaDulce);
+      }
 
       const recetasFormateadas = [
         {
-          _id: `salada-${Date.now()}-${Math.random()}`,
-          title: recetaSalada.nombre, // Accede a la propiedad 'nombre' del objeto recetaSalada
-          description: recetaSalada.pasos
-            ? recetaSalada.pasos.slice(0, 1).join("") + "..."
-            : "Receta salada.",
-          image: recetaSalada.imageUrl || "src/assets/img/placeholder.png",
-          ingredients: recetaSalada.ingredientes, // Accede a la propiedad 'ingredientes'
+          _id: `salada-${Date.now()}`,
+          title: recetaSalada.nombre,
+          description: recetaSalada.pasos[0] + "...",
+          image: recetaSalada.imageUrl,
+          ingredients: recetaSalada.ingredientes,
           steps: recetaSalada.pasos,
-          category: recetaSalada.categoria || "Platos Fuertes",
+          category: recetaSalada.categoria,
         },
         {
-          _id: `dulce-${Date.now()}-${Math.random()}`,
+          _id: `dulce-${Date.now()}`,
           title: recetaDulce.nombre,
-          description: recetaDulce.pasos
-            ? recetaDulce.pasos.slice(0, 1).join("") + "..."
-            : "Receta dulce.",
-          image: recetaDulce.imageUrl || "src/assets/img/placeholder.png",
+          description: recetaDulce.pasos[0] + "...",
+          image: recetaDulce.imageUrl,
           ingredients: recetaDulce.ingredientes,
           steps: recetaDulce.pasos,
-          category: recetaDulce.categoria || "Postres",
+          category: recetaDulce.categoria,
         },
       ];
 
@@ -110,20 +116,19 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
     }
   },
 
-  obtenerHistorial: async (req: Request, res: Response) => {
+  obtenerHistorial: async (_req: Request, res: Response) => {
     try {
       const recetas = await CachedRecipe.find().sort({ createdAt: -1 });
 
-      // Formatear las recetas para que sean compatibles con tu componente
-      const recetasFormateadas = recetas.map((r) => ({
+      const recetasFormateadas = recetas.map((r: RecetaIADoc) => ({
         _id: r._id,
         title: r.receta.nombre,
-        description: r.receta.pasos?.[0] ? r.receta.pasos[0] + "..." : "Receta IA.",
+        description: r.receta.pasos[0] + "...",
         image: r.receta.imageUrl,
         ingredients: r.receta.ingredientes,
         steps: r.receta.pasos,
         category: r.receta.categoria,
-        tipo: r.tipo, // útil si quieres distinguir visualmente entre salada o dulce
+        tipo: r.tipo,
       }));
 
       res.status(200).json({ recetas: recetasFormateadas });
@@ -133,4 +138,3 @@ No incluyas texto adicional ni explicaciones ni bloques de código. Solo el JSON
     }
   },
 };
-

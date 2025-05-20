@@ -52,7 +52,7 @@ export function RecipeInventory() {
           response.data.recetas.length > 0
         ) {
           const mappedRecipes: Recipe[] = response.data.recetas
-            .slice(0, 3)
+            .slice(0, 6)
             .map((recipe, index) => ({
               _id: recipe._id || `ia-${index + 1}`,
               name: recipe.title || `Receta IA ${index + 1}`,

@@ -15,3 +15,11 @@ export interface Recipe {
     image: string;
     __v?: number;
 }
+
+export interface RecetaIA {
+  nombre: string;
+  ingredientes: string[];
+  pasos: string[];
+  categoria: string;
+  imageUrl: string;
+}

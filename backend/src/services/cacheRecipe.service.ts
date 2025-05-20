@@ -2,8 +2,8 @@ import { CachedRecipe } from "../models/cachedRecipeIA";
 import mongoose from "mongoose";
 
 export const cacheRecipeService = {
-  // Buscar una receta generada con IA basada en los ingredientes exactos y el tipo
-  buscarPorIngredientes: async (ingredientes: string[], tipo: "salada" | "dulce") => {
+  // Buscar receta cacheada por ingredientes y tipo
+  buscar: async (ingredientes: string[], tipo: "salada" | "dulce") => {
     if (!ingredientes.length) throw new Error("Lista de ingredientes requerida");
     if (!tipo) throw new Error("Tipo de receta requerido");
 
@@ -13,8 +13,8 @@ export const cacheRecipeService = {
     });
   },
 
-  // Guardar una nueva receta generada con IA en la base de datos
-  guardarReceta: async (
+  // Guardar receta cacheada
+  guardar: async (
     ingredientes: string[],
     tipo: "salada" | "dulce",
     receta: {
@@ -39,7 +39,6 @@ export const cacheRecipeService = {
     return nueva;
   },
 
-  // Obtener por ID (opcional)
   getById: async (id: string) => {
     if (!id) throw new Error("ID requerido");
     return await CachedRecipe.findById(new mongoose.Types.ObjectId(id));
