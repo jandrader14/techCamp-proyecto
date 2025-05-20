@@ -32,6 +32,15 @@ export function RecipesPage() {
         console.error("Error al obtener recetas:", error);
       }
     }
+
+    if (cardName === "Ver recetas IA") {
+      navigate("/recetas/recomendadas");
+    }
+
+    if (cardName === "Unidades") {
+      // Por ahora solo evita el error
+      window.location.href = "#";
+    }
   };
 
   const openModal = () => setIsModalOpen(true);

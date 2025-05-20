@@ -43,15 +43,38 @@
   object-fit: cover;
 }
 
+/* 💻 Pantallas medianas: tablets horizontales */
+@media (max-width: 1024px) {
+  .recipeCard {
+    flex: 1 1 calc(45% - 1rem);
+  }
+}
+
+/* 📱 Pantallas pequeñas: móviles grandes */
 @media (max-width: 768px) {
   .recipeCard {
     flex: 1 1 calc(50% - 1rem);
   }
 }
 
+/* 📱 Pantallas muy pequeñas: móviles */
 @media (max-width: 480px) {
   .recipeCard {
     flex: 1 1 100%;
+  }
+}
+
+/* 🖥 Pantallas grandes: desktops 1366px o más */
+@media (min-width: 1366px) {
+  .recipeCard {
+    flex: 0 0 calc(33.33% - 1rem); /* 3 tarjetas por fila con espacio */
+  }
+}
+
+/* 🖥 Pantallas muy grandes: 1920px o más */
+@media (min-width: 1920px) {
+  .recipeCard {
+    flex: 0 0 calc(25% - 1rem); /* 4 tarjetas por fila si hay espacio */
   }
 }
 

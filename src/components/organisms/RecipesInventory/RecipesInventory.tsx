@@ -42,7 +42,7 @@ export function RecipeInventory() {
     const fetchIARecipes = async () => {
       try {
         const response = await axios.get<ApiResponse>(
-          "http://localhost:5000/api/recipes/suggest/generar"
+          "http://localhost:5000/api/recipes/suggest/historial"
         );
         console.log("Respuesta cruda del backend:", response.data.recetas);
 
@@ -52,7 +52,7 @@ export function RecipeInventory() {
           response.data.recetas.length > 0
         ) {
           const mappedRecipes: Recipe[] = response.data.recetas
-            .slice(0, 6)
+            .slice(0, 3)
             .map((recipe, index) => ({
               _id: recipe._id || `ia-${index + 1}`,
               name: recipe.title || `Receta IA ${index + 1}`,
@@ -103,7 +103,7 @@ export function RecipeInventory() {
             )}
         {error && <p className={styles.error}>{error}</p>}
 
-        <Link to="/recetas" className={styles.button}>
+        <Link to="/recetas/recomendadas" className={styles.button}>
           Ver todas <ChevronRight size={18} className={styles.icon} />
         </Link>
       </div>
