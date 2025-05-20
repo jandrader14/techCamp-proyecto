@@ -18,8 +18,9 @@ export interface Recipe {
 
 export interface RecetaIA {
   nombre: string;
+  porciones: string;
   ingredientes: string[];
   pasos: string[];
   categoria: string;
-  imageUrl: string;
+  imageUrl: string | null;
 }

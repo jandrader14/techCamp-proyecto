@@ -4,14 +4,9 @@ import { productsService } from "../services/products.service";
 import { generarImagenParaReceta } from "../utils/generarImagenParaReceta";
 import { cacheRecipeService } from "../services/cacheRecipe.service";
 import { RecetaIADoc, CachedRecipe } from "../models/cachedRecipeIA";
+import { RecetaIA } from "../../../shared/types/Recipe";
 
-interface RecetaIA {
-  nombre: string;
-  ingredientes: string[];
-  pasos: string[];
-  categoria: string;
-  imageUrl: string;
-}
+
 
 export const recipesIAController = {
   generarDesdeInventario: async (req: Request, res: Response) => {
@@ -33,14 +28,15 @@ export const recipesIAController = {
       if (recetaSaladaCache) {
         recetaSalada = recetaSaladaCache.receta;
       } else {
-        const promptSalada = `Tengo los siguientes productos: ${nombres.join(", ")}.
-Sugiere una receta colombiana salada y creativa.
+        const promptSalada = `Como un chef experimentado y conocedor profundo de la gastronomía colombiana, tengo los siguientes productos: ${nombres.join(", ")}.
+Sugiere una receta salada **auténtica y creativa**, que represente los sabores y técnicas culinarias de Colombia.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
+- "porciones" (string, por ejemplo: "4 personas"),
 - "ingredientes" (array de strings, cada uno con cantidad y unidad),
 - "pasos" (array de strings),
-- "categoria" (string, debe ser UNA de: "Entradas", "Platos Fuertes", "Sopas y Salsas").
-No incluyas texto adicional ni explicaciones. Solo el JSON.`;
+- "categoria" (string, debe ser UNA de: "Entrada", "Plato Fuerte", "Sopa", "Acompañamiento" o "Salsa").
+No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin texto adicional.`;
 
         const nueva = await generarRecetas(nombres, promptSalada);
         const image = await generarImagenParaReceta({
@@ -52,9 +48,13 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
         recetaSalada = {
           ...nueva,
           imageUrl: image ?? "",
+          porciones: nueva.porciones,
         };
 
-        await cacheRecipeService.guardar(nombres, "salada", recetaSalada);
+        await cacheRecipeService.guardar(nombres, "salada", {
+          ...recetaSalada,
+          imageUrl: recetaSalada.imageUrl ?? "",
+        });
       }
 
       // === DULCE ===
@@ -64,14 +64,15 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
       if (recetaDulceCache) {
         recetaDulce = recetaDulceCache.receta;
       } else {
-        const promptDulce = `Tengo los siguientes productos: ${nombres.join(", ")}.
-Sugiere una receta colombiana dulce y creativa.
+        const promptDulce = `Como un chef experto en la repostería y dulces tradicionales de Colombia, tengo los siguientes productos: ${nombres.join(", ")}.
+Sugiere una receta colombiana dulce, **auténtica y creativa**, que evoque los sabores y tradiciones de nuestro país.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
+- "porciones" (string, por ejemplo: "6 porciones"),
 - "ingredientes" (array de strings),
 - "pasos" (array de strings),
-- "categoria" (string, debe ser "Postres").
-No incluyas texto adicional ni explicaciones. Solo el JSON.`;
+- "categoria" (string, debe ser "Postres" o una categoría específica de dulces colombianos como "Dulces Tradicionales" o "Postres Típicos").
+No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin texto adicional.`;
 
         const nueva = await generarRecetas(nombres, promptDulce);
         const image = await generarImagenParaReceta({
@@ -83,9 +84,13 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
         recetaDulce = {
           ...nueva,
           imageUrl: image ?? "",
+          porciones: nueva.porciones,
         };
 
-        await cacheRecipeService.guardar(nombres, "dulce", recetaDulce);
+        await cacheRecipeService.guardar(nombres, "dulce", {
+          ...recetaDulce,
+          imageUrl: recetaDulce.imageUrl ?? "",
+        });
       }
 
       const recetasFormateadas = [
@@ -97,6 +102,7 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
           ingredients: recetaSalada.ingredientes,
           steps: recetaSalada.pasos,
           category: recetaSalada.categoria,
+          portions: recetaSalada.porciones,
         },
         {
           _id: `dulce-${Date.now()}`,
@@ -106,6 +112,7 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
           ingredients: recetaDulce.ingredientes,
           steps: recetaDulce.pasos,
           category: recetaDulce.categoria,
+          portions: recetaDulce.porciones,
         },
       ];
 
@@ -129,6 +136,8 @@ No incluyas texto adicional ni explicaciones. Solo el JSON.`;
         steps: r.receta.pasos,
         category: r.receta.categoria,
         tipo: r.tipo,
+        portions: r.receta.porciones,
+
       }));
 
       res.status(200).json({ recetas: recetasFormateadas });

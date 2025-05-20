@@ -64,7 +64,7 @@ export function RecipeInventory() {
                 unit: "",
               })),
               steps: recipe.steps || [],
-              portions: "2",
+              portions: "👥",
               category: recipe.category || "General",
               preparation: (recipe.steps || []).join("\n"),
             }));

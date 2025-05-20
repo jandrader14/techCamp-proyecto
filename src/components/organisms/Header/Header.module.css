@@ -133,20 +133,29 @@
 /* Estilo para el submenú */
 .submenu {
   position: absolute;
-  top: 100%; /* Aparece debajo del ícono */
+  top: 100%;
   right: 0;
-  background-color: #fff;
-  padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  z-index: 10;
 }
 
-/* Estilo para los botones */
-button {
-  padding: 10px;
-  margin: 5px;
+.submenu button {
+  background-color: #f8f4f1;
+  color: #7a4e29;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  text-align: left;
 }
 
-button:hover {
-  background-color: #f0f0f0;
+.submenu button:hover {
+  background-color: #e4d5c7;
+  transform: translateX(2px);
 }

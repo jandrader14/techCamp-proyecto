@@ -1,4 +1,4 @@
-// src/utils/generarImagenParaReceta.ts
+
 import axios from 'axios';
 import cloudinary from '../config/cloudinary';
 

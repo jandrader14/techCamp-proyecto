@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import { OpenAI } from 'openai';
 import axios from 'axios';
-//import { extraerNombreReceta, extraerIngredientes, extraerPasos } from '../utils/openAI.helpers';
+
+import { RecetaIA } from '../../../shared/types/Recipe';
+
 
 // Configuración de la API de OpenAI
 const openai = new OpenAI({
@@ -12,15 +14,6 @@ const openai = new OpenAI({
 
 // Configuración de la API de Pixabay
 const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
-
-// Tipo para la respuesta de receta
-interface RecipeResponse {
-  nombre: string;
-  ingredientes: string[];
-  pasos: string[];
-  imageUrl: string | null;
-  categoria: string;
-}
 
 // Función para buscar una imagen en Pixabay
 const obtenerImagenDeReceta = async (nombreReceta: string) => {
@@ -36,7 +29,7 @@ const obtenerImagenDeReceta = async (nombreReceta: string) => {
 };
 
 // Función para generar la receta y buscar imagen
-export const generarRecetas = async (productos: string[], prompt: string): Promise<RecipeResponse> => {
+export const generarRecetas = async (productos: string[], prompt: string): Promise<RecetaIA> => {
   try {
     const respuesta = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
@@ -45,9 +38,14 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
     });
 
     const content = respuesta.choices[0].message?.content ?? '';
-    console.log('Respuesta JSON de la IA:', content);
 
-    const recetaAI = JSON.parse(content) as { nombre: string; ingredientes: string[]; pasos: string[]; categoria: string };
+    const cleanContent = content.replace(/```json|```/g, "").trim();
+    console.log("✅ JSON limpio recibido:", cleanContent);
+
+    console.log('⚠️ Texto recibido de la IA:', content);
+
+
+    const recetaAI = JSON.parse(cleanContent) as { nombre: string; ingredientes: string[]; pasos: string[]; categoria: string, porciones: string };
     const imageUrl = await obtenerImagenDeReceta(recetaAI.nombre);
 
     return {
@@ -55,7 +53,8 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
       ingredientes: recetaAI.ingredientes,
       pasos: recetaAI.pasos,
       imageUrl: imageUrl,
-      categoria: recetaAI.categoria || 'Platos Fuertes', // Asignar una categoría por defecto
+      categoria: recetaAI.categoria || 'Platos Fuertes',
+      porciones: recetaAI.porciones
     };
 
   } catch (error) {
@@ -64,8 +63,9 @@ export const generarRecetas = async (productos: string[], prompt: string): Promi
       nombre: 'Error al generar receta',
       ingredientes: [],
       pasos: [],
-      imageUrl: null,
+      imageUrl: "",
       categoria: 'Error',
+      porciones: 'Error',
     };
   }
 };
