@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { productsService } from "../services/products.service";
-import { CachedRecipe, RecetaIADoc } from "../models/cachedRecipeIA";
 import { generateAndCacheRecipe } from "../utils/recipeGenerator";
+import { cacheRecipeService } from "../services/cacheRecipe.service";
+import { RecetaIADoc, CachedRecipe } from "../models/cachedRecipeIA";
 
 export const recipesIAController = {
   generarDesdeInventario: async (req: Request, res: Response) => {
@@ -16,32 +17,35 @@ export const recipesIAController = {
         .map((p) => p.name)
         .filter((nombre): nombre is string => !!nombre);
 
-      // === PROMPTS (pueden seguir aquí o en un archivo de configuración si son muy grandes) ===
-      const promptSalada = `Como un chef experimentado y conocedor profundo de la gastronomía colombiana, tengo los siguientes productos: ${nombres.join(", ")}.
-Sugiere una receta salada **auténtica y creativa**, que represente los sabores y técnicas culinarias de Colombia.
+      const ignorarCache = req.query.forzar === 'true';
+
+      const promptSalada = `Tengo los siguientes productos: ${nombres.join(", ")}.
+Sugiere una receta colombiana salada y creativa.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
 - "porciones" (string, por ejemplo: "4 personas"),
 - "ingredientes" (array de strings, cada uno con cantidad y unidad),
 - "pasos" (array de strings),
-- "categoria" (string, debe ser UNA de: "Entrada", "Plato Fuerte", "Sopa", "Acompañamiento" o "Salsa").
-No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin texto adicional.`;
+- "categoria" (string, debe ser UNA de: "Entradas", "Platos Fuertes", "Sopas y Salsas").
+No incluyas texto adicional ni explicaciones. Solo el JSON.`;
 
-      const promptDulce = `Como un chef experto en la repostería y dulces tradicionales de Colombia, tengo los siguientes productos: ${nombres.join(", ")}.
-Sugiere una receta colombiana dulce, **auténtica y creativa**, que evoque los sabores y tradiciones de nuestro país.
+      const promptDulce = `Tengo los siguientes productos: ${nombres.join(", ")}.
+Sugiere una receta colombiana dulce y creativa.
 Devuelve únicamente un objeto JSON válido con las siguientes claves:
 - "nombre" (string),
 - "porciones" (string, por ejemplo: "6 porciones"),
 - "ingredientes" (array de strings),
 - "pasos" (array de strings),
-- "categoria" (string, debe ser "Postres" o una categoría específica de dulces colombianos como "Dulces Tradicionales" o "Postres Típicos").
-No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin texto adicional.`;
+- "categoria" (string, debe ser "Postres").
+No incluyas texto adicional ni explicaciones. Solo el JSON.`;
 
-      // === Generar y cachear ambas recetas usando la nueva función ===
-      const [recetaSalada, recetaDulce] = await Promise.all([
-        generateAndCacheRecipe(nombres, "salada", promptSalada),
-        generateAndCacheRecipe(nombres, "dulce", promptDulce),
-      ]);
+      const recetaSalada = ignorarCache
+        ? await generateAndCacheRecipe(nombres, "salada", promptSalada)
+        : (await cacheRecipeService.buscar(nombres, "salada"))?.receta || await generateAndCacheRecipe(nombres, "salada", promptSalada);
+
+      const recetaDulce = ignorarCache
+        ? await generateAndCacheRecipe(nombres, "dulce", promptDulce)
+        : (await cacheRecipeService.buscar(nombres, "dulce"))?.receta || await generateAndCacheRecipe(nombres, "dulce", promptDulce);
 
       const recetasFormateadas = [
         {
@@ -52,7 +56,7 @@ No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin text
           ingredients: recetaSalada.ingredientes,
           steps: recetaSalada.pasos,
           category: recetaSalada.categoria,
-          portions: `Para ${recetaSalada.porciones}`,
+          portions: recetaSalada.porciones,
         },
         {
           _id: `dulce-${Date.now()}`,
@@ -62,7 +66,7 @@ No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin text
           ingredients: recetaDulce.ingredientes,
           steps: recetaDulce.pasos,
           category: recetaDulce.categoria,
-          portions: `Para ${recetaDulce.porciones}`,
+          portions: recetaDulce.porciones,
         },
       ];
 
@@ -86,7 +90,7 @@ No uses markdown ni bloques de código como \`\`\`. Solo el JSON crudo, sin text
         steps: r.receta.pasos,
         category: r.receta.categoria,
         tipo: r.tipo,
-        portions: `Para ${r.receta.porciones}`,
+        portions: r.receta.porciones,
       }));
 
       res.status(200).json({ recetas: recetasFormateadas });
