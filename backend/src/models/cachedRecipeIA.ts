@@ -23,6 +23,7 @@ const cachedRecipeSchema = new Schema<RecetaIACacheada>({
     pasos: [String],
     categoria: String,
     imageUrl: String,
+    porciones: { type: String, required: true },
   },
   createdAt: {
     type: Date,

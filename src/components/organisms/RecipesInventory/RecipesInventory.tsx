@@ -18,6 +18,7 @@ interface IARecipeResponse {
   ingredients: string[];
   steps: string[];
   category: string;
+  portions: string;
   _id: string;
 }
 
@@ -64,7 +65,7 @@ export function RecipeInventory() {
                 unit: "",
               })),
               steps: recipe.steps || [],
-              portions: "👥",
+              portions: recipe.portions,
               category: recipe.category || "General",
               preparation: (recipe.steps || []).join("\n"),
             }));
