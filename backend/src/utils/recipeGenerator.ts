@@ -1,20 +1,23 @@
 import { generarRecetas } from "../apis/openAI.service";
-import { generarImagenParaReceta } from "./generarImagenParaReceta"; 
+import { generarImagenParaReceta } from "./generarImagenParaReceta";
 import { cacheRecipeService } from "../services/cacheRecipe.service";
-import { RecetaIA } from "../../../shared/types/Recipe"; 
+import { RecetaIA } from "../../../shared/types/Recipe";
 
 export const generateAndCacheRecipe = async (
   nombres: string[],
   tipo: "salada" | "dulce",
-  prompt: string
+  prompt: string,
+  ignorarCache = false,
 ): Promise<RecetaIA> => {
-  const recetaCache = await cacheRecipeService.buscar(nombres, tipo);
-  if (recetaCache) {
-    console.log(`Receta ${tipo} encontrada en caché.`);
-    return recetaCache.receta;
+  if (!ignorarCache) {
+    const recetaCache = await cacheRecipeService.buscar(nombres, tipo);
+    if (recetaCache) {
+      console.log(`Receta ${tipo} encontrada en caché.`);
+      return recetaCache.receta;
+    }
   }
 
-  console.log(`Generando nueva receta ${tipo}...`); 
+  console.log(`Generando nueva receta ${tipo}...`);
   const nueva = await generarRecetas(nombres, prompt);
   const image = await generarImagenParaReceta({
     nombre: nueva.nombre,
@@ -30,7 +33,7 @@ export const generateAndCacheRecipe = async (
 
   await cacheRecipeService.guardar(nombres, tipo, {
     ...recetaFinal,
-    imageUrl: recetaFinal.imageUrl ?? "", 
+    imageUrl: recetaFinal.imageUrl ?? "",
   });
 
   return recetaFinal;
