@@ -1,0 +1,9 @@
+﻿{
+    "projectKey":  "techCamp-proyecto",
+    "sonarUrl":  "http://localhost:9001",
+    "totalIssues":  58,
+    "totalHotspots":  0,
+    "exportedAt":  "2026-08-30T20:11:26",
+    "issuesCsv":  "J:\\develop\\techCamp-proyecto\\sonar-export\\sonar-issues-with-cwe.csv",
+    "hotspotsCsv":  "J:\\develop\\techCamp-proyecto\\sonar-export\\sonar-hotspots-with-cwe.csv"
+}

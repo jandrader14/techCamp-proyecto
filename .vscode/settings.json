@@ -1,5 +1,9 @@
 {
     "liveServer.settings.port": 5501,
      "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "http-localhost-9001",
+    "projectKey": "techCamp-proyecto"
+  }
 }
